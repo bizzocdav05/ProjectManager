@@ -4,8 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accedi a Torg</title>
+
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-elem {
+            
+        }
+    </style>
 </head>
 <body>
-    
+    <h1>Accedi</h1>
+    <div class="container">
+        <form method="post">
+            <div class="form-elem">
+                <label for="id_mail">Email</label>
+                <input type="email" name="mail" id="id_mail">
+            </div>
+
+            <div class="form-elem">
+                <label for="id_pass">Password</label>
+                <input type="password" name="password" id="id_pass">
+            </div>
+
+            <div class="form-elem">
+                <input type="submit" value="Accedi">
+            </div>
+
+            <div class="form-elem">
+                <a href="./signup.html">Non hai un account? Crealo adesso</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
