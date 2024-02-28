@@ -15,6 +15,10 @@
         .form-elem {
             
         }
+
+        .info-form {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -52,7 +56,9 @@
         </form>
     </div>
     <script>
-    
+        let p_info_form = $(".info-form");
+
+
         let password1 = $("#ps");
         let password2 = $("#cps");
 
@@ -62,6 +68,8 @@
             {
                 e.preventDefault();
                 console.log("password diverse"); 
+                p_info_form.text("password diverse");
+                p_info_form.show();
             }
         });
     </script>
