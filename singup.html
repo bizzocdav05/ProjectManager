@@ -2,16 +2,68 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrati su Torg</title>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-elem {
+            
+        }
+    </style>
 </head>
 <body>
-    <form>
-        <input type="text" name="nome" id="nm">
-        <input type="email" name="email" id="em">
-        <input type="date" name="anno_nascita" id="an">
-        <input type="text" name="password" id="ps">
-        <input type="submit" value="Iscriviti">
-    </form>
+    <h1>Registrati</h1>
+    <div class="container">
+        <p class="info-form"></p>
+        <form method="post">
+            <div class="form-elem">
+                <label for="nm">Nome</label>
+                <input type="text" name="nome" id="nm">
+            </div>
+            <div class="form-elem">
+                <label for="cg">Cognome</label>
+                <input type="text" name="cognome" id="cg">
+            </div>
+            <div class="form-elem">
+                <label for="em">Email</label>
+                <input type="email" name="email" id="em">
+            </div>
+            <div class="form-elem">
+                <label for="an">Data di nascita</label>
+                <input type="date" name="anno_nascita" id="an">
+            </div>
+            <div class="form-elem">
+                <label for="ps">Password</label>
+                <input type="password" name="password" id="ps" required>
+            </div>
+            <div class="form-elem">
+                <label for="cps">Conferma password</label>
+                <input type="password" name="c_password" id="cps" required>
+            </div>
+            <div class="form-elem">
+                <input type="submit" value="Registrati">
+            </div>
+        </form>
+    </div>
+    <script>
+    
+        let password1 = $("#ps");
+        let password2 = $("#cps");
+
+        $("body > div > form").submit(function (e) {
+
+            if (password1.val() != password2.val())
+            {
+                e.preventDefault();
+                console.log("password diverse"); 
+            }
+        });
+    </script>
 </body>
 </html>
