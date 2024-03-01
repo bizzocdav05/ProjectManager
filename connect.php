@@ -27,7 +27,7 @@ function accedi_user($server) {
         if (isset($mail) && isset($password))
         {
             $password_hash = password_hash($password);
-            $sql = "SELECT * FROM Utenti WHERE Utenti.Email = '$mail' AND Utenti.password = '$password_hash';"
+            $sql = "SELECT * FROM Utenti WHERE Utenti.Email = '$mail' AND Utenti.password = '$password_hash';";
             $result = $server->query($sql);
 
             if ($result->num_rows > 0) {
@@ -61,7 +61,7 @@ function registrazione_user($server)
             if ($password == $password_2)
             {
                 $password_hash = password_hash($password);
-                $sql = "SELECT * FROM Utenti WHERE Utenti.Email = '$mail' AND Utenti.password = '$password_hash';"
+                $sql = "SELECT * FROM Utenti WHERE Utenti.Email = '$mail' AND Utenti.password = '$password_hash';";
                 $result = $server->query($sql);
 
                 if ($result->num_rows != 0) {
@@ -70,7 +70,6 @@ function registrazione_user($server)
                     ));
                 }
                 else {
-                    $sql = "INSERT INTO Console"
                     $sql = "INSERT INTO Utenti (nome, cognome, email, anno_nascita, password) VALUES ($nome, $cognome, $mail, $anno_nascita, $password_hash);"
                 }
             }
