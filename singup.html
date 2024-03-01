@@ -24,7 +24,7 @@
 <body>
     <h1>Registrati</h1>
     <div class="container">
-        <p class="info-form"></p>
+       
         <form method="post">
             <div class="form-elem">
                 <label for="nm">Nome</label>
@@ -48,7 +48,7 @@
             </div>
             <div class="form-elem">
                 <label for="cps">Conferma password</label>
-                <input type="password" name="c_password" id="cps" required>
+                <input type="password" name="c_password" id="cps" required> <p class="info-form"></p>
             </div>
             <div class="form-elem">
                 <input type="submit" value="Registrati">
@@ -62,14 +62,39 @@
         let password1 = $("#ps");
         let password2 = $("#cps");
 
+        var array;
         $("body > div > form").submit(function (e) {
+            e.preventDefault();
 
             if (password1.val() != password2.val())
             {
-                e.preventDefault();
                 console.log("password diverse"); 
                 p_info_form.text("password diverse");
                 p_info_form.show();
+            }
+            else {
+                array = $(this).serializeArray();
+
+                let valori_campi = "";
+                for (let i = 0; i < 5; i++)
+                {
+                    valori_campi += array[i]["value"];
+                    if (i != 4) valori_campi += ",";
+                }
+
+                let query = "INSERT INTO Utenti(nome, cognome, anno_nascita, password) VALUES (" + valori_campi + ")";
+
+                console.log(query);
+
+                /*
+                $.ajax({
+                    url: "torg.altervista.org/server.php",
+                    type: "GET",
+                    data: {
+                        "query": ""
+                    }
+                });
+                */
             }
         });
     </script>
