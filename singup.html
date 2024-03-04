@@ -78,23 +78,31 @@
                 let valori_campi = "";
                 for (let i = 0; i < 5; i++)
                 {
-                    valori_campi += array[i]["value"];
+                    valori_campi += '\'' + array[i]["value"] + '\'';
                     if (i != 4) valori_campi += ",";
                 }
+                $(this).get(0).reset();
 
-                let query = "INSERT INTO Utenti(nome, cognome, anno_nascita, password) VALUES (" + valori_campi + ")";
+                let query = "INSERT INTO Utenti(nome, cognome, email, data_nascita, password) VALUES (" + valori_campi + ");";
 
                 console.log(query);
 
-                /*
+                
                 $.ajax({
-                    url: "torg.altervista.org/server.php",
+                    url: "http://torg.altervista.org/server.php",
                     type: "GET",
                     data: {
-                        "query": ""
+                        "query": query
+                    },
+
+                    success: function (result) {
+                        console.log(result);
+                    },
+
+                    error: function (err) {
+                        console.log(err);
                     }
                 });
-                */
             }
         });
     </script>
