@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Accedi a Torg</title>
 
     <style>
@@ -20,6 +21,7 @@
 <body>
     <h1>Accedi</h1>
     <div class="container">
+        <p class="info-form"></p>
         <form method="post">
             <div class="form-elem">
                 <label for="id_mail">Email</label>
@@ -33,6 +35,7 @@
 
             <div class="form-elem">
                 <input type="submit" value="Accedi">
+                <input type="reset" value="Reset">
             </div>
 
             <div class="form-elem">
@@ -40,5 +43,39 @@
             </div>
         </form>
     </div>
+
+    <script>
+        let p_info_form = $(".info-form");
+
+        $("body > div > form").submit(function (e) {
+            e.preventDefault();
+
+            let array = $(this).serializeArray();
+
+            let data = {};
+            array.forEach((elem) => {
+                data[elem["name"]] = elem["value"];
+            });
+            console.log(data);
+            
+            $.ajax({
+                url: "http://torg.altervista.org/server.php",
+                type: "POST",
+                data: {
+                    "campi": data,
+                    "action": "login"
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    console.log(result);
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
