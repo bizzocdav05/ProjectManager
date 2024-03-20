@@ -203,7 +203,7 @@
 
 .dropdown-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     width: 100vh;
@@ -227,7 +227,7 @@
 }
 
 .dropdown-content {
-  /*visibility: hidden; */
+  visibility: hidden; 
   position: absolute;
   z-index: 1;
 }
@@ -257,65 +257,55 @@
         <div class="navbar-left" > 
             <img  src="img/logo_scritta_completo.png"  class="logo">
             
+        
+            <!--"Chi Siamo"-->
             <div class="dropdown">
             <span class="writing">Chi siamo</span>
-
-            <!-- <div class="dropdown-content">
-                <h4 class="testo">Perché Scegliere Torg per la Gestione del Lavoro:</h4>
-                <p>1. **Semplicità d'Uso:** Torg offre un'interfaccia intuitiva e facile da navigare, <br>
-                    riducendo al minimo il tempo necessario per imparare a utilizzarlo e massimizzando l'efficienza del tuo lavoro. <br>
-
-                    2. **Centralizzazione dei Dati:** Con Torg, tutte le informazioni relative ai tuoi progetti <br>
-                    e compiti sono organizzate in un'unica piattaforma, garantendo una gestione più ordinata e una visione chiara dei progressi.<br>
-                    
-                    3. **Collaborazione Fluida:** Grazie alle funzionalità di condivisione e comunicazione <br>
-                    di Torg, i membri del team possono lavorare insieme in modo efficiente, condividendo file, <br>
-                    commenti e aggiornamenti in tempo reale.<br>
-                    
-                    4. **Monitoraggio in Tempo Reale:** Torg ti permette di tenere sempre sotto controllo lo<br>
-                     stato dei tuoi progetti, visualizzando le scadenze, l'avanzamento e le eventuali sfide da affrontare, <br>
-                     il tutto in tempo reale.<br>
-                    
-                    5. **Adattabilità alle Esigenze:** Con la flessibilità di personalizzare i flussi di lavoro e<br>
-                     le impostazioni secondo le tue esigenze specifiche, Torg si adatta perfettamente al tuo stile di lavoro e al tuo team.<br>
-                    
-                    6. **Sicurezza dei Dati:** La sicurezza dei tuoi dati è una priorità per noi. Torg utilizza misure <br>
-                    di sicurezza avanzate per proteggere le tue informazioni sensibili e garantire la riservatezza dei tuoi progetti.<br>
-                    </p>
-            </div> -->
-
-            <div class="dropdown-content">
-                <h1>Esplora</h1>
-
-                <div>
-                    <div class="drowdown-elem">
-                        <p class="dropdown-title">Viste</p>
-                        <p class="dropdown-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, illo!</p>
-                    </div>
-
-                    <div class="drowdown-elem">
-                        <p class="dropdown-title">Funzioni</p>
-                        <p class="dropdown-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, illo!</p>
-                    </div>
-                </div>
             </div>
 
-            </div>
-
+            <!--"Soluzioni"-->
             <div class="dropdown">
             <span class="writing">Soluzioni</span>
             <div class="dropdown-content">
-                <p class="testo">Hello World!</p>
-            </div>
+                <div>
 
+                    <!-- dropdown di "Soluzioni"-->
+
+                    <div class="drowdown-elem">
+                        <p class="dropdown-title">Semplicità d'Uso</p>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <p class="dropdown-title">Centralizzazione dei Dati</p>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <p class="dropdown-title">Collaborazione Fluida</p>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <p class="dropdown-title">Monitoraggio in Tempo Reale</p>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <p class="dropdown-title">Adattabilità alle Esigenze</p>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <p class="dropdown-title">Sicurezza dei Dati</p>
+                    </div>
+
+
+                </div>
+            </div>
             </div>
 
 
         </div>
 
         <div class="navbar-right" style="margin-right: 10%;"> 
-            <p class="button">Log In</p>
-            <p class="button">Sign Up</p>
+            <a class="button" href="../login.html"> Log In </a>
+            <a class="button" href="../singup.html"> Sing Up</a>
         </div>
     </div>
 
