@@ -78,3 +78,58 @@ function registrazione_user($server)
 }
 
 ?>
+
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["campi"]) && isset($_POST["action"]))
+{
+	$servername = "localhost";
+    $username = "torg";
+    $password = "";
+    $database = "my_torg";
+
+    $conn = new mysqli($servername, $username, $password, $database);
+    $campi = $_POST["campi"];
+    $action = $_POST["action"];
+    
+    if ($action == "newuser") {
+    	$sql = "INSERT INTO Utenti (";
+        for ($i = 0; $i < count($campi); $i++) {
+            $sql .= $campi[$i]["name"];
+            
+            if ($i != count($campi) -1) {
+                $sql .= ",";
+            }
+        }
+        
+        $sql .= ") Values (";
+        for ($i = 0; $i < count($campi); $i++) {
+            if ($campi[$i]["name"] == "password") {
+                $campi[$i]["value"] = password_hash($campi[$i]["value"]);
+            }
+            
+            $sql .= "\\'" . $campi[$i]['value'] . "\\'";
+            
+            if ($i != count($campi) -1) {
+                $sql .= ",";
+            }
+        }
+    }
+    elseif ($action == "login") {
+    	$password = password_hash($campi["password"]);
+    	$sql = "SELECT ID From Utenti Where email=" . $campi['email']. " AND password=$password;";
+        echo $sql;
+
+        $result = $conn->query($sql);
+        
+        if ($result->num_rows == 0) {
+        	echo "nouser";
+        } elseif ($result->num_rows == 1) {
+        	echo "loggato"; 
+        } else ($result->num_rows > 1) {
+        	echo "integrita corrotta";
+        }
+    }
+  
+}
+?>

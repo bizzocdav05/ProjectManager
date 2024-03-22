@@ -75,16 +75,15 @@
             else {
                 array = $(this).serializeArray();
                 array.splice(5, 1);
-                console.log(array);
-                
+
                 $.ajax({
                     url: "http://torg.altervista.org/server.php",
-                    type: "GET",
+                    type: "POST",
                     data: {
-                        "campi": array
+                        "campi": array,
+                        "action": "newuser"
                     },
                     crossDomain: true,
-                    dataType: "text",
 
                     success: function (result) {
                         console.log(result);
