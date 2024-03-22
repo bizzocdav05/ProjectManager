@@ -36,7 +36,7 @@
             </div>
             <div class="form-elem">
                 <label for="em">Email</label>
-                <input type="email" name="email" id="em" required>
+                <input type="email" name="mail" id="em" required>
             </div>
             <div class="form-elem">
                 <label for="an">Data di nascita</label>
@@ -54,6 +54,8 @@
                 <input type="submit" value="Registrati">
             </div>
         </form>
+
+        <a href="./login.html">Sei già registrato? Accedi</a>
     </div>
     <script>
         let p_info_form = $(".info-form");
@@ -75,7 +77,8 @@
             else {
                 array = $(this).serializeArray();
                 array.splice(5, 1);
-
+                console.log(array);
+                
                 $.ajax({
                     url: "http://torg.altervista.org/server.php",
                     type: "POST",
