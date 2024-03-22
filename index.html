@@ -19,7 +19,7 @@
     <title>Torg</title>
 
     <style>
-
+        /* barra superiore della pagina*/
         .navbar {
             display: flex;
             flex-direction: row;
@@ -33,6 +33,7 @@
             width: 100%;
         }
 
+        /* */
         .navbar > * {
             display: flex;
             flex-direction: row;
@@ -43,33 +44,28 @@
             margin: 0;
         }
 
+        /* */
         .navbar-left > *, .navbar-right > * {
             margin: 20px;
         }
 
+        /* tutta la pagina sotto la barra*/
         .header {
             background-color: #f3e0ad;
             height: 100vh;
             width: 100%;
         }
 
-        #login {
-            position: sticky;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-        }
-
+        /* immagine del logo nella barra superiore*/
         .logo {
             width: 170px;
             height: 170px;
         }
 
-    .button{
+    /* stile "bottoni" */
+    .button {
         font-family: "Concert One", sans-serif;
         font-weight: bolder;
-
         background-color:#8f411a;
         border: solid transparent;
         border-radius: 16px;
@@ -93,7 +89,8 @@
         vertical-align: middle;
         white-space: nowrap;
         width: 100%;
-        }
+        text-decoration: none;
+    }
 
     .button:after {
         background-clip: padding-box;
@@ -108,18 +105,19 @@
         right: 0;
         top: 0;
         z-index: -1;
-}
+    }
 
-.button:hover {
-  filter: brightness(1.1);
+    .button:hover {
+        filter: brightness(1.1);
  
-}
+    }
 
-.button:active {
-  border-width: 4px 0 0;
-  background: none;
-}
+    .button:active {
+        border-width: 4px 0 0;
+        background: none;
+    }
 
+    /* stile di "Chi siamo"/"Soluzioni" */
 .writing{
     text-decoration: underline;
     font-family: "Concert One", sans-serif;
@@ -132,17 +130,17 @@
    color: #f3e0ad;  
 }
 
+    /* stile "slogan" */
 .title{
     font-family: "Concert One", sans-serif;
     font-weight: bolder;
-
-    margin-top: 0px;
     padding-top: 120px;
     margin-right: 80px;
     margin-left: 90px;
 }
 
-.img_text{
+    /*immagini laterali superiori */
+.top_img{
     height: 300px;
     width: 300px;
     margin-right: 40px;
@@ -150,7 +148,8 @@
 
 }
 
-.bar{
+    /* parte superiore dell'header*/
+.top_bar{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -158,12 +157,14 @@
     
 }
 
-.bar_2{
+/* parte intermedia dell'header*/
+.middle_bar{
     display: flex;
     flex-direction:column;
     background-color: #f3e0ad;
 }
 
+/* titolo istruzioni*/
 .subtitle{
     font-family: "Concert One", sans-serif;
     font-weight: bolder;
@@ -171,6 +172,7 @@
     padding-top: 200px;
 }
 
+/* introduzione istruzioni*/
 .text{
     font-family: "Outfit", sans-serif;
     font-optical-sizing: auto;
@@ -180,6 +182,7 @@
     margin-left: 90px;
 }
 
+/* titoli liste*/
 .paragraph_title{
   font-family: "Outfit", sans-serif;
   font-optical-sizing: auto;
@@ -188,6 +191,7 @@
   margin-left: 130px;
 }
 
+/* body liste*/
 .lista{
     font-family: "Outfit", sans-serif;
     font-optical-sizing: auto;
@@ -196,38 +200,37 @@
     margin-left: 130px; 
 }
 
+
+/* dropdown di "soluzioni"*/
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
+/* contenuto del dropdown*/
 .dropdown-content {
-    display: flex;
-    flex-direction: row;
+    font-family: "Concert One", sans-serif;
+    font-weight: bold;
     justify-content: flex-start;
     align-items: center;
-    width: 100vh;
+    width: 130vh;
     text-align: center;
+    height: 30vh;
 }
 
 .dropdown-content > div {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
 .dropdown-content > .dropwdown-elem {
-    display: flex;
-    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     width: 50%;
 }
 
 .dropdown-content {
-  visibility: hidden; 
+  visibility: hidden;
   position: absolute;
   z-index: 1;
 }
@@ -238,10 +241,70 @@
   border-radius: 16px;
 }
 
+/* barra superiore del dropdown*/
+.top-row-dropdwn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+}
+
+/* parte inferiore del dropdown*/
+.bottom-row-dropdwn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+}
+
+/* icone all'interno di "Soluzioni" */
+.icons{
+    width: 50px;
+    height: 50px;
+}
+
+/* stile link all'interno di "Soluzioni" */
+.soluzioni_link{
+text-decoration: none;
+color: #000000;
+}
+
+.soluzioni_link:hover{
+    text-decoration: underline;
+}
+
+/* barra per il bottone e l'ultima frase*/
 .testo{
     margin-left: 30px;
     margin-top: 20px;
     font-family: "Concert One", sans-serif;
+}
+
+/* ultima frase della pagina*/
+.slogan{
+    font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    padding-bottom: 20px;
+}
+
+/* barra per il bottone e l'ultima frase*/
+.bottom_bar{
+    display: flex;
+    flex-direction: column;
+    background-color: #f3e0ad;
+    align-items: center;
+    padding-top: 15vh;
+    padding-bottom: 100px;
 }
 
 
@@ -252,11 +315,15 @@
 
 
 <body>
-    <div class="navbar">
 
+    <!--parte della barra a sinistra-->
+    <div class="navbar">
         <div class="navbar-left" > 
+
+            <!--immagine del logo-->
+            <a href="../index.html">
             <img  src="img/logo_scritta_completo.png"  class="logo">
-            
+            </a>
         
             <!--"Chi Siamo"-->
             <div class="dropdown">
@@ -271,55 +338,90 @@
 
                     <!-- dropdown di "Soluzioni"-->
 
+<!-- barra superiore di "soluzioni"-->
+<div class="top-row-dropdwn">
                     <div class="drowdown-elem">
+                        <a href="../soluzioni.html" class="soluzioni_link">
+                        <img src="img/easy_to_use.png" class="icons">
                         <p class="dropdown-title">Semplicità d'Uso</p>
+                        </a>
                     </div>
 
                     <div class="drowdown-elem">
+                        <a href="../soluzioni.html" class="soluzioni_link">
+                        <img src="/img/data_centralization.png" class="icons">
                         <p class="dropdown-title">Centralizzazione dei Dati</p>
+                        </a>
                     </div>
 
-                    <div class="drowdown-elem">
+                    <div class="drowdown-elem">     
+                        <a href="../soluzioni.html" class="soluzioni_link">
+                        <img src="img/collaboration_icon.png" class="icons">
                         <p class="dropdown-title">Collaborazione Fluida</p>
+                        </a>
                     </div>
 
+</div>
+
+<!-- barra inferiore di "soluzioni"-->
+<div class="bottom-row-dropdwn">
                     <div class="drowdown-elem">
+                        <a href="../soluzioni.html" class="soluzioni_link">
+                        <img src="/img/real_time.png" class="icons">
                         <p class="dropdown-title">Monitoraggio in Tempo Reale</p>
+                        </a>
                     </div>
 
                     <div class="drowdown-elem">
+                        <a href="../soluzioni.html" class="soluzioni_link">
+                        <img src="/img/esigenze.png" class="icons">
                         <p class="dropdown-title">Adattabilità alle Esigenze</p>
+                        </a>
                     </div>
 
                     <div class="drowdown-elem">
+                        <a href="../soluzioni.html" class="soluzioni_link">
+                        <img src="/img/data_security.png" class="icons">
                         <p class="dropdown-title">Sicurezza dei Dati</p>
+                        </a>
                     </div>
-
-
                 </div>
-            </div>
-            </div>
 
-
+            </div>
         </div>
+    </div>
+</div>
 
+<!-- barra destra-->
         <div class="navbar-right" style="margin-right: 10%;"> 
             <a class="button" href="../login.html"> Log In </a>
             <a class="button" href="../singup.html"> Sing Up</a>
         </div>
     </div>
 
+
+<!-- body del sito-->
+
+    <!-- parte superiore con "slogan", bottone e immagini-->
     <div class="header">
-        <div class="bar">
+        <div class="top_bar">
+
+        <!-- "slogan"-->
         <h1 class="title">Torg: L'Alleato Essenziale per <br>
                              la Gestione del Lavoro</h1>
-        <img src="img/logo.jpeg" class="img_text">
+
+        <!-- immagini laterali superiori-->
+        <img src="img/logo_integrale.jpeg" class="top_img">
     </div>
-    <p class="button" style="width:25%; margin-left: 90px;">Registrati gratuitamente </p>
+
+    <!-- bottone-->
+    <a class="button" style="width:25%; margin-left: 90px;" href="../singup.html">Registrati gratuitamente </a>
 
     <br>
     <br>
-    <div class="bar_2"> 
+
+    <!-- parte intermedia con descrizione di come funziona e immagini-->
+    <div class="middle_bar"> 
       <h2 class="subtitle">Un modo semplice e veloce per <br>
                             aumentare la produttivita'</h2>  
 <br>
@@ -341,6 +443,16 @@
         <p class="lista"> Fai clic su ciascun task per aprire la relativa scheda. <br>
             Qui puoi aggiungere dettagli come scadenze, note, allegati e assegnare compiti ai membri del team.</p>
 
+
+        <!-- immagini laterali barra intermedia-->
+        <img href="img/logo_integrale.jpeg" class="middle_img">
+    </div>
+
+    <!-- barra inferiore della pagina-->
+    <div class="bottom_bar"> 
+
+        <h2 class="slogan"> Scopri il potere dell'efficienza con Torg: organizza, collabora e conquista il successo</h2>
+        <a class="button" style="width:25%; margin-left: 90px;" href="../singup.html"> Unisciti subito a Torg </a>
 
     </div>
 
