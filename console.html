@@ -6,7 +6,9 @@
     <title>Document</title>
 
     <style>
-
+        body {
+            background-color:  #f3e0ad;
+        }
         .navbar {
             display: flex;
             flex-direction: row;
@@ -159,12 +161,30 @@
             <p class="button">Sign Up</p>
         </div>
     </div>
-    <div class="console">
-        <div class="attivita">
-            -attivita1<br>
-            -attivita2<br>
-            -attivita3
-        </div>
+    <div class="console" style="margin-top: 2%;">
+        <p class="button" style="margin-top: 1;">
+            bacheca
+        </p><p class="button" style="margin-top: 1%;">
+            bacheca
+        </p>
+        <p class="button" style="margin-top: 2%;">Crea nuova bacheca</p>
     </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        function newButtonClickListener() {
+            alert("Hello World");
+        }
+        function test() {
+            var r = $('<input/>').attr({
+                type: "button",
+                id: "field",
+                value: "New Button",
+                onclick: "newButtonClickListener()"
+            });
+            $("body").append(r);
+        }
+    </script>
+    <button onclick="test()">Insert after</button><br/> 
 </body>
 </html>
