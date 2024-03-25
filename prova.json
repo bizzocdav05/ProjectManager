@@ -1,0 +1,20 @@
+[
+    {
+      "nome": "attività",
+      "data_creazione": "giovedì",
+      "liste": [
+        {
+          "nome": "lista",
+          "elems": [
+            {
+              "type": "chechbox"
+            },
+            {
+              "type": "commento"
+            }
+          ]
+        }
+      ]
+    },
+    {}
+  ]
