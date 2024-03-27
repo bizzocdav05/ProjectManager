@@ -84,6 +84,36 @@
         width: 100%;
         }
 
+    .bacheca{
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+
+        background-color:#d9cfca;
+        border: solid transparent;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+        display: inline-block;
+        font-size:large;
+        font-weight: 700;
+        letter-spacing: .8px;
+        line-height: 20px;
+        margin: 5%;
+        overflow: visible;
+        padding: 13px 16px;
+        text-align: center;
+        text-transform: uppercase;
+        touch-action: manipulation;
+        transform: translateZ(0);
+        transition: filter .2s;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 20%;
+        height: 30%;
+    }
+
         .button:after {
   background-clip: padding-box;
   background-color: #d05e26;
@@ -161,14 +191,9 @@
             <p class="button">Sign Up</p>
         </div>
     </div>
-    <div class="console" style="margin-top: 2%;">
-        <p class="button" style="margin-top: 1;">
-            bacheca
-        </p><p class="button" style="margin-top: 1%;">
-            bacheca
-        </p>
-        <p class="button" style="margin-top: 2%;">Crea nuova bacheca</p>
-    </div>
+        <p class="bacheca"> bacheca</p>
+        <button class="bacheca" onclick="new_bacheca()">Crea nuova bacheca</button>
+
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript">
@@ -184,6 +209,10 @@
             });
             $("body").append(r);
         }
+        function new_bacheca() {
+            alert("ciao");
+        }
+
     </script>
     <button onclick="test()">Insert after</button><br/> 
 </body>
