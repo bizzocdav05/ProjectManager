@@ -130,6 +130,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["campi"]) && isset($_PO
         	echo "integrita corrotta";
         }
     }
-  
 }
+
+function serializer($conn, $id_utente) {
+    $id_console;
+	$array = array();
+ 	
+    // Informazioni utente
+    $array["utente"] = array(
+        "nome" => "",
+        "cognome" => "",
+        "mail" => "",
+        "data_nascita" => ""
+    );
+	$sql = "SELECT nome, cognome, mail, data_nascita, console FROM Utenti WHERE ID=$id_utente;";
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $id_console = $row["ID"];
+            $array["utente"]["nome"] = $row["nome"];
+            $array["utente"]["cognome"] = $row["cognome"];
+            $array["utente"]["mail"] = $row["mail"];
+            $array["utente"]["data_nascita"] = $row["data_nascita"];
+          }
+    }
+
+    // Bacheche
+    $array["bacheche"] = array();
+    $sql = "SELECT ID, nome FROM Bacheca WHERE console=$id_console;";
+    $result_bacheca = $conn->query($sql);
+    
+    if ($result_bacheca->num_rows > 0) {
+        while($row_bacheca = $result_bacheca->fetch_assoc()) {
+            $id_bacheca = $row_bacheca["ID"];
+            
+            $array_attivita = array();
+
+            // Attività
+            $sql = "SELECT data_creazione, data_ultima_modifica, titolo, ID FROM Attivita WHERE bacheca=$id_bacheca;";
+            $result_attivita = $conn->query($sql);
+
+            if ($result_attivita->num_rows > 0) {
+                while ($row_attivita = $result_attivita->fetch_assoc()) {
+                    $id_attivita = $row_attivita["ID"];
+                    $array_attivita["data_creazione"] = $row_attivita["data_creazione"];
+                    $array_attivita["data_ultima_modifica"] = $row_attivita["data_ultima_modifica"];
+                    $array_attivita["titolo"] = $row_attivita["titolo"];
+                }
+            }
+
+            $array_bacheca = array("nome" => $row_bacheca["nome"], "attivita" => $array_attivita)
+            array_push($array["bacheche"], $array_bacheca);
+        }
+    }
+}
+
 ?>
