@@ -425,6 +425,9 @@ color: #000000;
 
                 success: function (result) {
                     console.log(result);
+                    if (result == "loggato") {
+                        location.href = "bacheche.php";  // link finale
+                    }
                 },
 
                 error: function (err) {
