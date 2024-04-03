@@ -88,30 +88,17 @@
         font-family: "Concert One", sans-serif;
         font-weight: bolder;
 
-        background-color:#d9cfca;
-        border: solid transparent;
-        border-radius: 16px;
-        border-width: 0 0 4px;
-        box-sizing: border-box;
-        color: #000000;
-        cursor: pointer;
-        display: inline-block;
-        font-size:large;
-        font-weight: 700;
-        letter-spacing: .8px;
-        line-height: 20px;
-        margin: 5%;
-        overflow: visible;
-        padding: 13px 16px;
+        border: none;
+        color: black;
+        
+        padding: 16px 32px;
         text-align: center;
-        text-transform: uppercase;
-        touch-action: manipulation;
-        transform: translateZ(0);
-        transition: filter .2s;
-        vertical-align: middle;
-        white-space: nowrap;
-        width: 20%;
-        height: 30%;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
     }
 
         .button:after {
@@ -191,9 +178,10 @@
             <p class="button">Sign Up</p>
         </div>
     </div>
-        <p class="bacheca"> bacheca</p>
+    <div class="bacheca">
+        <button class="bacheca"> bacheca</p>
         <button class="bacheca" onclick="new_bacheca()">Crea nuova bacheca</button>
-
+    </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript">
@@ -210,7 +198,15 @@
             $("body").append(r);
         }
         function new_bacheca() {
-            alert("ciao");
+            let n_b = prompt("Nome bacheca: ");
+            if (n_b == null || n_b == ""){
+                alert("Inserire un nome per la bacheca");
+            }
+            else{
+                var button = document.createElement('button');
+                button.innerHTML = n_b;
+            }
+            document.body.appendChild(button);
         }
 
     </script>
