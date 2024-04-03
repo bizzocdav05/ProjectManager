@@ -65,3 +65,58 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 }
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <title>Bacheca</title>
+</head>
+<body>
+    <form id="form-nuova-attivita" method="post">
+        <label for="">Titolo</label>
+        <input type="text" name="titolo" id="">
+
+        <input type="submit" value="Crea Attivita">
+    </form>
+
+    <script>
+        $("#form-nuova-attivita").submit(function (e) {
+            e.preventDefault();
+
+            let array = $(this).serializeArray();
+
+            let data = {};
+            array.forEach((elem) => {
+                data[elem["name"]] = elem["value"];
+            });
+
+            data["action"] = "new-attivita";
+            let searchParams = new URLSearchParams(window.location.search);
+            data["codice"] = searchParams.get('codice');
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    data
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    console.log(result);
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>
