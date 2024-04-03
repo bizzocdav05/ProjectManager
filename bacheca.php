@@ -6,6 +6,8 @@ login_required();
 $id_console = set_console();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
+    $data = array();
+
     $codice_bacheca = $_GET["codice"];
     $conn = connection();
     $id_utente = $_SESSION["id_utente"];
@@ -94,15 +96,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 data[elem["name"]] = elem["value"];
             });
 
-            data["action"] = "new-attivita";
             let searchParams = new URLSearchParams(window.location.search);
-            data["codice"] = searchParams.get('codice');
 
             $.ajax({
                 url: "attivita.php",
                 type: "POST",
                 data: {
-                    data
+                    "action": "new-attivita",
+                    "codice":searchParams.get('codice'),
+                    "titolo": data["titolo"]
                 },
                 crossDomain: true,
 

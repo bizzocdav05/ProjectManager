@@ -84,4 +84,35 @@ function login_required() {
     }
 }
 
+function set_bacheca($codice_bacheca) {
+    $conn = connection();
+    $id_console = set_console();
+    $id_utente = $_SESSION["id_utente"];
+    $privilegi = 0;
+
+    $sql = "SELECT ID FROM Bacheca Where codice='$codice_bacheca' AND console=$id_console;";
+    $result = $conn->query($sql);
+
+    if (!$result) {
+        echo "<h1>Questa bacheca non esiste</h1>";
+        exit();
+    }
+
+    if ($result->num_rows == 0) {
+        $sql = "SELECT bacheca, privilegi FROM Bacheca_assoc WHERE other=$id_utente AND codice='$codice_bacheca';";
+        $result_assoc = $conn->query($sql);
+
+        if ($result_assoc->num_rows > 0) {
+            $data = $result_assoc->fetch_assoc();
+            $id_bacheca = $data["bacheca"];
+            $privilegi = $data["privilegi"];
+        } else {
+            echo "<h1>Non puoi accede a questa bacheca</h1>";
+            exit();
+        }
+    }
+
+    return array($id_bacheca, $privilegi);
+}
+
 ?>
