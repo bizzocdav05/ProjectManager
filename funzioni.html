@@ -235,29 +235,320 @@ color: #000000;
     flex-direction: column;
     background-color: #f3e0ad;
     align-items: center;
-    padding-top: 15vh;
+    padding-top: 90vh;
     padding-bottom: 100px;
 }
 
-.text{
-    font-family: "Outfit", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 100px;
-    font-style: normal;
-    font-size: 25px;
-    padding-left: 90px;
-    background-color: #f3e0ad;
+/*non ne ho idea*/
+@keyframes slidein {
+	 0% {
+		 top: -400px;
+		 opacity: 0;
+	}
+	 100% {
+		 opacity: 1;
+		 top: 0px;
+	}
+}
+ @keyframes slideout {
+	 0% {
+		 top: 0;
+		 opacity: 1;
+	}
+	 100% {
+		 top: -400px;
+		 opacity: 0;
+	}
 }
 
-.title{
-    font-family: "Concert One", sans-serif;
-    font-weight: bolder;
-    padding-left: 90px;
-    padding-top: 200px;
-    background-color: #f3e0ad;
+
+ body {
+	 background: #e0ab23;
+     font-family: "Concert One", sans-serif;
+	 -moz-user-select: none;
+	 -webkit-user-select: none;
+	 -ms-user-select: none;
+	 user-select: none;
 }
 
-    </style>
+ body #scene {
+	 display: flex;
+	 align-items: center;
+	 justify-content: left;
+	 width: 1000px;
+	 height: 400px;
+	 position: absolute;
+	 top: 0;
+	 bottom: 0;
+	 left: 0;
+	 right: 0;
+	 margin: auto;
+	 background-color: #e0ab23;
+	 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	 overflow: hidden;
+     border-radius: 12px;
+}
+
+ body #scene #left-zone {
+	 background: #e0ab23;
+	 height: 75%;
+	 flex-grow: 0;
+	 display: flex;
+	 width: 350px;
+	 align-items: center;
+	 justify-content: left;
+}
+
+ body #scene #left-zone .list {
+	 display: flex;
+	 list-style: none;
+	 align-content: stretch;
+	 flex-direction: column;
+	 flex-grow: 1;
+	 margin: 0;
+	 padding: 0;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"] {
+	 display: none;
+}
+
+/* scritte del menu laterale */
+ body #scene #left-zone .list li.item input[type="radio"] ~ label {
+	 display: block;
+	 opacity: 0.5;
+	 height: 50px;
+	 text-align: center;
+	 line-height: 50px;
+     font-family: "Concert One", sans-serif;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"] ~ label:first-letter {
+	 text-transform: uppercase;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"] ~ label:hover {
+	 opacity: 0.75;
+	 cursor: pointer;
+}
+
+/*immagine nel menu a lato di "semplicita' d'uso"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ label.label_semplicita:before {
+	 content: " ";
+	 display: block;
+	 position: absolute;
+	 width: 50px;
+	 height: 50px;
+	 margin-left: 15px;
+	 background-image: url('img/easy_to_use.png');
+	 background-position: center;
+	 background-size: 75% 75%;
+	 background-repeat: no-repeat;
+}
+
+/*immagine nel menu a lato di "centralizzazione dei dati"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ label.label_centralizzazione:before {
+	 content: " ";
+	 display: block;
+	 position: absolute;
+	 width: 50px;
+	 height: 50px;
+	 margin-left: 15px;
+	 background-image: url('img/data_centralization.png');
+	 background-position: center;
+	 background-size: 75% 75%;
+	 background-repeat: no-repeat;
+}
+
+/*immagine nel menu a lato di "collaborazione fluida"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ label.label_collaborazione:before {
+	 content: " ";
+	 display: block;
+	 position: absolute;
+	 width: 50px;
+	 height: 50px;
+	 margin-left: 15px;
+	 background-image: url('img/collaboration_icon.png');
+	 background-position: center;
+	 background-size: 75% 75%;
+	 background-repeat: no-repeat;
+}
+
+/*immagine nel menu a lato di "monitoraggio in tempo reale"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ label.label_tempo:before {
+	 content: " ";
+	 display: block;
+	 position: absolute;
+	 width: 50px;
+	 height: 50px;
+	 margin-left: 15px;
+	 background-image: url('img/real_time.png');
+	 background-position: center;
+	 background-size: 75% 75%;
+	 background-repeat: no-repeat;
+}
+
+/*immagine nel menu a lato di "adattabilita' alle esigenze"*/
+body #scene #left-zone .list li.item input[type="radio"] ~ label.label_esigenze:before {
+	 content: " ";
+	 display: block;
+	 position: absolute;
+	 width: 50px;
+	 height: 50px;
+	 margin-left: 15px;
+	 background-image: url('img/esigenze.png');
+	 background-position: center;
+	 background-size: 75% 75%;
+	 background-repeat: no-repeat;
+}
+
+/*immagine nel menu a lato di "sicurezza dei dati"*/
+body #scene #left-zone .list li.item input[type="radio"] ~ label.label_sicurezza:before {
+	 content: " ";
+	 display: block;
+	 position: absolute;
+	 width: 50px;
+	 height: 50px;
+	 margin-left: 15px;
+	 background-image: url('img/data_security.png');
+	 background-position: center;
+	 background-size: 75% 75%;
+	 background-repeat: no-repeat;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content {
+	 position: absolute;
+	 left: 350px;
+	 top: -400px;
+	 width: 650px;
+	 height: 400px;
+	 animation-duration: 0.75s;
+	 animation-name: slideout;
+	 animation-timing-function: ease-out;
+	 display: flex;
+	 align-items: center;
+	 justify-content: center;
+	 flex-direction: column;
+}
+
+
+                /* PRIMO TESTO SEMPLICITA' D'USO */
+/*titolo testo di "semplicita' d'uso"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content.content_semplicita h1 {
+	 color: #000000;
+     font-family: "Concert One", sans-serif;
+}
+
+
+            /* SECONDO TESTO CENTRALIZZAZIONE DATI */
+/*titolo testo di "centralizzazione dei dati"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content.content_centralizzazione h1 {
+	 color: #000000;
+     font-family: "Concert One", sans-serif;
+}
+
+
+            /* TERZO TESTO COLLABORAZIONE FLUIDA */
+/* titolo testo "collaborazione fluida*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content.content_collaborazione h1 {
+	 color: #000000;
+     font-family: "Concert One", sans-serif;
+}
+
+
+                /* QUARTO TESTO MONITORAGGIO IN TEMPO REALE */
+/*titolo testo "monitoraggio in tempo reale"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content.content_tempo h1 {
+	 color: #000000;
+     font-family: "Concert One", sans-serif;
+}
+
+
+             /* QUINTO TESTO ADATTABILITA' ALLE ESIGENZE */
+/*titolo testo "adattabilita' alle esigenze"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content.content_esigenze h1 {
+	 color: #000000;
+     font-family: "Concert One", sans-serif;
+}
+
+
+             /* SESTO TESTO SICUREZZA DEI DATI */
+/*titolo testo "sicurezza dei dati"*/
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content.content_sicurezza h1 {
+	 color: #000000;
+     font-family: "Concert One", sans-serif;
+}
+
+
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content h1:first-letter {
+	 text-transform: uppercase;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"] ~ .content p {
+	 max-width: 50%;
+	 text-align: center;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"]:checked ~ label {
+	 opacity: 1;
+	 animation: all 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+ body #scene #left-zone .list li.item input[type="radio"]:checked ~ label.label_semplicita {
+	 color: #d05e26;
+	 border-right: solid 4px #d05e26;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"]:checked ~ label.label_centralizzazione {
+	 color: #d05e26;
+	 border-right: solid 4px #d05e26;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"]:checked ~ label.label_collaborazione {
+	 color: #d05e26;
+	 border-right: solid 4px #d05e26;
+}
+
+ body #scene #left-zone .list li.item input[type="radio"]:checked ~ label.label_tempo {
+	 color: #d05e26;
+	 border-right: solid 4px #d05e26;
+}
+
+body #scene #left-zone .list li.item input[type="radio"]:checked ~ label.label_esigenze {
+	 color: #d05e26;
+	 border-right: solid 4px #d05e26;
+}
+
+body #scene #left-zone .list li.item input[type="radio"]:checked ~ label.label_sicurezza {
+	 color: #d05e26;
+	 border-right: solid 4px #d05e26;
+}
+
+
+/* intero div che contine i testi*/
+ body #scene #left-zone .list li.item input[type="radio"]:checked ~ .content {
+	 animation-duration: 0.75s;
+	 animation-name: slidein;
+	 animation-fill-mode: forwards;
+	 animation-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+
+ body #scene #middle-border {
+	 background-color: #e0ab23;
+	 height: 75%;
+	 flex-grow: 1;
+	 max-width: 2px;
+	 z-index: 0;
+}
+
+ body #scene #right-zone {
+	 background: #e0ab23;
+	 height: 100%;
+	 flex-grow: 3;
+}
+ 
+</style>
 
 </head>
 
@@ -356,50 +647,75 @@ color: #000000;
 
    
     <div class="header">
+        <div id="scene">
 
-        <div class="semplicita_uso">
-            <h1 class="title"> Semplicità d'Uso</h1>
-            <p class="text">
-                Torg offre un'interfaccia intuitiva e facile da navigare, riducendo al minimo il tempo necessario <br>
-                per imparare a utilizzarlo e massimizzando l'efficienza del tuo lavoro.
-            </p>
+            <div id="left-zone">
+                <ul class="list">
 
-            <h1 class="title"> Centralizzazione dei Dati</h1>
-            <p class="text">
-                Con Torg, tutte le informazioni relative ai tuoi progetti e compiti sono organizzate in un'unica piattaforma, <br>
-                garantendo una gestione più ordinata e una visione chiara dei progressi.
+                    <li class="item"><input type="radio" id="radio_The garden strawberry (or simply strawberry /ˈstrɔːbᵊri/; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria (collectively known as the strawberries)" name="basic_carousel" value="The garden strawberry (or simply strawberry /ˈstrɔːbᵊri/; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria (collectively known as the strawberries)"
+                            checked="checked" /><label class="label_semplicita" for="radio_The garden strawberry (or simply strawberry /ˈstrɔːbᵊri/; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria (collectively known as the strawberries)">Semplicità d'Uso</label>
+                        <div
+                            class="content content_semplicita">
+                            <h1>Semplicità d'Uso</h1>
+                            <p>Torg offre un'interfaccia intuitiva e facile da navigare, riducendo al minimo il tempo necessario per imparare a utilizzarlo e massimizzando l'efficienza del tuo lavoro.</p>
+            </div>
+            </li>
 
-            </p>
+            <li class="item"><input type="radio" id="radio_A banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa." name="basic_carousel" value="A banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa."
+                /><label class="label_centralizzazione" for="radio_A banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa.">Centralizzazione dei Dati</label>
+                <div class="content content_centralizzazione">
+                    <h1>Centralizzazione dei Dati</h1>
+                    <p>Con Torg, tutte le informazioni relative ai tuoi progetti e compiti sono organizzate in un'unica piattaforma, garantendo una gestione più ordinata e una visione chiara dei progressi.</p>
+                </div>
+            </li>
 
-            <h1 class="title">Collaborazione Fluida </h1>
-            <p class="text">
-                Grazie alle funzionalità di condivisione e comunicazione di Torg, i membri del team possono lavorare insieme <br>
-                in modo efficiente, condividendo file, commenti e aggiornamenti in tempo reale.
-
-            </p>
-
-            <h1 class="title">Monitoraggio in Tempo Reale</h1>
-            <p class="text">
-                Torg ti permette di tenere sempre sotto controllo lo stato dei tuoi progetti, visualizzando le scadenze, <br>
-                l'avanzamento e le eventuali sfide da affrontare, il tutto in tempo reale.
-
-            </p>
-
-            <h1 class="title">Adattabilità alle Esigenze  </h1>
-            <p class="text">
-                Con la flessibilità di personalizzare i flussi di lavoro e le impostazioni secondo le tue esigenze specifiche, <br>
-                Torg si adatta perfettamente al tuo stile di lavoro e al tuo team.
-
-            </p>
-
-            <h1 class="title">Sicurezza dei Dati </h1>
-            <p class="text">
-                La sicurezza dei tuoi dati è una priorità per noi. Torg utilizza misure di sicurezza avanzate per proteggere <br>
-                le tue informazioni sensibili e garantire la riservatezza dei tuoi progetti.
-
-            </p>
-
+            <li class="item"><input type="radio" id="radio_The apple tree (Malus domestica) is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. It is cultivated worldwide as a fruit tree, and is the most widely grown species in the genus Malus."
+                    name="basic_carousel" value="The apple tree (Malus domestica) is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. It is cultivated worldwide as a fruit tree, and is the most widely grown species in the genus Malus."
+                /><label class="label_collaborazione" for="radio_The apple tree (Malus domestica) is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. It is cultivated worldwide as a fruit tree, and is the most widely grown species in the genus Malus.">Collaborazione Fluida</label>
+                <div class="content content_collaborazione">
+                    <h1>Collaborazione Fluida</h1>
+                    <p>Grazie alle funzionalità di condivisione e comunicazione di Torg, i membri del team possono lavorare insieme in modo efficiente, condividendo file, commenti e aggiornamenti in tempo reale.</p>
         </div>
+        </li>
+
+        <li class="item"><input type="radio" id="radio_The orange (specifically, the sweet orange) is the fruit of the citrus species Citrus × sinensis in the family Rutaceae." name="basic_carousel" value="The orange (specifically, the sweet orange) is the fruit of the citrus species Citrus × sinensis in the family Rutaceae."
+            /><label class="label_tempo" for="radio_The orange (specifically, the sweet orange) is the fruit of the citrus species Citrus × sinensis in the family Rutaceae.">Monitoraggio in Tempo Reale</label>
+            <div class="content content_tempo">
+                <h1>Monitoraggio in Tempo Reale</h1>
+                <p>Torg ti permette di tenere sempre sotto controllo lo stato dei tuoi progetti, visualizzando le scadenze, l'avanzamento e le eventuali sfide da affrontare, il tutto in tempo reale.
+                </p>
+            </div>
+        </li>
+
+        <li class="item"><input type="radio" id="radio_Con la flessibilità di personalizzare i flussi di lavoro e le impostazioni secondo le tue esigenze specifiche, Torg si adatta perfettamente al tuo stile di lavoro e al tuo team."
+            checked="checked" /><label class="label_esigenze" for="radio_Con la flessibilità di personalizzare i flussi di lavoro e le impostazioni secondo le tue esigenze specifiche, Torg si adatta perfettamente al tuo stile di lavoro e al tuo team.">Adattabilità alle Esigenze</label>
+        <div class="content content_esigenze">
+            <h1>Adattabilità alle Esigenze</h1>
+            <p>Con la flessibilità di personalizzare i flussi di lavoro e le impostazioni secondo le tue esigenze specifiche, Torg si adatta perfettamente al tuo stile di lavoro e al tuo team.</p>
+</div>
+</li>
+
+
+        <li class="item"><input type="radio" id="radio_La sicurezza dei tuoi dati è una priorità per noi. Torg utilizza misure di sicurezza avanzate per proteggere le tue informazioni sensibili e garantire la riservatezza dei tuoi progetti."
+        checked="checked" /><label class="label_sicurezza" for="radio_La sicurezza dei tuoi dati è una priorità per noi. Torg utilizza misure di sicurezza avanzate per proteggere le tue informazioni sensibili e garantire la riservatezza dei tuoi progetti.">Sicurezza dei Dati</label>
+        
+        <div class="content content_sicurezza">
+        <h1>Sicurezza dei Dati</h1>
+        <p> La sicurezza dei tuoi dati è una priorità per noi. Torg utilizza misure di sicurezza avanzate per proteggere le tue informazioni sensibili e garantire la riservatezza dei tuoi progetti.</p>
+
+    </div>
+</li>
+
+</ul>
+</div>
+        
+        <div id="middle-border"></div>
+        <div id="right-zone"></div>
+        </div>
+
+
+
+
     <!-- barra inferiore della pagina-->
     <div class="bottom_bar"> 
 
