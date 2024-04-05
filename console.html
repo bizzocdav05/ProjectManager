@@ -9,6 +9,20 @@
         body {
             background-color:  #f3e0ad;
         }
+        #popup {
+            display: none;
+            width: 80vw;
+            height: 80vh;
+
+            overflow-y: auto;
+
+            position: absolute;
+            top: 10%;
+            left: 10%;
+
+            background-color: white;
+            z-index: 100;
+        }
         .navbar {
             display: flex;
             flex-direction: row;
@@ -183,6 +197,13 @@
         <button class="bacheca" onclick="new_bacheca()">Crea nuova bacheca</button>
     </div>
 
+    <form id="form-nuova-bacheca" method="post">
+        <label for="">Nome: </label>
+        <input type="text" name="nome" id="">
+
+        <input type="submit" value="Crea">
+    </form>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript">
         function newButtonClickListener() {
@@ -197,8 +218,8 @@
             });
             $("body").append(r);
         }
-        function new_bacheca() {
-            let n_b = prompt("Nome bacheca: ");
+       /* function new_bacheca() {
+            let n_b = popup("Nome bacheca: ");
             if (n_b == null || n_b == ""){
                 alert("Inserire un nome per la bacheca");
             }
@@ -207,6 +228,22 @@
                 button.innerHTML = n_b;
             }
             document.body.appendChild(button);
+        }*/
+        let popup = $("#popup");
+
+        popup.mostra = function () {
+            $(this).show();
+            console.log("show")
+            $(window).on("click", function (e) {
+                e.preventDefault();
+                if (!$(e.target).closest(popup).length) {
+                    console.log("hide");
+                    popup.hide();
+                    popup.empy();
+
+                    $(window).off("click");
+                }
+            });
         }
 
     </script>

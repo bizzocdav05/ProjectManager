@@ -38,53 +38,216 @@
     <title>Le tue Bacheche</title>
 
     <style>
-        #container {
+        body {
+            background-color:  #f3e0ad;
+        }
+        #popup {
+            display: none;
+            width: 80vw;
+            height: 80vh;
+
+            overflow-y: auto;
+
+            position: absolute;
+            top: 10%;
+            left: 10%;
+
+            background-color: white;
+            z-index: 100;
+        }
+        .navbar {
             display: flex;
             flex-direction: row;
-            width: 50%;
-            justify-content: space-evenly;
-            margin-top: 20px;
-            margin-bottom: 40px;
-        }
-
-        div.bacheca {
-            width: 200px;
-            height: 200px;
-            background-color: gray;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #e0ab23;
+            width: 100%;
         }
 
-        div.bacheca:hover {
+        .navbar > * {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100px;
+            background-color: #e0ab23;
+            margin: 0;
+        }
+
+        .navbar-left > *, .navbar-right > * {
+            margin: 20px;
+        }
+
+        .header {
+            background-color: #f3e0ad;
+            height: 100vh;
+            width: 100%;
+        }
+
+        #login {
+            position: sticky;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .logo {
+            width: 170px;
+            height: 170px;
+        }
+
+        .button {
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+
+            background-color:#8f411a;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-size:large;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 100%;
+            }
+
+
+
+        .bacheca
+        {
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+
+            border: none;
+            color: black;
+            
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
             cursor: pointer;
         }
 
-        p.bacheca-nome {
-            font-size: 40px;
-            font-weight: bold;
+        .button:after {
+            background-clip: padding-box;
+            background-color: #d05e26;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
         }
+
+        .button:hover {
+            filter: brightness(1.1);
+        
+        }
+
+        .button:active {
+            border-width: 4px 0 0;
+            background: none;
+        }
+
+        .writing{
+            text-decoration: underline;
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            font-style: normal;
+            font-size: larger;
+        }
+
+        .title{
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            margin-top: 0px;
+            padding-top: 120px;
+            margin-right: 80px;
+            margin-left: 90px;
+        }
+
+        .img_text{
+            height: 300px;
+            width: 300px;
+            margin-right: 40px;
+            margin-top: 70px;
+
+        }
+
+        .bar{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            
+        }
+
     </style>
 </head>
 <body>
-    <h3>Loggato</h3>
-	<a href="logout.php">Logout</a>
+    <div id="popup"></div>
 
-    <div id="bacheca-prototipo" class="bacheca" style="display: none">
+    <div class="navbar"> <!--tutta la barra-->
+
+        <div class="navbar-left" > <!--logo  e titolo -->
+            <img  src="img/logo_scritta_completo.png"  class="logo">
+            
+
+            <p class="writing">Chi siamo</p>
+            <p class="writing">Soluzioni</p>
+
+        </div>
+
+        <div class="navbar-right" style="margin-right: 10%;"> <!--barra destra-->
+            <p class="button">Log In</p>
+            <p class="button">Sign Up</p>
+        </div>
+    </div>
+
+    <!-- content hidden -->
+    <div id="bacheca-prototipo" class="bacheca bacheca-elem" style="display: none">
         <p class="bacheca-nome"><span></span></p>
     </div>
 
-    <div id="container">
-    </div>
-
-    <form id="form-nuova-bacheca" method="post">
+    <form id="form-nuova-bacheca" method="post" style="display: none">
         <label for="">Nome: </label>
         <input type="text" name="nome" id="">
 
         <input type="submit" value="Crea">
     </form>
+
+    <!-- lista bacheche -->
+    <div class="bacheca-list" id="container">
+        <div id="nuova-bacheca" class="bacheca">Crea nuova bacheca</div>
+    </div>
+
+    
 
     <script>
         // Passaggio dati
@@ -137,11 +300,47 @@
             });
         });
 
-        $("#container > div.bacheca").click(function (e) {
+        $("#container > div.bacheca-elem").click(function (e) {
             location.href = "bacheca.php?codice=" +encodeURIComponent($(this).attr("id"));
         });
 
-        popup.add($("form-nuova-bacheca"));
+        let popup = $("#popup");
+
+        $("#nuova-bacheca").click(function (e) {
+            e.stopPropagation();
+            popup.add($("#form-nuova-bacheca"));
+        });
+
+        popup.mostra = function () {
+            $(this).show();
+            console.log("show")
+            $(window).on("click", function (e) {
+                e.preventDefault();
+                if (!$(e.target).closest(popup).length) {
+                    console.log("hide");
+                    popup.hide();
+                    popup.empty();
+
+                    popup.close();
+                }
+            });
+        }
+
+        popup.close = function () {
+            popup.hide();
+            popup.empty();
+            $(window).off("click");
+        }
+
+        popup.add = function (elem) {
+            popup.empty();
+            let new_ = elem.clone(true);
+            console.log(new_)
+            new_.show();
+            new_.appendTo(popup)
+
+            popup.mostra();
+        }
     </script>
 </body>
 </html>
