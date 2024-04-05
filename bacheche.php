@@ -43,17 +43,18 @@
         }
         #popup {
             display: none;
-            width: 80vw;
-            height: 80vh;
+            width: 60vw;
+            height: 60vh;
 
             overflow-y: auto;
 
             position: absolute;
-            top: 10%;
-            left: 10%;
+            top: 20%;
+            left: 20%;
 
             background-color: white;
-            z-index: 100;
+            z-index: 101;
+            padding: 20px;
         }
         .navbar {
             display: flex;
@@ -211,7 +212,9 @@
     </style>
 </head>
 <body>
-    <div id="popup"></div>
+    <div id="popup">
+
+    </div>
 
     <div class="navbar"> <!--tutta la barra-->
 
@@ -335,6 +338,7 @@
         popup.add = function (elem) {
             popup.empty();
             let new_ = elem.clone(true);
+            new_.attr("id", "");
             console.log(new_)
             new_.show();
             new_.appendTo(popup)

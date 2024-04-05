@@ -89,69 +89,212 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <title>Bacheca</title>
 
     <style>
+        body {
+            margin: 0;
+        }
+
         #popup {
             display: none;
-            width: 80vw;
-            height: 80vh;
+            width: 100vw;
+            height: 100vh;
+
+            overflow: hidden;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            background: rgba(145, 152, 163, 0.8);
+            box-sizing: border-box;
+            z-index: 200;
+        }
+
+        #popup-box {
+            padding: 10px;
+
+            width: 60vw;
+            height: 60vh;
 
             overflow-y: auto;
 
             position: absolute;
-            top: 10%;
-            left: 10%;
+            top: 20%;
+            left: 20%;
 
             background-color: white;
-            z-index: 100;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+
+            overflow-x: auto;
+
+            margin: 10px;
         }
 
         div.attivita-box > div.attivita-info {
             display: none;
         }
 
+        div.attivita-box-isola {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-width: 250px;
+            width: fit-content;
+            height: auto;
+            min-height: 50px;
+
+            background-color: black;
+            color: white;
+            border: 1px solid white;
+            border-radius: 10px;
+
+            padding: 20px 0px;
+        }
+
+        div.attivita-box-isola > h3 {
+            border-bottom: 1px solid white;
+            width: 80%;
+            font-size: 30px;
+            margin-top: 0px;
+        }
+
+        div.attivita-lista-isola {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            padding-bottom: 10px;
+            width: 100%;
+        }
+
         p.lista-nome {
-            font-size: 40px;
-            font-weight: bold;
-        }
-
-        div.lista-info {
-            display: block;
-        }
-
-        .attivita-lista li {
-            list-style: none;
+            font-size: 20px;
+            /* font-weight: 700; */
+            margin: 0px;
         }
 
         div.lista {
-            width: fit-content;
-            padding: 20px;
+            text-align: left;
+            width: 90%;
             border: 1px solid black;
             border-radius: 10px;
             background-color: rgba(145, 152, 163, 0.4);
+
+            padding: 5px 0px 10px 5px;
+            margin-bottom: 10px;
         }
 
         div.lista > p.lista-nome {
             margin: 0px;
         }
 
+        div.lista > p.lista-nome:hover {
+            cursor: pointer;
+        }
+
+        /* nuova attivta */
+        #attivita-nuova div.lista {
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #attivita-nuova div.lista:hover {
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
     <div id="popup">
+        <div id="popup-box">
 
+        </div>
     </div>
 
-    <div id="container">        
+    <div id="container">
+        <div id="attivita-nuova" class="attivita-box">
+            <h3 class="attivita-titolo">Crea nuova attività</h3>
+            <div class="attivita-lista attivita-lista-isola">
+               <div class="lista">
+                <h2>CREA</h2>
+                <div class="lista-info" style="display: none">
+                    <form id="form-nuova-attivita" method="post">
+                        <label for="">Titolo</label>
+                        <input type="text" name="titolo" id="">
+
+                        <input type="submit" value="Crea Attivita">
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 
-    <form id="form-nuova-attivita" method="post">
-        <label for="">Titolo</label>
-        <input type="text" name="titolo" id="">
+    <table>
+        <thead>
+            <tr>
+                <th>Attività</th>
+                <th>Liste</th>
+            </tr>
+        </thead>
 
-        <input type="submit" value="Crea Attivita">
-    </form>
+        <tbody>
+            <tr>
+                <td><h3 class="attivita-titolo"><span></span></h3></td>
+            </tr>
+        </tbody>
+    </table>
 
-    <div id="lista-prototipo" class="lista" style="display: none">
-            <p class="lista-nome">Nome: <span></span></p>
+    <tr id="attivita-prototipo-table" style="display: none">
+        <td><h3 class="attivita-titolo"></h3></td>
+
+        <div class="attivita-lista">
+            <!-- Liste -->
+
+            <td class="lista-nuova lista">
+                <p class="lista-nome">+ Aggiungi una nuova lista</p>
+                <div class="lista-info" style="display: none">
+                    <form class="form-nuova-lista" method="post">
+                        <label for="">Nome</label>
+                        <input type="text" name="nome" id="">
+
+                        <label for="">Descrizione</label>
+                        <textarea name="descrizione" id="" cols="30" rows="10"></textarea>
+
+                        <input type="submit" value="Aggiungi Lista">
+                    </form>
+                </div>
+            </td>
+        </div>
+    </tr>
+
+    <div>
+        <td class="lista-prototipo-tabella" class="attivita-box" style="display: none">
+            <p class="lista-nome"><span></span></p>
+
+            <div class="lista-info" style="display: none">
+                <p class="lista-codice">Codice: <span></span></p>
+                <p class="lista-nome"><span></span></p>
+
+                <p class="lista-text">Descrizione</p>
+                <p class="lista-descrizione"><span></span></p>
+            </div>
+        </td>
+    </div>
+
+    <div id="lista-prototipo-isola" class="lista" style="display: none">
+            <p class="lista-nome"><span></span></p>
 
             <div class="lista-info" style="display: none">
                 <p class="lista-codice">Codice: <span></span></p>
@@ -162,7 +305,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             </div>
     </div>
 
-    <div id="attivita-prototipo" class="attivita-box" style="display: none">
+    <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
+        <h3 class="attivita-titolo"><span></span></h3>
         <div class="attivita-info">
             <p class="attivita-codice">Codice: <span></span></p>
             <p class="attivita-data-creazione">Data Creazione: <span></span></p>
@@ -170,24 +314,40 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <p class="attivita-titolo">Titolo: <span></span></p>
         </div>
 
-        <ul class="attivita-lista">
-            <!-- <li>Lista n</li> -->
-        </ul>
+        <div class="attivita-lista attivita-lista-isola">
+            <!-- Lista -->
 
-        <form class="form-nuova-lista" method="post">
-            <label for="">Nome</label>
-            <input type="text" name="nome" id="">
+            <div class="lista lista-nuova">
+                <p class="lista-nome">+ Aggiungi una nuova lista</p>
 
-            <label for="">Descrizione</label>
-            <textarea name="descrizione" id="" cols="30" rows="10"></textarea>
+                <div class="lista-info" style="display: none">
+                    <form class="form-nuova-lista" method="post">
+                        <label for="">Nome</label>
+                        <input type="text" name="nome" id="">
 
-            <input type="submit" value="Aggiungi Lista">
-        </form>
+                        <label for="">Descrizione</label>
+                        <textarea name="descrizione" id="" cols="30" rows="10"></textarea>
+
+                        <input type="submit" value="Aggiungi Lista">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        let type = "table";
+        function get_attivita_prop() {
+            return $("#attivita-prototipo-" + type);
+        }
+
+        function get_lista_prop() {
+            return $("#lista-prototipo-" + type);
+        }
+
         function create_lista(dati) {
-            let elem = $("#lista-prototipo").clone(true);
+            let elem = get_lista_prop().clone(true);
+            console.log(elem);
             elem.attr("id", dati.codice);
 
             elem.find("p.lista-codice > span").text(dati.codice);
@@ -200,21 +360,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         function show_attivita(dati) {
             let info = dati.info;
-            let elem = $("#attivita-prototipo").clone(true);
+            let elem = get_attivita_prop().clone(true);
             elem.attr("id", info.codice);
 
             elem.find("p.attivita-codice > span").text(info.codice);
             elem.find("p.attivita-data-creazione > span").text(info.data_creazione);
             elem.find("p.attivita-data-ultima-modifica > span").text(info.data_ultima_modifica);
-            elem.find("p.attivita-titolo > span").text( info.titolo);
+            elem.find(".attivita-titolo > span").text( info.titolo);
 
             for (let i = 0; i < dati.lista.length; i++)
-                elem.find(".attivita-lista").append($("<li>").append(create_lista(dati.lista.list[i])));
+                create_lista(dati.lista.list[i]).insertBefore(elem.find("div.lista-nuova"));
 
-            elem.appendTo("#container");
+            elem.insertBefore($("#attivita-nuova"));
             elem.show();
-
-            $("#container").append("<hr>");
         }
 
         // Passaggio dati
@@ -291,7 +449,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true)
-                        $("#" + codice_attivita + " ul.attivita-lista").append($("<li>").append(create_lista(result.lista)));
+                        $("#" + codice_attivita + " div.attivita-lista").append(create_lista(result.lista));
                 },
 
                 error: function (err) {
@@ -301,17 +459,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         });
 
         let popup = $("#popup");
+        popup.box = $("#popup-box");
 
         popup.mostra = function () {
-            $(this).show();
-            console.log("show")
-            $(window).on("click", function (e) {
-                e.preventDefault();
-                if (!$(e.target).closest(popup).length) {
-                    console.log("hide");
-                    popup.hide();
-                    popup.empty();
+            popup.show();
 
+            $(window).on("click", function (e) {
+                target = $(e.target);
+                if (target.closest(popup).length > target.closest(popup.box).length) {
+                    e.preventDefault();
                     popup.close();
                 }
             });
@@ -319,15 +475,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         popup.close = function () {
             popup.hide();
-            popup.empty();
+            popup.box.empty();
             $(window).off("click");
         }
 
         popup.add = function (elem) {
-            popup.empty();
+            popup.box.empty();
             let new_ = elem.clone(true);
             new_.show();
-            popup.append(new_);
+            popup.box.append(new_);
 
             popup.mostra();
         }
