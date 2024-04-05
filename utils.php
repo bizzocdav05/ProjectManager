@@ -68,12 +68,17 @@ function genera_codice($length = 16) {
     for ($i = 0; $i < $length; $i++) {
         $code .= $characters[mt_rand(0, $max)];
     }
+
+    $conn = connection();
     
-    if (connection()->query("SELECT codice FROM Codici WHERE codice=$code")->num_rows > 0) {  // codice già esistente
+    if ($conn->query("SELECT codice FROM Codici WHERE codice=$code")->num_rows > 0) {  // codice già esistente
         return genera_codice($length);
     }
 
-    connection()->query(create_sql("INSERT INTO Codici", array("codice"), array($code)));
+    // salvo il codice
+    $conn->query(create_sql("INSERT INTO Codici", array("codice"), array($code)));
+    $conn->close();
+
     return $code;
 }
 
@@ -84,4 +89,60 @@ function login_required() {
     }
 }
 
+function set_bacheca($codice_bacheca) {
+    $conn = connection();
+    $id_console = set_console();
+    $id_utente = $_SESSION["id_utente"];
+
+    $privilegi = 0;
+    $id_bacheca = -1;
+
+    $sql = "SELECT ID FROM Bacheca Where codice='$codice_bacheca' AND console=$id_console;";
+    $result = $conn->query($sql);
+
+    if (!$result) {
+        echo "<h1>Questa bacheca non esiste</h1>";
+        exit();
+    }
+
+    if ($result->num_rows == 0) {
+        $sql = "SELECT bacheca, privilegi FROM Bacheca_assoc WHERE other=$id_utente AND codice='$codice_bacheca';";
+        $result_assoc = $conn->query($sql);
+
+        if ($result_assoc->num_rows > 0) {
+            $data = $result_assoc->fetch_assoc();
+            $id_bacheca = $data["bacheca"];
+            $privilegi = $data["privilegi"];
+        } else {
+            echo "<h1>Non puoi accede a questa bacheca</h1>";
+            exit();
+        }
+    }
+
+    if ($result->num_rows > 0) {
+        $id_bacheca = $result->fetch_assoc()["ID"];
+    }
+    $conn->close();
+
+    return array($id_bacheca, $privilegi);
+}
+
+function get_elem_by_code($tipo, $codici) {
+    $conn = connection();
+    
+    if ($tipo == "bacheca")
+    {
+        $result = set_bacheca($codici[$tipo])[0];
+        return $result;
+    }
+
+    if ($tipo == "attivita") {
+        $result = $conn->query("SELECT ID FROM Attivita WHERE codice='" . $codici[$tipo] . "' AND bacheca=" . get_elem_by_code("bacheca", $codici) . ";");
+    }
+
+    if ($result->num_rows == 1) {
+        return $result->fetch_assoc()["ID"];
+    }
+    exit();
+}
 ?>

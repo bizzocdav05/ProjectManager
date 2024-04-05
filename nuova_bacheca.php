@@ -1,22 +1,3 @@
-<?php
-include "utils.php";
-
-session_start();
-login_required();
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nome"])) {
-    $conn = connection();
-
-    $id_console = set_console();
-    $codice = genera_codice(16);
-    
-    echo create_sql("INSERT INTO Bacheca", array("console", "nome", "codice"), array($_SESSION["id_console"], $_POST["nome"]));
-    $result = $conn->query(create_sql("INSERT INTO Bacheca", array("console", "nome", "codice"), array($_SESSION["id_console"], $_POST["nome"], $codice)));
-
-    $conn->close();
-}
-
-?>
 
 <!DOCTYPE html>
 <html lang="it">
@@ -24,10 +5,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nome"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirect - Nuova Bacheca</title>
-    <!-- <meta http-equiv="refresh" content="0; URL=bacheche.php"> -->
 
 </head>
 <body>
     
 </body>
 </html>
+
+<?php
+include "utils.php";
+
+session_start();
+login_required();
+$id_console = set_console();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
+    $conn = connection();
+    $action = $_POST["action"];
+
+    if ($action == "new-bacheca" && isset($_POST["nome"])) {
+        $codice = genera_codice(16);
+    
+    echo create_sql("INSERT INTO Bacheca", array("console", "nome", "codice"), array($_SESSION["id_console"], $_POST["nome"]));
+    $result = $conn->query(create_sql("INSERT INTO Bacheca", array("console", "nome", "codice"), array($_SESSION["id_console"], $_POST["nome"], $codice)));
+    }
+
+    $conn->close();
+}
+
+header("Location: bacheche.php");
+exit();
+
+?>
