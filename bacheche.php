@@ -128,6 +128,7 @@
                     if (result.esito == true) {
                         show_bacheca(result.bacheca);
                     }
+                    popup.close();
                 },
 
                 error: function (err) {
@@ -139,6 +140,8 @@
         $("#container > div.bacheca").click(function (e) {
             location.href = "bacheca.php?codice=" +encodeURIComponent($(this).attr("id"));
         });
+
+        popup.add($("form-nuova-bacheca"));
     </script>
 </body>
 </html>

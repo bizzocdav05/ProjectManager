@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -310,22 +310,31 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 if (!$(e.target).closest(popup).length) {
                     console.log("hide");
                     popup.hide();
-                    popup.empy();
+                    popup.empty();
 
-                    $(window).off("click");
+                    popup.close();
                 }
             });
         }
 
-        $("div.lista").on("click", function (e) {
-            let lista_info = $(this).find("div.lista-info").clone(true);
-            console.log(lista_info);
-            console.log(this);
+        popup.close = function () {
+            popup.hide();
+            popup.empty();
+            $(window).off("click");
+        }
 
-            lista_info.show();
-            lista_info.appendTo(popup);
-            e.stopPropagation();
+        popup.add = function (elem) {
+            popup.empty();
+            let new_ = elem.clone(true);
+            new_.show();
+            popup.append(new_);
+
             popup.mostra();
+        }
+
+        $("div.lista").on("click", function (e) {
+            popup.add($(this).find("div.lista-info"));
+            e.stopPropagation();
         });
     </script>
 </body>
