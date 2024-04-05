@@ -87,8 +87,59 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <title>Bacheca</title>
+
+    <style>
+        #popup {
+            display: none;
+            width: 80vw;
+            height: 80vh;
+
+            overflow-y: auto;
+
+            position: absolute;
+            top: 10%;
+            left: 10%;
+
+            background-color: white;
+            z-index: 100;
+        }
+
+        div.attivita-box > div.attivita-info {
+            display: none;
+        }
+
+        p.lista-nome {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        div.lista-info {
+            display: block;
+        }
+
+        .attivita-lista li {
+            list-style: none;
+        }
+
+        div.lista {
+            width: fit-content;
+            padding: 20px;
+            border: 1px solid black;
+            border-radius: 10px;
+            background-color: rgba(145, 152, 163, 0.4);
+        }
+
+        div.lista > p.lista-nome {
+            margin: 0px;
+        }
+
+    </style>
 </head>
 <body>
+    <div id="popup">
+
+    </div>
+
     <div id="container">        
     </div>
 
@@ -99,10 +150,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <input type="submit" value="Crea Attivita">
     </form>
 
-    <div id="lista-prototipo" style="display: none">
-            <p class="lista-codice">Codice: <span></span></p>
+    <div id="lista-prototipo" class="lista" style="display: none">
             <p class="lista-nome">Nome: <span></span></p>
-            <p class="lista-descrizione">Descrizione: <span></span></p>
+
+            <div class="lista-info" style="display: none">
+                <p class="lista-codice">Codice: <span></span></p>
+                <p class="lista-nome"><span></span></p>
+
+                <p class="lista-text">Descrizione</p>
+                <p class="lista-descrizione"><span></span></p>
+            </div>
     </div>
 
     <div id="attivita-prototipo" class="attivita-box" style="display: none">
@@ -113,7 +170,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <p class="attivita-titolo">Titolo: <span></span></p>
         </div>
 
-        <h3>Liste:</h3>
         <ul class="attivita-lista">
             <!-- <li>Lista n</li> -->
         </ul>
@@ -161,6 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             $("#container").append("<hr>");
         }
 
+        // Passaggio dati
         let dati = <?php echo json_encode($data)?>;
         console.log(dati);
 
@@ -242,8 +299,34 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 }
             });
         });
-            
 
+        let popup = $("#popup");
+
+        popup.mostra = function () {
+            $(this).show();
+            console.log("show")
+            $(window).on("click", function (e) {
+                e.preventDefault();
+                if (!$(e.target).closest(popup).length) {
+                    console.log("hide");
+                    popup.hide();
+                    popup.empy();
+
+                    $(window).off("click");
+                }
+            });
+        }
+
+        $("div.lista").on("click", function (e) {
+            let lista_info = $(this).find("div.lista-info").clone(true);
+            console.log(lista_info);
+            console.log(this);
+
+            lista_info.show();
+            lista_info.appendTo(popup);
+            e.stopPropagation();
+            popup.mostra();
+        });
     </script>
 </body>
 </html>
