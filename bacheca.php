@@ -221,6 +221,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         </div>
     </div>
+    
+    <div id="select-type-visual">
+        <button class="active" value="isola">Isola</button>
+        <button value="isola">Table</button>
+    </div>
 
     <div id="container">
         <div id="attivita-nuova" class="attivita-box">
@@ -241,7 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <table>
+    <!-- <table>
         <thead>
             <tr>
                 <th>Attività</th>
@@ -254,13 +259,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <td><h3 class="attivita-titolo"><span></span></h3></td>
             </tr>
         </tbody>
-    </table>
+    </table> -->
 
-    <tr id="attivita-prototipo-table" style="display: none">
+    <!-- <tr id="attivita-prototipo-table" style="display: none">
         <td><h3 class="attivita-titolo"></h3></td>
 
         <div class="attivita-lista">
-            <!-- Liste -->
 
             <td class="lista-nuova lista">
                 <p class="lista-nome">+ Aggiungi una nuova lista</p>
@@ -291,31 +295,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <p class="lista-descrizione"><span></span></p>
             </div>
         </td>
-    </div>
+    </div> -->
 
-    <div id="lista-prototipo-isola" class="lista" style="display: none">
+    <!-- <div id="lista-prototipo-info-isola" class="lista" style="display: none">
+        <p class="lista-nome"><span></span></p>
+
+        <div class="lista-info" style="display: none">
+            <p class="lista-codice">Codice: <span></span></p>
             <p class="lista-nome"><span></span></p>
 
-            <div class="lista-info" style="display: none">
-                <p class="lista-codice">Codice: <span></span></p>
-                <p class="lista-nome"><span></span></p>
-
-                <p class="lista-text">Descrizione</p>
-                <p class="lista-descrizione"><span></span></p>
-            </div>
+            <p class="lista-text">Descrizione</p>
+            <p class="lista-descrizione"><span></span></p>
+        </div>
     </div>
 
     <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
         <h3 class="attivita-titolo"><span></span></h3>
-        <div class="attivita-info">
-            <p class="attivita-codice">Codice: <span></span></p>
-            <p class="attivita-data-creazione">Data Creazione: <span></span></p>
-            <p class="attivita-data-ultima-modifica">Data ultima modifica: <span></span></p>
-            <p class="attivita-titolo">Titolo: <span></span></p>
-        </div>
 
         <div class="attivita-lista attivita-lista-isola">
-            <!-- Lista -->
 
             <div class="lista lista-nuova">
                 <p class="lista-nome">+ Aggiungi una nuova lista</p>
@@ -333,10 +330,134 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 </div>
             </div>
         </div>
+    </div> -->
+
+    <div id="lista-prototipo-isola" class="lista" style="display: none">
+        <p class="lista-nome"><span></span></p>
+    </div>
+
+    <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
+        <h3 class="attivita-titolo"><span></span></h3>
+
+        <div class="attivita-lista attivita-lista-isola">
+
+            <div class="lista lista-nuova">
+                <p class="lista-nome">+ Aggiungi una nuova lista</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="attivita-info-prototipo">
+        <div class="attivita-info">
+            <p class="attivita-codice">Codice: <span></span></p>
+            <p class="attivita-data-creazione">Data Creazione: <span></span></p>
+            <p class="attivita-data-ultima-modifica">Data ultima modifica: <span></span></p>
+            <p class="attivita-titolo">Titolo: <span></span></p>
+        </div>
+    </div>
+
+    <div id="attivita-nuova-prototipo">
+        <div class="lista-info" style="display: none">
+            <form id="form-nuova-attivita" method="post">
+                <label for="">Titolo</label>
+                <input type="text" name="titolo" id="">
+
+                <input type="submit" value="Crea Attivita">
+            </form>
+        </div>
+    </div>
+
+    <div id="lista-info-prototipo">
+        <div class="lista-info" style="display: none">
+            <p class="lista-codice">Codice: <span></span></p>
+            <p class="lista-nome"><span></span></p>
+
+            <p class="lista-text">Descrizione</p>
+            <p class="lista-descrizione"><span></span></p>
+        </div>
+    </div>
+
+    <div id="lista-nuova-prototipo">
+        <div class="lista-info" style="display: none">
+            <form class="form-nuova-lista" method="post">
+                <label for="">Nome</label>
+                <input type="text" name="nome" id="">
+
+                <label for="">Descrizione</label>
+                <textarea name="descrizione" id="" cols="30" rows="10"></textarea>
+
+                <input type="submit" value="Aggiungi Lista">
+            </form>
+        </div>
     </div>
 
     <script>
-        let type = "table";
+        class Visualizator {
+            constructor (data) {
+                this.tipi = ["isola", "table"];
+                this.data;
+                this.tipo = "isola";
+
+                this.cod_idx = {};  // associa ad ogni codice l'indice (di dati)
+
+                this.elements = {
+                    "isola": {
+                        "attivita": $('<div class="attivita-box attivita-box-isola" style="display: none"><h3 class="attivita-titolo"><span></span></h3><div class="attivita-lista attivita-lista-isola"><div class="lista lista-nuova"><p class="lista-nome">+ Aggiungi una nuova lista</p></div></div></div>'),
+                        "lista": $('<div class="lista"><p class="lista-nome"><span></span></p></div>')
+                    }
+                }
+            }
+
+            add_idx_attivita(idx, codice) {
+                this.cod_idx[codice] = {idx, "list"};
+            }
+
+            add_idx_lista(idx, codice, cod_attivita) {
+                this.cod_idx.cod_attivita.list[codice] = idx;
+            }
+
+            init_cod_idx() {
+                for (let i = 0; i < data.attivita.length; i++) {
+                    let dati = data.attivita.list[i];
+                    this.add_idx_attivita(i, dati.info.codice);
+
+                    for (let i = 0; i < dati.lista.length; i++) {
+                        let dati_lista = dati.lista.list[i];
+                        this.add_idx_lista(i, dati_lista.codice, dati.info.codice);
+                    }
+                }
+            }
+
+            change_type(tipo) {
+                if (this.tipi.includes(tipo)) this.tipo = tipo;
+            }
+
+            create_lista(dati, codice_attivita) {
+                let elem = this.elements[this.tipo].lista.clone(true);
+                elem.attr("id", dati.codice);
+
+                elem.find("p.lista-nome > span").text(dati.nome);
+
+                elem.show();
+                elem.insertBefore($("#" + codice_attivita + " div.lista-nuova"))
+            }
+
+            create_attivita(dati) {
+                let info = dati.info;
+                let elem = this.elements[this.tipo].attivita.clone(true);
+                elem.attr("id", info.codice);
+
+                elem.find("p.attivita-codice > span").text(info.codice);
+
+                for (let i = 0; i < dati.lista.length; i++)
+                    create_lista(dati.lista.list[i]).insertBefore(elem.find("div.lista-nuova"));
+
+                elem.insertBefore($("#attivita-nuova"));
+                elem.show();
+            }
+        }
+
+        let type = "isola";
         function get_attivita_prop() {
             return $("#attivita-prototipo-" + type);
         }
@@ -492,6 +613,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             popup.add($(this).find("div.lista-info"));
             e.stopPropagation();
         });
+
+        $("#select-type-visual > button").on("click", function (e) {
+            if ($(this).hasClass("active")) return;
+
+            $("#select-type-visual > button").removeClass("active");
+            $(this).addClass("active");
+        });
+
     </script>
 </body>
 </html>
