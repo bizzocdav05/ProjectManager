@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             );
 
             // cerco liste
-            $sql = "SELECT nome, descrizione, data_creazione, data_ultima_modifica, codice FROM Lista WHERE attivita='" . $row["ID"] . "';";
+            $sql = "SELECT ID nome, descrizione, data_creazione, data_ultima_modifica, codice FROM Lista WHERE attivita='" . $row["ID"] . "';";
             $result_lista = $conn->query($sql);
 
             $dati["lista"]["length"] = $result_lista->num_rows;
@@ -52,14 +52,66 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         "data_ultima_modifica" => $row_lista["data_ultima_modifica"],
                         "nome" => $row_lista["nome"],
                         "descrizione" => $row_lista["descrizione"],
-                        "codice" => $row_lista["codice"]
+                        "codice" => $row_lista["codice"],
                     );
+
+                    // commenti
+                    $sql = "SELECT testo, data_creazione FROM Commento WHERE lista=" . $row_lista["ID"] . " AND user=" . $id_utente . ";";
+                    $result_commento = $conn->query($sql);
+
+                    $dati_commento = array("length" => $result_commento->num_rows, "list" => array());
+                    if ($result_commento->num_rows > 0) {
+                        while ($row_commento = $result_commento->fetch_assoc()) {
+                            array_push($dati_commento["list"], array(
+                                "testo" => $row_commento["testo"],
+                                "data_creazione" => $row_commento["data_creazione"]
+                            ));
+                        }
+                    }
+                    
+                    $dati_lista["commento"] = $dati_commento;
+
+                    // checkbox
+                    $sql = "SELECT testo, is_check FROM Checkbox WHERE lista=" . $row_lista["ID"] . ";";
+                    $result_checkbox = $conn->query($sql);
+
+                    $dati_checkbox = array("length" => $result_checkbox->num_rows, "list" => array());
+                    if ($result_checkbox->num_rows > 0) {
+                        while ($row_checkbox = $result_checkbox->fetch_assoc()) {
+                            array_push($dati_checkbox["list"], array(
+                                "testo" => $row_checkbox["testo"],
+                                "is_check" => $row_checkbox["is_check"]
+                            ));
+                        }
+                    }
+                    
+                    $dati_lista["checkbox"] = $dati_checkbox;
+
+                    // etichetta
+                    $sql = "SELECT e.testo as testo, c.blue as blue, c.red as red, c.green as green, c.opacity as opacity FROM Etichetta as e, Colore as c WHERE e.lista=" . $row_lista["ID"] . "AND c.ID = e.colore;";
+                    $result_etichetta = $conn->query($sql);
+
+                    $dati_etichetta = array("length" => $result_etichetta->num_rows, "list" => array());
+                    if ($result_etichetta->num_rows > 0) {
+                        while ($row_etichetta = $result_etichetta->fetch_assoc()) {
+                            array_push($dati_etichetta["list"], array(
+                                "testo" => $row_etichetta["testo"],
+                                "blue" => $row_etichetta["blue"],
+                                "red" => $row_etichetta["red"],
+                                "green" => $row_etichetta["green"],
+                                "opacity" => $row_etichetta["opacity"],
+                            ));
+                        }
+                    }
+                    
+                    $dati_lista["etichetta"] = $dati_etichetta;
 
                     array_push($dati["lista"]["list"], $dati_lista);
                 }
             }
 
             // lista -> checkbox, etichette, commenti, ...
+
             
             // inserisco le informazioni
             array_push($data["attivita"]["list"], $dati);
@@ -85,6 +137,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel ="stylesheet">
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
 
     <title>Bacheca</title>
 
@@ -213,6 +269,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             cursor: pointer;
         }
 
+        div.lista-info > div.lista-descrizione {
+            width: 50%;
+            max-width: 50%;
+            min-height: 10vh;
+            border: 1px solid black;
+        }
+
     </style>
 </head>
 <body>
@@ -241,58 +304,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Attività</th>
-                <th>Liste</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr>
-                <td><h3 class="attivita-titolo"><span></span></h3></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <tr id="attivita-prototipo-table" style="display: none">
-        <td><h3 class="attivita-titolo"></h3></td>
-
-        <div class="attivita-lista">
-            <!-- Liste -->
-
-            <td class="lista-nuova lista">
-                <p class="lista-nome">+ Aggiungi una nuova lista</p>
-                <div class="lista-info" style="display: none">
-                    <form class="form-nuova-lista" method="post">
-                        <label for="">Nome</label>
-                        <input type="text" name="nome" id="">
-
-                        <label for="">Descrizione</label>
-                        <textarea name="descrizione" id="" cols="30" rows="10"></textarea>
-
-                        <input type="submit" value="Aggiungi Lista">
-                    </form>
-                </div>
-            </td>
-        </div>
-    </tr>
-
-    <div>
-        <td class="lista-prototipo-tabella" class="attivita-box" style="display: none">
-            <p class="lista-nome"><span></span></p>
-
-            <div class="lista-info" style="display: none">
-                <p class="lista-codice">Codice: <span></span></p>
-                <p class="lista-nome"><span></span></p>
-
-                <p class="lista-text">Descrizione</p>
-                <p class="lista-descrizione"><span></span></p>
-            </div>
-        </td>
-    </div>
-
     <div id="lista-prototipo-isola" class="lista" style="display: none">
             <p class="lista-nome"><span></span></p>
 
@@ -301,7 +312,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <p class="lista-nome"><span></span></p>
 
                 <p class="lista-text">Descrizione</p>
-                <p class="lista-descrizione"><span></span></p>
+                <div class="lista-descrizione"><span></span></div>
+
+                <p class="lista-text">Membri</p>
+
+                <p class="lista-text">Commenti</p>
+                <div class="lista-commenti"></div>
             </div>
     </div>
 
@@ -336,7 +352,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </div>
 
     <script>
-        let type = "table";
+        let type = "isola";
         function get_attivita_prop() {
             return $("#attivita-prototipo-" + type);
         }
@@ -352,9 +368,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
             elem.find("p.lista-codice > span").text(dati.codice);
             elem.find("p.lista-nome > span").text(dati.nome);
-            elem.find("p.lista-descrizione > span").text(dati.descrizione);
+            elem.find(".lista-descrizione > span").text(dati.descrizione);
 
             elem.show();
+            elem.draggable();
             return elem;
         }
 
