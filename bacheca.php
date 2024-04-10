@@ -22,49 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     //TODO: considerare l'idea di utilizzare questa pagina come API e mostra il tutto in una hmtl usando un JSON come struttura
 
-    // mostro attività
-    $sql = "SELECT ID, data_creazione, data_ultima_modifica, titolo, codice FROM Attivita WHERE bacheca=$id_bacheca;";
-    $result = $conn->query($sql);
-
-    // echo "numero attività mostrate: $result->num_rows";
-    $data["attivita"] = array("length" => $result->num_rows, "list" => array());
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $dati = array("info" => array(
-                "data_creazione" => $row["data_creazione"],
-                "data_ultima_modifica" => $row["data_ultima_modifica"],
-                "titolo" => $row["titolo"],
-                "codice" => $row["codice"])
-            );
-
-            // cerco liste
-            $sql = "SELECT nome, descrizione, data_creazione, data_ultima_modifica, codice FROM Lista WHERE attivita='" . $row["ID"] . "';";
-            $result_lista = $conn->query($sql);
-
-            $dati["lista"]["length"] = $result_lista->num_rows;
-            $dati["lista"]["list"] = array();
-
-            if ($result_lista->num_rows > 0) {
-                while ($row_lista = $result_lista->fetch_assoc()) {
-                    $dati_lista = array(
-                        "data_creazione" => $row_lista["data_creazione"],
-                        "data_ultima_modifica" => $row_lista["data_ultima_modifica"],
-                        "nome" => $row_lista["nome"],
-                        "descrizione" => $row_lista["descrizione"],
-                        "codice" => $row_lista["codice"]
-                    );
-
-                    array_push($dati["lista"]["list"], $dati_lista);
-                }
-            }
-
-            // lista -> checkbox, etichette, commenti, ...
-            
-            // inserisco le informazioni
-            array_push($data["attivita"]["list"], $dati);
-        }
-    }
+    $data["attivita"] = get_dati_attivita($id_bacheca);    
 
     //TOOD: crea nuovo elemento (attività, lista, checkbox, ...) -> attivita.php
 
@@ -308,11 +266,29 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <script>
         class Visualizator {
             constructor (data) {
-                this.tipi = ["isola", "table"];
-                this.data;
+                this.data = data;
                 this.tipo = "isola";
 
-                this.cod_idx = {};  // associa ad ogni codice l'indice (di dati)
+                this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
+                    "attivita": {},
+                    "lista": {},
+                };
+                /*  STRUCTURE  //
+                {
+                    "attivita": {
+                        "codice": 0,
+                        "codice2": 1
+                    },
+                    "lista": {
+                        "codice": 0,
+                        "codice2": 1
+                    },
+                    "element": {
+                        "codice": 0,
+                        "codice2": 1
+                    }
+                }
+                */
 
                 this.elements = {
                     "isola": {
@@ -320,30 +296,76 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         "lista": $('<div class="lista"><p class="lista-nome"><span></span></p></div>')
                     }
                 }
+
+                // init
+                this.init_cod_idx();
+                this.popup;
+                this.init_popup();
             }
 
-            add_idx_attivita(idx, codice) {
-                this.cod_idx[codice] = {idx, "list"};
-            }
+            // init
+            init_popup() {
+                this.popup = $("#popup");
+                this.popup.box = $("#popup-box");
+                
+                const self = this;
+                this.popup.mostra = function () {
+                    self.popup.show();
 
-            add_idx_lista(idx, codice, cod_attivita) {
-                this.cod_idx.cod_attivita.list[codice] = idx;
+                    $(window).on("click", function (e) {
+                        target = $(e.target);
+                        if (target.closest(self.popup).length > target.closest(self.popup.box).length) {
+                            e.preventDefault();
+                            self.popup.close();
+                        }
+                    });
+                }
+
+                this.popup.close = function () {
+                    self.popup.hide();
+                    self.popup.box.empty();
+                    $(window).off("click");
+                }
+
+                this.popup.add = function (elem) {
+                    console.log(self.popup)
+                    self.popup.box.empty();
+                    let new_ = elem.clone(true);
+                    new_.attr("id", "");
+                    new_.show();
+                    self.popup.box.append(new_);
+
+                    self.popup.mostra();
+                }
             }
 
             init_cod_idx() {
-                for (let i = 0; i < data.attivita.length; i++) {
-                    let dati = data.attivita.list[i];
+                for (let i = 0; i < this.data.attivita.length; i++) {
+                    let dati = this.data.attivita.list[i];
                     this.add_idx_attivita(i, dati.info.codice);
 
                     for (let i = 0; i < dati.lista.length; i++) {
                         let dati_lista = dati.lista.list[i];
-                        this.add_idx_lista(i, dati_lista.codice, dati.info.codice);
+                        this.add_idx_lista(i, dati_lista.codice);
                     }
                 }
             }
 
+            // method
+            add_idx_attivita(codice, idx=Object.keys(this.cod_idx["attivita"]).length) {
+                this.cod_idx["attivita"][idx] = codice;
+            }
+
+            add_idx_lista(codice, idx=Object.keys(this.cod_idx["lista"]).length) {
+                this.cod_idx["lista"][idx] = codice;
+            }
+
+            get_idx(tipo, codice) {
+                return this.cod_idx[tipo][codice];
+            }
+
             change_type(tipo) {
-                if (this.tipi.includes(tipo)) this.tipo = tipo;
+                if (["isola", "table"].includes(tipo)) this.tipo = tipo;
             }
 
             create_lista(dati, codice_attivita) {
@@ -354,6 +376,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 elem.show();
                 elem.insertBefore($("#" + codice_attivita + " div.lista-nuova"))
+                
+                elem.get(0).dati = dati;
+                // console.log(elem.dati);
+                return elem;
             }
 
             create_attivita(dati) {
@@ -361,13 +387,34 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 let elem = this.elements[this.tipo].attivita.clone(true);
                 elem.attr("id", info.codice);
 
-                elem.find("p.attivita-codice > span").text(info.codice);
+                // elem.find("p.attivita-codice > span").text(info.codice);
+                elem.find("h3.attivita-titolo > span").text(info.titolo);
 
-                for (let i = 0; i < dati.lista.length; i++)
-                    create_lista(dati.lista.list[i]).insertBefore(elem.find("div.lista-nuova"));
+                for (let i = 0; i < dati.lista.length; i++) 
+                    this.create_lista(dati.lista.list[i]).insertBefore(elem.find("div.lista-nuova"));
 
                 elem.insertBefore($("#attivita-nuova"));
                 elem.show();
+            }
+
+            create_new_lista(dati, codice_attivita) {
+                this.add_idx_lista(dati.codice);
+                this.create_lista(dati, codice_attivita);
+            }
+
+            create_new_attivita(dati) {
+                this.add_idx_attivita(dati.codice);
+                this.create_attivita(dati, true);
+            }
+
+            show_dati() {
+                for (let i = 0; i < this.data.attivita.length; i++) {
+                    this.create_attivita(this.data.attivita.list[i]);
+                } 
+            }
+
+            show_info(id) {
+                this.popup.add($(id));
             }
         }
 
@@ -390,6 +437,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             elem.find("p.lista-descrizione > span").text(dati.descrizione);
 
             elem.show();
+            elem.get(0).dati = dati;
+            console.log("dati", elem.get(0).dati)
             return elem;
         }
 
@@ -414,9 +463,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         let dati = <?php echo json_encode($data)?>;
         console.log(dati);
 
-        for (let i = 0; i < dati.attivita.length; i++) {
-            show_attivita(dati.attivita.list[i]);
-        }
+        let visual = new Visualizator(dati);
+
+        // for (let i = 0; i < dati.attivita.length; i++) {
+        //     // show_attivita(dati.attivita.list[i]);
+        //     visual.create_attivita();
+        // }
+
+        visual.show_dati();
 
         $("#form-nuova-attivita").submit(function (e) {
             e.preventDefault();
@@ -445,7 +499,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
-                        show_attivita(result.attivita);
+                        visual.create_new_attivita(result.attivita);
                     }
                 },
 
@@ -484,7 +538,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true)
-                        $("#" + codice_attivita + " div.attivita-lista").append(create_lista(result.lista));
+                        visual.show
+                        visual.create_new_lista(result.lista);
                 },
 
                 error: function (err) {
@@ -493,41 +548,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             });
         });
 
-        let popup = $("#popup");
-        popup.box = $("#popup-box");
-
-        popup.mostra = function () {
-            popup.show();
-
-            $(window).on("click", function (e) {
-                target = $(e.target);
-                if (target.closest(popup).length > target.closest(popup.box).length) {
-                    e.preventDefault();
-                    popup.close();
-                }
-            });
-        }
-
-        popup.close = function () {
-            popup.hide();
-            popup.box.empty();
-            $(window).off("click");
-        }
-
-        popup.add = function (elem) {
-            popup.box.empty();
-            let new_ = elem.clone(true);
-            new_.show();
-            popup.box.append(new_);
-
-            popup.mostra();
-        }
-
+        
+        // Informazioni lista
         $("div.lista").on("click", function (e) {
-            popup.add($(this).find("div.lista-info"));
+            visual.popup.add(visual.get_idx("lista", $("#" + $(this).attr("id"))));
             e.stopPropagation();
         });
 
+        // Nuova lista
         $("#select-type-visual > button").on("click", function (e) {
             if ($(this).hasClass("active")) return;
 
