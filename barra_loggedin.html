@@ -129,87 +129,10 @@
    text-decoration: underline;
 }
 
-
-/* dropdown di "Funzioni"*/
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* contenuto del dropdown*/
-.dropdown-content {
-    font-family: "Concert One", sans-serif;
-    font-weight: bold;
-    justify-content: flex-start;
-    align-items: center;
-    width: 130vh;
-    text-align: center;
-    height: 35vh;
-}
-
-.dropdown-content > div {
-    justify-content: center;
-    align-items: center;
-}
-
-.dropdown-content > .dropwdown-elem {
-    justify-content: flex-start;
-    align-items: center;
-    width: 50%;
-}
-
-.dropdown-content {
-  visibility: hidden;
-  position: absolute;
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-  visibility: visible;
-  background-color: #f7eccd;
-  border-radius: 16px;
-}
-
-/* barra superiore del dropdown*/
-.top-row-dropdwn {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: nowrap;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-bottom: 10px;
-    padding-right: 10px;
-}
-
-/* parte inferiore del dropdown*/
-.bottom-row-dropdwn {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: baseline;
-    flex-wrap: nowrap;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-bottom: 10px;
-    padding-right: 10px;
-}
-
-/* icone all'interno di "Funzioni" */
-.icons{
+.image{
+    border-radius: 50%;
     width: 50px;
     height: 50px;
-}
-
-/* stile link all'interno di "Funzioni" */
-.Funzioni_link{
-text-decoration: none;
-color: #000000;
-}
-
-.Funzioni_link:hover{
-    text-decoration: underline;
 }
     </style>
 </head>
@@ -226,75 +149,20 @@ color: #000000;
             <!--"Chi Siamo"-->
             <div class="dropdown">
             <a href="../chi_siamo.html" style="text-decoration: none;">
-            <span class="writing">Chi siamo</span>
+            <span class="writing">Spazio di Lavoro</span>
             </a>
             </div>
 
-            <!--"Funzioni"-->
-            <div class="dropdown">
-            <a href="../Funzioni.html" style="text-decoration: none;">
-            <span class="writing">Funzioni</span>
-            </a>
-            <div class="dropdown-content">
-                <div>
 
-                    <!-- dropdown di "Funzioni"-->
-
-<!-- barra superiore di "Funzioni"-->
-<div class="top-row-dropdwn">
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="img/easy_to_use.png" class="icons">
-                        <p class="dropdown-title">Semplicità d'Uso</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/data_centralization.png" class="icons">
-                        <p class="dropdown-title">Centralizzazione dei Dati</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">     
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="img/collaboration_icon.png" class="icons">
-                        <p class="dropdown-title">Collaborazione Fluida</p>
-                        </a>
-                    </div>
-
+    <a class="button" href="" style="width: 90px;"> Crea </a>
 </div>
 
-<!-- barra inferiore di "Funzioni"-->
-<div class="bottom-row-dropdwn">
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/real_time.png" class="icons">
-                        <p class="dropdown-title">Monitoraggio in Tempo Reale</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/esigenze.png" class="icons">
-                        <p class="dropdown-title">Adattabilità alle Esigenze</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/data_security.png" class="icons">
-                        <p class="dropdown-title">Sicurezza dei Dati</p>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+<div class="navbar-left">
+    <img src="img/solid_red.jpg"  class="image" >
+    <a href="" style="text-decoration: none; margin-left: 0px;">
+        <span class="writing">Account</span>
+        </a>
 </div>
-
-<!-- barra destra-->
 
     </div>
 </body>
