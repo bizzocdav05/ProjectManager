@@ -424,7 +424,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.popup.add(elem);
             }
 
-            show_lista_nuova(dati) {
+            show_lista_nuova() {
                 this.popup.add($("lista-nuova-prototipo").clone(true));
             }
         }
@@ -522,9 +522,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         // Informazioni lista
         $("div.attivita-box div.lista").on("click", function (e) {
             if ($(this).attr("id") == "attivita-nuova")
-                visual.show_lista_nuova
+                visual.show_lista_nuova();
             else
-                visual.show_lisa_info(this.dati);
+                visual.show_lista_info(this.dati);
 
             e.stopPropagation();
         });
