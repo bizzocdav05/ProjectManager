@@ -56,7 +56,15 @@
             z-index: 101;
             padding: 20px;
         }
-        .navbar {
+        #login {
+            position: sticky;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+         /* barra superiore della pagina*/
+         .navbar {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -69,6 +77,7 @@
             width: 100%;
         }
 
+        /* */
         .navbar > * {
             display: flex;
             flex-direction: row;
@@ -79,136 +88,285 @@
             margin: 0;
         }
 
+        /* */
         .navbar-left > *, .navbar-right > * {
             margin: 20px;
         }
 
+        /* tutta la pagina sotto la barra*/
         .header {
             background-color: #f3e0ad;
             height: 100vh;
             width: 100%;
         }
 
-        #login {
-            position: sticky;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-        }
-
+        /* immagine del logo nella barra superiore*/
         .logo {
             width: 170px;
             height: 170px;
         }
 
-        .button {
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
+    /* stile "bottoni" */
+    .button {
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        background-color:#8f411a;
+        border: solid transparent;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+        display: inline-block;
+        font-size:large;
+        font-weight: 700;
+        letter-spacing: .8px;
+        line-height: 20px;
+        margin: 0px 5px 0px 5px;
+        overflow: visible;
+        padding: 13px 16px;
+        text-align: center;
+        text-transform: uppercase;
+        touch-action: manipulation;
+        transform: translateZ(0);
+        transition: filter .2s;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 100%;
+        text-decoration: none;
+    }
 
-            background-color:#8f411a;
-            border: solid transparent;
-            border-radius: 16px;
-            border-width: 0 0 4px;
-            box-sizing: border-box;
-            color: #000000;
-            cursor: pointer;
-            display: inline-block;
-            font-size:large;
-            font-weight: 700;
-            letter-spacing: .8px;
-            line-height: 20px;
-            margin: 0px 5px 0px 5px;
-            overflow: visible;
-            padding: 13px 16px;
-            text-align: center;
-            text-transform: uppercase;
-            touch-action: manipulation;
-            transform: translateZ(0);
-            transition: filter .2s;
-            vertical-align: middle;
-            white-space: nowrap;
-            width: 100%;
-            }
+    .button:after {
+        background-clip: padding-box;
+        background-color: #d05e26;
+        border: solid transparent;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        bottom: -4px;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+    }
 
+    .button:hover {
+        filter: brightness(1.1);
+ 
+    }
 
+    .button:active {
+        border-width: 4px 0 0;
+        background: none;
+    }
 
-        .bacheca
-        {
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
+    /*"Chi siamo"/"Funzioni" */
+    .writing{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+    }
 
-            border: none;
-            color: black;
-            
-            padding: 16px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-        }
+    .writing:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+    }
 
-        .button:after {
-            background-clip: padding-box;
-            background-color: #d05e26;
-            border: solid transparent;
-            border-radius: 16px;
-            border-width: 0 0 4px;
-            bottom: -4px;
-            content: "";
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: -1;
-        }
+        /* stile "slogan" */
+    .title{
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        padding-top: 120px;
+        margin-right: 80px;
+        margin-left: 90px;
+    }
 
-        .button:hover {
-            filter: brightness(1.1);
+        /*immagini laterali superiori */
+    .top_img{
+        height: 300px;
+        width: 300px;
+        margin-right: 40px;
+        margin-top: 70px;
+
+    }
+
+        /* parte superiore dell'header*/
+    .top_bar{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         
-        }
+    }
 
-        .button:active {
-            border-width: 4px 0 0;
-            background: none;
-        }
+    /* parte intermedia dell'header*/
+    .middle_bar{
+        display: flex;
+        flex-direction:column;
+        background-color: #f3e0ad;
+    }
 
-        .writing{
-            text-decoration: underline;
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
-            font-style: normal;
-            font-size: larger;
-        }
+    /* titolo istruzioni*/
+    .subtitle{
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        margin-left: 90px;
+        padding-top: 200px;
+    }
 
-        .title{
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
-            margin-top: 0px;
-            padding-top: 120px;
-            margin-right: 80px;
-            margin-left: 90px;
-        }
+    /* introduzione istruzioni*/
+    .text{
+        font-family: "Outfit", sans-serif;
+        font-weight:900px;
+        font-optical-sizing: auto;
+        font-weight: 100px;
+        font-style: normal;
+        font-size: 25px;
+        margin-left: 90px;
+    }
 
-        .img_text{
-            height: 300px;
-            width: 300px;
-            margin-right: 40px;
-            margin-top: 70px;
+    /* titoli liste*/
+    .paragraph_title{
+        font-family: "Concert One", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100px;
+    font-style: normal;
+    margin-left: 130px;
+    }
 
-        }
+    /* body liste*/
+    .lista{
+        font-family: "Outfit", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 900px;
+        font-size: larger;
+        font-style: normal;
+        margin-left: 130px; 
+    }
 
-        .bar{
+
+    /* dropdown di "Funzioni"*/
+    .dropdown {
+    position: relative;
+    display: inline-block;
+    }
+
+    /* contenuto del dropdown*/
+    .dropdown-content {
+        font-family: "Concert One", sans-serif;
+        font-weight: bold;
+        justify-content: flex-start;
+        align-items: center;
+        width: 130vh;
+        text-align: center;
+        height: 30vh;
+    }
+
+    .dropdown-content > div {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dropdown-content > .dropwdown-elem {
+        justify-content: flex-start;
+        align-items: center;
+        width: 50%;
+    }
+
+    .dropdown-content {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+    visibility: visible;
+    background-color: #f7eccd;
+    border-radius: 16px;
+    }
+
+    /* barra superiore del dropdown*/
+    .top-row-dropdwn {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        padding-right: 10px;
+    }
+
+    /* parte inferiore del dropdown*/
+    .bottom-row-dropdwn {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: baseline;
+        flex-wrap: nowrap;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        padding-right: 10px;
+    }
+
+    /* icone all'interno di "Funzioni" */
+    .icons{
+        width: 50px;
+        height: 50px;
+    }
+
+    /* stile link all'interno di "Funzioni" */
+    .Funzioni_link{
+    text-decoration: none;
+    color: #000000;
+    }
+
+    .Funzioni_link:hover{
+        text-decoration: underline;
+    }
+
+    /* barra per il bottone e l'ultima frase*/
+    .testo{
+        margin-left: 30px;
+        margin-top: 20px;
+        font-family: "Concert One", sans-serif;
+    }
+
+    /* ultima frase della pagina*/
+    .slogan{
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        padding-bottom: 20px;
+    }
+
+    /* barra per il bottone e l'ultima frase*/
+    .bottom_bar{
+        display: flex;
+        flex-direction: column;
+        background-color: #f3e0ad;
+        align-items: center;
+        padding-top: 15vh;
+        padding-bottom: 100px;
+    }
+
+    #container {
             display: flex;
             flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            
-        }
+            justify-content: space-evenly;
+            align-items: flex-start;
+            flex-wrap: nowrap;
 
+            overflow-x: auto;
+
+            margin: 10px;
+        }
+    
     </style>
 </head>
 <body>
@@ -216,22 +374,93 @@
 
     </div>
 
-    <div class="navbar"> <!--tutta la barra-->
+    <!--parte della barra a sinistra-->
+    <div class="navbar">
+        <div class="navbar-left" > 
 
-        <div class="navbar-left" > <!--logo  e titolo -->
+            <!--immagine del logo-->
+            <a href="../index.html">
             <img  src="img/logo_scritta_completo.png"  class="logo">
-            
+            </a>
+        
+            <!--"Chi Siamo"-->
+            <div class="dropdown">
+            <a href="../chi_siamo.html" style="text-decoration: none;">
+            <span class="writing">Chi siamo</span>
+            </a>
+            </div>
 
-            <p class="writing">Chi siamo</p>
-            <p class="writing">Soluzioni</p>
+            <!--"Funzioni"-->
+            <div class="dropdown">
+            <a href="../Funzioni.html" style="text-decoration: none;">
+            <span class="writing">Funzioni</span>
+            </a>
+            <div class="dropdown-content">
+                <div>
 
-        </div>
+                    <!-- dropdown di "Funzioni"-->
 
-        <div class="navbar-right" style="margin-right: 10%;"> <!--barra destra-->
-            <p class="button">Log In</p>
-            <p class="button">Sign Up</p>
+    <!-- barra superiore di "Funzioni"-->
+    <div class="top-row-dropdwn">
+                    <div class="drowdown-elem">
+                        <a href="../Funzioni.html" class="Funzioni_link">
+                        <img src="img/easy_to_use.png" class="icons">
+                        <p class="dropdown-title">Semplicità d'Uso</p>
+                        </a>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <a href="../Funzioni.html" class="Funzioni_link">
+                        <img src="/img/data_centralization.png" class="icons">
+                        <p class="dropdown-title">Centralizzazione dei Dati</p>
+                        </a>
+                    </div>
+
+                    <div class="drowdown-elem">     
+                        <a href="../Funzioni.html" class="Funzioni_link">
+                        <img src="img/collaboration_icon.png" class="icons">
+                        <p class="dropdown-title">Collaborazione Fluida</p>
+                        </a>
+                    </div>
+
+    </div>
+
+    <!-- barra inferiore di "Funzioni"-->
+    <div class="bottom-row-dropdwn">
+                    <div class="drowdown-elem">
+                        <a href="../Funzioni.html" class="Funzioni_link">
+                        <img src="/img/real_time.png" class="icons">
+                        <p class="dropdown-title">Monitoraggio in Tempo Reale</p>
+                        </a>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <a href="../Funzioni.html" class="Funzioni_link">
+                        <img src="/img/esigenze.png" class="icons">
+                        <p class="dropdown-title">Adattabilità alle Esigenze</p>
+                        </a>
+                    </div>
+
+                    <div class="drowdown-elem">
+                        <a href="../Funzioni.html" class="Funzioni_link">
+                        <img src="/img/data_security.png" class="icons">
+                        <p class="dropdown-title">Sicurezza dei Dati</p>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
+</div>
+
+<!-- barra destra-->
+        <div class="navbar-right" style="margin-right: 10%;"> 
+            <a class="button" href="../login.html"> Log In </a>
+            <a class="button" href="../singup.html"> Sing Up</a>
+        </div>
+    </div>
+
 
     <!-- content hidden -->
     <div id="bacheca-prototipo" class="bacheca bacheca-elem" style="display: none">
@@ -250,7 +479,6 @@
         <div id="nuova-bacheca" class="bacheca">Crea nuova bacheca</div>
     </div>
 
-    
 
     <script>
         // Passaggio dati
