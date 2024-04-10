@@ -313,7 +313,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     self.popup.show();
 
                     $(window).on("click", function (e) {
-                        target = $(e.target);
+                        let target = $(e.target);
                         if (target.closest(self.popup).length > target.closest(self.popup.box).length) {
                             e.preventDefault();
                             self.popup.close();
@@ -413,50 +413,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 } 
             }
 
-            show_info(id) {
-                this.popup.add($(id));
+            show_lista_info(dati) {
+                let elem = $("lista-info-prototipo").clone(true);
+                
+                elem.find("p.lista-codice > span").text(dati.codice);
+                elem.find("p.lista-nome > span").text(dati.nome);
+                elem.find("p.lista-descrizione > span").text(dati.descrizione);
+
+                elem.show();
+                this.popup.add(elem);
             }
-        }
 
-        let type = "isola";
-        function get_attivita_prop() {
-            return $("#attivita-prototipo-" + type);
-        }
-
-        function get_lista_prop() {
-            return $("#lista-prototipo-" + type);
-        }
-
-        function create_lista(dati) {
-            let elem = get_lista_prop().clone(true);
-            console.log(elem);
-            elem.attr("id", dati.codice);
-
-            elem.find("p.lista-codice > span").text(dati.codice);
-            elem.find("p.lista-nome > span").text(dati.nome);
-            elem.find("p.lista-descrizione > span").text(dati.descrizione);
-
-            elem.show();
-            elem.get(0).dati = dati;
-            console.log("dati", elem.get(0).dati)
-            return elem;
-        }
-
-        function show_attivita(dati) {
-            let info = dati.info;
-            let elem = get_attivita_prop().clone(true);
-            elem.attr("id", info.codice);
-
-            elem.find("p.attivita-codice > span").text(info.codice);
-            elem.find("p.attivita-data-creazione > span").text(info.data_creazione);
-            elem.find("p.attivita-data-ultima-modifica > span").text(info.data_ultima_modifica);
-            elem.find(".attivita-titolo > span").text( info.titolo);
-
-            for (let i = 0; i < dati.lista.length; i++)
-                create_lista(dati.lista.list[i]).insertBefore(elem.find("div.lista-nuova"));
-
-            elem.insertBefore($("#attivita-nuova"));
-            elem.show();
+            show_lista_nuova(dati) {
+                this.popup.add($("lista-nuova-prototipo").clone(true));
+            }
         }
 
         // Passaggio dati
@@ -550,8 +520,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         
         // Informazioni lista
-        $("div.lista").on("click", function (e) {
-            visual.popup.add(visual.get_idx("lista", $("#" + $(this).attr("id"))));
+        $("div.attivita-box div.lista").on("click", function (e) {
+            if ($(this).attr("id") == "attivita-nuova")
+                visual.show_lista_nuova
+            else
+                visual.show_lisa_info(this.dati);
+
             e.stopPropagation();
         });
 
