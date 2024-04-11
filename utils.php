@@ -59,7 +59,7 @@ function create_sql($start, $names, $values) {
     return $sql;
 }
 
-function genera_codice($length = 16) {
+function genera_codice($length = 16, $id_bacheca) {
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     $code = '';
     $max = strlen($characters) - 1;
@@ -72,11 +72,11 @@ function genera_codice($length = 16) {
     $conn = connection();
     
     if ($conn->query("SELECT codice FROM Codici WHERE codice=$code")->num_rows > 0) {  // codice già esistente
-        return genera_codice($length);
+        return genera_codice($length, $id_bacheca);
     }
 
     // salvo il codice
-    $conn->query(create_sql("INSERT INTO Codici", array("codice"), array($code)));
+    $conn->query(create_sql("INSERT INTO Codici", array("codice", "bacheca"), array($code, $id_bacheca)));
     $conn->close();
 
     return $code;
@@ -163,7 +163,12 @@ function get_dati_liste($id_attivita) {
     $sql = "SELECT nome, descrizione, data_creazione, data_ultima_modifica, codice FROM Lista WHERE attivita='" . $id_attivita . "';";
     $result_lista = $conn->query($sql);
 
-    $dati["length"] = $result_lista->num_rows;
+    if (!$result_lista) {
+        $dati["length"] = 0;
+    } else {
+        $dati["length"] = $result_lista->num_rows;
+    }
+
     $dati["list"] = array();
 
     if ($result_lista->num_rows > 0) {
@@ -180,7 +185,13 @@ function get_dati_liste($id_attivita) {
             $sql = "SELECT testo, data_creazione, user FROM Commento WHERE lista=" . $row_lista["ID"] . ";";
             $result_commento = $conn->query($sql);
 
-            $dati_commento = array("length" => $result_commento->num_rows, "list" => array());
+            $dati_commento = array("list" => array());
+            if (!$result_commento) {
+                $dati_commento["length"] = 0;
+            } else {
+                $dati_commento["length"] = $result_commento->num_rows;
+            }
+
             if ($result_commento->num_rows > 0) {
                 while ($row_commento = $result_commento->fetch_assoc()) {
                     array_push($dati_commento["list"], array(
@@ -196,7 +207,12 @@ function get_dati_liste($id_attivita) {
             $sql = "SELECT testo, is_check FROM Checkbox WHERE lista=" . $row_lista["ID"] . ";";
             $result_checkbox = $conn->query($sql);
 
-            $dati_checkbox = array("length" => $result_checkbox->num_rows, "list" => array());
+            $dati_checkbox = array("list" => array());
+            if (!$result_checkbox) {
+                $dati_checkbox["length"] = 0;
+            } else {
+                $dati_checkbox["length"] = $result_checkbox->num_rows;
+            }
             if ($result_checkbox->num_rows > 0) {
                 while ($row_checkbox = $result_checkbox->fetch_assoc()) {
                     array_push($dati_checkbox["list"], array(
@@ -212,7 +228,12 @@ function get_dati_liste($id_attivita) {
             $sql = "SELECT e.testo as testo, c.blue as blue, c.red as red, c.green as green, c.opacity as opacity FROM Etichetta as e, Colore as c WHERE e.lista=" . $row_lista["ID"] . "AND c.ID = e.colore;";
             $result_etichetta = $conn->query($sql);
 
-            $dati_etichetta = array("length" => $result_etichetta->num_rows, "list" => array());
+            $dati_etichetta = array("list" => array());
+            if (!$result_etichetta) {
+                $dati_etichetta["length"] = 0;
+            } else {
+                $dati_etichetta["length"] = $result_etichetta->num_rows;
+            }
             if ($result_etichetta->num_rows > 0) {
                 while ($row_etichetta = $result_etichetta->fetch_assoc()) {
                     array_push($dati_etichetta["list"], array(

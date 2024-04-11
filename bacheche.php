@@ -467,7 +467,7 @@
         <p class="bacheca-nome"><span></span></p>
     </div>
 
-    <form id="form-nuova-bacheca" method="post" style="display: none">
+    <form id="form-nuova-bacheca" class="form-nuova-bacheca" method="post" style="display: none">
         <label for="">Nome: </label>
         <input type="text" name="nome" id="">
 
@@ -496,7 +496,7 @@
         for (let i = 0; i < dati.length; i++)
             show_bacheca(dati.list[i]).appendTo("#container");
 
-        $("#form-nuova-bacheca").submit(function (e) {
+        $("body").on("submit", "#nuova-bacheca-popup", (function (e) {
             e.preventDefault();
 
             let array = $(this).serializeArray();
@@ -506,7 +506,7 @@
             array.forEach((elem) => {
                 data[elem["name"]] = elem["value"];
             });
-
+            console.log(data);
             $.ajax({
                 url: "attivita.php",
                 type: "POST",
@@ -517,10 +517,11 @@
                 crossDomain: true,
 
                 success: function (result) {
+                    console.log(result);
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
-                        show_bacheca(result.bacheca);
+                        show_bacheca(result.bacheca).appendTo("#container");
                     }
                     popup.close();
                 },
@@ -529,9 +530,9 @@
                     console.log(err);
                 }
             });
-        });
+        }));
 
-        $("#container > div.bacheca-elem").click(function (e) {
+        $("body").on("click", "#container > div.bacheca-elem", function (e) {
             location.href = "bacheca.php?codice=" +encodeURIComponent($(this).attr("id"));
         });
 
@@ -546,8 +547,9 @@
             $(this).show();
             console.log("show")
             $(window).on("click", function (e) {
-                e.preventDefault();
-                if (!$(e.target).closest(popup).length) {
+                let target = $(e.target);
+                if (!target.closest(popup).length) {
+                    e.preventDefault();
                     console.log("hide");
                     popup.hide();
                     popup.empty();
@@ -566,8 +568,8 @@
         popup.add = function (elem) {
             popup.empty();
             let new_ = elem.clone(true);
-            new_.attr("id", "");
             console.log(new_)
+            new_.attr("id", "nuova-bacheca-popup");
             new_.show();
             new_.appendTo(popup)
 

@@ -191,21 +191,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <div class="attivita-lista attivita-lista-isola">
                <div class="lista">
                 <h2>CREA</h2>
-                <div class="lista-info" style="display: none">
-                    <form id="form-nuova-attivita" method="post">
-                        <label for="">Titolo</label>
-                        <input type="text" name="titolo" id="">
-
-                        <input type="submit" value="Crea Attivita">
-                    </form>
-                </div>
             </div>
             </div>
         </div>
-    </div>
-
-    <div id="lista-prototipo-isola" class="lista" style="display: none">
-        <p class="lista-nome"><span></span></p>
     </div>
 
     <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
@@ -219,7 +207,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <div id="attivita-info-prototipo">
+    <div id="lista-prototipo-isola" class="lista" style="display: none">
+        <p class="lista-nome"><span></span></p>
+    </div>
+
+    <div id="attivita-info-prototipo" style="display: none">
         <div class="attivita-info">
             <p class="attivita-codice">Codice: <span></span></p>
             <p class="attivita-data-creazione">Data Creazione: <span></span></p>
@@ -228,29 +220,31 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <div id="attivita-nuova-prototipo">
-        <div class="lista-info" style="display: none">
+    <div id="attivita-nuova-prototipo" style="display: none">
+        <div class="lista-info">
             <form id="form-nuova-attivita" method="post">
                 <label for="">Titolo</label>
-                <input type="text" name="titolo" id="">
+                <input type="text" name="titolo" id="" required>
 
                 <input type="submit" value="Crea Attivita">
             </form>
         </div>
     </div>
 
-    <div id="lista-info-prototipo">
-        <div class="lista-info" style="display: none">
+    <div id="lista-info-prototipo" class="lista-info-box" style="display: none">
+        <div class="lista-info">
             <p class="lista-codice">Codice: <span></span></p>
             <p class="lista-nome"><span></span></p>
 
             <p class="lista-text">Descrizione</p>
             <p class="lista-descrizione"><span></span></p>
+
+            <button class="lista-delete">Cancella lista</button>
         </div>
     </div>
 
-    <div id="lista-nuova-prototipo">
-        <div class="lista-info" style="display: none">
+    <div id="lista-nuova-prototipo" style="display: none">
+        <div class="lista-info">
             <form class="form-nuova-lista" method="post">
                 <label for="">Nome</label>
                 <input type="text" name="nome" id="">
@@ -297,6 +291,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     }
                 }
 
+                let searchParams = new URLSearchParams(window.location.search);
+                this.codice_bacheca = searchParams.get('codice');
+
                 // init
                 this.init_cod_idx();
                 this.popup;
@@ -328,7 +325,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 }
 
                 this.popup.add = function (elem) {
-                    console.log(self.popup)
                     self.popup.box.empty();
                     let new_ = elem.clone(true);
                     new_.attr("id", "");
@@ -342,25 +338,26 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             init_cod_idx() {
                 for (let i = 0; i < this.data.attivita.length; i++) {
                     let dati = this.data.attivita.list[i];
-                    this.add_idx_attivita(i, dati.info.codice);
+                    this.add_idx_attivita(dati.info.codice);
 
-                    for (let i = 0; i < dati.lista.length; i++) {
-                        let dati_lista = dati.lista.list[i];
-                        this.add_idx_lista(i, dati_lista.codice);
+                    for (let j = 0; j < dati.lista.length; j++) {
+                        let dati_lista = dati.lista.list[j];
+                        this.add_idx_lista(dati_lista.codice, dati.info.codice);
                     }
                 }
             }
 
             // method
             add_idx_attivita(codice, idx=Object.keys(this.cod_idx["attivita"]).length) {
-                this.cod_idx["attivita"][idx] = codice;
+                this.cod_idx["attivita"][codice] = idx;
             }
 
-            add_idx_lista(codice, idx=Object.keys(this.cod_idx["lista"]).length) {
-                this.cod_idx["lista"][idx] = codice;
+            add_idx_lista(codice, idx_attivita, idx=Object.keys(this.cod_idx["lista"]).length) {
+                this.cod_idx["lista"][codice] = [idx, idx_attivita];
             }
 
             get_idx(tipo, codice) {
+                console.log(tipo, codice);
                 return this.cod_idx[tipo][codice];
             }
 
@@ -368,17 +365,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 if (["isola", "table"].includes(tipo)) this.tipo = tipo;
             }
 
-            create_lista(dati, codice_attivita) {
+            create_lista(dati) {
                 let elem = this.elements[this.tipo].lista.clone(true);
                 elem.attr("id", dati.codice);
 
                 elem.find("p.lista-nome > span").text(dati.nome);
 
                 elem.show();
-                elem.insertBefore($("#" + codice_attivita + " div.lista-nuova"))
+                // elem.insertBefore($("#" + codice_attivita + " div.lista-nuova"))
                 
                 elem.get(0).dati = dati;
-                // console.log(elem.dati);
                 return elem;
             }
 
@@ -398,13 +394,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             create_new_lista(dati, codice_attivita) {
-                this.add_idx_lista(dati.codice);
-                this.create_lista(dati, codice_attivita);
+                let idx = this.get_idx("attivita", codice_attivita);
+                console.log(idx);
+                let idx_list = this.data.attivita.list[idx].lista.list.push(dati);
+                this.data.attivita.list[idx].lista.length += 1;
+
+                this.add_idx_lista(dati.codice, codice_attivita);
+                this.create_lista(dati).insertBefore($("#" + codice_attivita).find("div.lista-nuova"));
             }
 
             create_new_attivita(dati) {
-                this.add_idx_attivita(dati.codice);
-                this.create_attivita(dati, true);
+                let idx_att = this.data.attivita.list.push(dati);
+                this.data.attivita.length += 1;
+                this.add_idx_attivita(dati.info.codice);
+                this.create_attivita(dati);
             }
 
             show_dati() {
@@ -414,7 +417,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             show_lista_info(dati) {
-                let elem = $("lista-info-prototipo").clone(true);
+                console.log("lista info")
+                let elem = $("#lista-info-prototipo").clone(true);
+                elem.attr("id", "");
                 
                 elem.find("p.lista-codice > span").text(dati.codice);
                 elem.find("p.lista-nome > span").text(dati.nome);
@@ -424,8 +429,46 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.popup.add(elem);
             }
 
-            show_lista_nuova() {
-                this.popup.add($("lista-nuova-prototipo").clone(true));
+            show_lista_nuova(codice_attivita) {
+                let elem = $("#lista-nuova-prototipo").clone(true);
+                elem.attr("id");
+                elem.find("form.form-nuova-lista").append($('<input>').attr({
+                    type: 'hidden',
+                    name: 'codice_attivita',
+                    value: codice_attivita
+                }));
+                this.popup.add(elem);
+            }
+
+            show_attivita_nuova() {
+                let elem = $("#attivita-nuova-prototipo").clone(true);
+                elem.attr("id");
+
+                this.popup.add(elem);
+            }
+
+            cancella_lista(codice_lista) {
+                let idx_lista = this.get_idx("lista", codice_lista)[0];
+                let idx_att = this.get_idx("attivita", this.get_idx("lista", codice_lista)[1]);
+                
+                
+                delete this.cod_idx["lista"][codice_lista];
+                delete this.data.attivita.list[idx_att].lista.list[idx_lista];
+                this.data.attivita.list[idx_att].lista.length -= 1;
+
+                $.ajax({url:"attivita.php",type:"POST",data:{"action":"delete-lista","codice_lista":codice_lista, "codice_bacheca":this.codice_bacheca},crossDomain:true,success:function(result){console.log(result)},error:function(err){console.log(err)}});
+                $("#" + codice_lista).remove();
+            }
+
+            cancella_attivita(codice_attivita) {
+                let idx = this.get_idx("attivita", codice_attivita);
+
+                delete this.cod_idx["attivita"][codice_attivita];
+                delete this.attivita.list[idx];
+                this.data.attivita.length -= 1;
+
+                $.ajax({url:"attivita.php",type:"POST",data:{"action":"delete-lista","codice_attivita":codice_attivita, "codice_bacheca":this.codice_bacheca},crossDomain:true,success:function(result){console.log(result)},error:function(err){console.log(err)}});
+                $("#" + codice_attivita).remove();
             }
         }
 
@@ -442,7 +485,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         visual.show_dati();
 
-        $("#form-nuova-attivita").submit(function (e) {
+        $("body").on("submit", "#form-nuova-attivita", (function (e) {
             e.preventDefault();
 
             let array = $(this).serializeArray();
@@ -470,6 +513,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     console.log(result);
                     if (result.esito == true) {
                         visual.create_new_attivita(result.attivita);
+                        visual.popup.close();
                     }
                 },
 
@@ -477,9 +521,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     console.log(err);
                 }
             });
-        });
+        }));
 
-        $("div.attivita-box form.form-nuova-lista").submit(function (e) {
+        $("form.form-nuova-lista").submit(function (e) {
             e.preventDefault();
 
             let array = $(this).serializeArray();
@@ -491,7 +535,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             });
 
             let searchParams = new URLSearchParams(window.location.search);
-            let codice_attivita = $(this).parent().attr("id");
+            
+            let codice_attivita = data["codice_attivita"];
             $.ajax({
                 url: "attivita.php",
                 type: "POST",
@@ -505,11 +550,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 crossDomain: true,
 
                 success: function (result) {
+                    console.log(result);
                     result =JSON.parse(result);
                     console.log(result);
-                    if (result.esito == true)
-                        visual.show
-                        visual.create_new_lista(result.lista);
+                    if (result.esito == true) {
+                        visual.create_new_lista(result.lista, codice_attivita);
+                        visual.popup.close();
+                    }
                 },
 
                 error: function (err) {
@@ -520,16 +567,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         
         // Informazioni lista
-        $("div.attivita-box div.lista").on("click", function (e) {
-            if ($(this).attr("id") == "attivita-nuova")
-                visual.show_lista_nuova();
+        $("body").on("click", "div.attivita-box div.lista", function (e) {
+            let target = $(e.currentTarget);
+            if (target.hasClass("lista-nuova"))
+                visual.show_lista_nuova(target.closest("div.attivita-box").attr("id"));
+            else if (target.closest("div.attivita-box").attr("id") == "attivita-nuova")
+                visual.show_attivita_nuova();
             else
-                visual.show_lista_info(this.dati);
+                visual.show_lista_info(target.get(0).dati);
 
             e.stopPropagation();
         });
 
-        // Nuova lista
+        // Cancellazione lista
+        $("body").on("click", "#popup div.lista-info-box button.lista-delete", function (e) {
+            let target = $(e.currentTarget);
+            console.log(target.closest("div.lista-info").find(".lista-codice > span").text());
+            visual.cancella_lista(target.closest("div.lista-info").find(".lista-codice > span").text());
+            visual.popup.close();
+            e.stopPropagation();
+        });
+
+        // Bottone modalità
         $("#select-type-visual > button").on("click", function (e) {
             if ($(this).hasClass("active")) return;
 

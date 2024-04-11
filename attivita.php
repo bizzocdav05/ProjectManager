@@ -12,6 +12,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
     $conn = connection();
 
+    if ($action == "new-bacheca" && isset($_POST["nome"])) {
+        $codice = genera_codice(16, -1);
+    
+        $result = $conn->query(create_sql("INSERT INTO Bacheca", array("console", "nome", "codice"), array($_SESSION["id_console"], $_POST["nome"], $codice)));
+        
+        // cerco la bacheca per inserire l'id nel codice
+        $sql = "SELECT ID FROM Bacheca WHERE console=$id_console AND codice='$codice';";
+        $result = $conn->query($sql);
+
+        $id_bacheca = $result->fetch_assoc()["ID"];
+
+        // update
+        $sql = "UPDATE Codici SET bacheca=$id_bacheca WHERE codice='$codice';";
+        $result = $conn->query($sql);
+
+        $dati = array("esito" => true, "bacheca" => array("nome" => $_POST["nome"], "codice" => $codice));
+        echo json_encode($dati);
+        exit();
+    }
+
     if (!isset($_POST["codice_bacheca"])) {
         exit();
     }
@@ -27,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         $dati["attivita"] = array();
         if (isset($_POST["titolo"])) {
             $data = date("Y-m-d");
-            $codice_attivita = genera_codice(16);
+            $codice_attivita = genera_codice(16, $id_bacheca);
             $sql = create_sql("INSERT INTO Attivita",
                 array("titolo, data_creazione, data_ultima_modifica", "bacheca", "codice"),
                 array($_POST["titolo"], $data, $data, $id_bacheca, $codice_attivita));
@@ -44,9 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     if ($action == "new-lista") {
         if (isset($_POST["codice_bacheca"]) && isset($_POST["codice_attivita"]) && isset($_POST["nome"]) && isset($_POST["descrizione"]))
         {
-            if (!isset($_POST["ha_scandenza"])) {
-                $ha_scadenza = 0;
-            }
             $codice_bacheca = $_POST["codice_bacheca"];
             $codice_attivita = $_POST["codice_attivita"];
 
@@ -58,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             // cerco ID attivita (autorizzato)
             $id_attivita = get_elem_by_code("attivita", $codici);
 
-            $codice = genera_codice(16);
+            $codice = genera_codice(16, $id_bacheca);
 
             $conn->query(create_sql(
                 "INSERT INTO Lista",
@@ -71,8 +88,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 "descrizione" => $descrizione,
                 "data_creazione" => date("Y-m-d"),
                 "data_ultima_modifica" => date("Y-m-d"),
-                "codice" => $codice
+                "codice" => $codice,
+                "commento" => array("length" => 0, "list" => array()),
+                "etichetta" => array("length" => 0, "list" => array()),
+                "checkbox" => array("length" => 0, "list" => array()),
             );
+        }
+    }
+
+    if ($action == "delete-lista") {
+        if (isset($_POST["codice_lista"])) {
+            $codice_lista = $_POST["codice_lista"];
+
+            // cancello da codici
+            $sql = "DELETE FROM Codici WHERE codice='$codice_lista' AND bacheca=$id_bacheca;";
+            $result = $conn->query($sql);
+
+            if (!$result) {
+                echo "autorizzazione negata";
+                $conn->close();
+                exit();
+            }
+
+            // cancello lista
+            $sql = "DELETE FROM Lista WHERE codice='$codice_lista';";
+            $result = $conn->query($sql);
+
+            $conn->close();
+            exit();
+        }
+    }
+
+    if ($action == "delete-attivita") {
+        if (isset($_POST["codice_attivita"])) {
+            $codice_lista = $_POST["codice_attivita"];
+
+            // cancello da codici
+            $sql = "DELETE FROM Codici WHERE codice='$codice_lista' AND bacheca=$id_bacheca;";
+            $result = $conn->query($sql);
+
+            if (!$result) {
+                echo "autorizzazione negata";
+                $conn->close();
+                exit();
+            }
+
+            // cancello lista
+            $sql = "DELETE FROM Attivita WHERE codice='$codice_lista';";
+            $result = $conn->query($sql);
+
+            $conn->close();
+            exit();
         }
     }
 
