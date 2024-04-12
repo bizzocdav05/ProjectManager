@@ -171,6 +171,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             cursor: pointer;
         }
 
+        p.lista-nome > span:focus {
+            display: inline-block;
+            min-width: 200px;
+            border: 1px solid black;
+            padding: 2px;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -423,7 +431,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 
                 elem.find("p.lista-codice > span").text(dati.codice);
                 elem.find("p.lista-nome > span").text(dati.nome);
+                elem.find("p.lista-nome > span").attr("contenteditable", "true");
                 elem.find("p.lista-descrizione > span").text(dati.descrizione);
+                elem.find("p.lista-descrizione > span").attr("contenteditable", "true");
+
+                elem.find("p.lista-nome > span").change(() => console.log($(this).text()));
 
                 elem.show();
                 this.popup.add(elem);
