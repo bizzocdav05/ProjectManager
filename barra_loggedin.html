@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>side menu</title>
 
-     <!--font dei titoli-->
+         <!--font dei titoli-->
      <link rel="preconnect" href="https://fonts.googleapis.com">
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
      <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
- 
-    <title>Barra logged in </title>
-    <style>
 
-        body{
+    <style> 
+
+
+body{
             margin:0px;
             background-color: #f3e0ad;
         }
@@ -134,35 +135,484 @@
     width: 50px;
     height: 50px;
 }
-    </style>
-</head>
-<body>
-     <!--parte della barra a sinistra-->
-     <div class="navbar">
-        <div class="navbar-left" > 
 
-            <!--immagine del logo-->
-            <a href="../index.html">
-            <img  src="img/logo_scritta_completo.png"  class="logo">
+
+
+/*stile menu*/
+    :root {
+  --background: #f3e0ad;
+  --navbar-width: 256px;
+  --navbar-width-min: 80px;
+  --navbar-dark-primary: #e0ab23; /*colore menu*/
+  --navbar-dark-secondary: #d05e26; /*colore righe*/
+  --navbar-light-primary: #eee; /*colore titolo avatar*/
+  --navbar-light-secondary: #eee; /*colore descrizione avatar*/
+}
+
+
+#nav-toggle:checked ~ #nav-header {
+  width: calc(var(--navbar-width-min) - 16px); 
+}
+
+#nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
+  width: var(--navbar-width-min); 
+}
+
+#nav-toggle:checked ~ #nav-header #nav-title {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .1s; 
+}
+
+#nav-toggle:checked ~ #nav-header label[for="nav-toggle"] {
+  left: calc(50% - 8px);
+  transform: translate(-50%); 
+}
+
+#nav-toggle:checked ~ #nav-header #nav-toggle-burger {
+  background: #000000;
+}
+
+  #nav-toggle:checked ~ #nav-header #nav-toggle-burger:before, #nav-toggle:checked ~ #nav-header #nav-toggle-burger::after {
+    width: 16px;
+    background: #000000;
+    transform: translate(0, 0) rotate(0deg); 
+}
+
+#nav-toggle:checked ~ #nav-content .nav-button span {
+  opacity: 0;
+  transition: opacity .1s; 
+}
+
+#nav-toggle:checked ~ #nav-content .nav-button .fas {
+  min-width: calc(100% - 16px); 
+}
+
+#nav-toggle:checked ~ #nav-footer #nav-footer-avatar {
+  margin-left: 0;
+  left: 50%;
+  transform: translate(-50%); 
+}
+
+#nav-toggle:checked ~ #nav-footer #nav-footer-titlebox, #nav-toggle:checked ~ #nav-footer label[for="nav-footer-toggle"] {
+  opacity: 0;
+  transition: opacity .1s;
+  pointer-events: none; 
+}
+
+#nav-bar {
+  position: absolute;
+  left: 1vw;
+  top: 130px;
+  height: calc(100% - 2vw);
+  background: var(--navbar-dark-primary);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  color: var(--navbar-light-primary);
+  font-family: "Concert One", sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+  #nav-bar hr {
+    margin: 0;
+    position: relative;
+    left: 16px;
+    width: calc(100% - 32px);
+    border: none;
+    border-top: solid 1px var(--navbar-dark-secondary); 
+}
+
+  #nav-bar a {
+    color: inherit;
+    text-decoration: inherit; 
+}
+
+  #nav-bar input[type="checkbox"] {
+    display: none; 
+}
+
+#nav-header {
+  position: relative;
+  width: var(--navbar-width);
+  left: 16px;
+  width: calc(var(--navbar-width) - 16px);
+  min-height: 80px;
+  background: var(--navbar-dark-primary);
+  border-radius: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  transition: width .2s; 
+  color: #000000;
+  font-weight: 900;
+}
+  
+  #nav-header hr {
+    position: absolute;
+    bottom: 0; 
+}
+
+#nav-title {
+  font-size: 1.5rem;
+  transition: opacity 1s; 
+}
+
+label[for="nav-toggle"] {
+  position: absolute;
+  right: 0;
+  width: 3rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; 
+}
+
+#nav-toggle-burger {
+  position: relative;
+  width: 16px;
+  height: 2px;
+  background: var(--navbar-dark-primary);
+  border-radius: 99px;
+  transition: background .2s; 
+}
+
+  #nav-toggle-burger:before, #nav-toggle-burger:after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    width: 10px;
+    height: 2px;
+    background: #000000;
+    border-radius: 99px;
+    transform: translate(2px, 8px) rotate(30deg);
+    transition: .2s; 
+    font-weight: 900;
+}
+
+  #nav-toggle-burger:after {
+    top: 6px;
+    transform: translate(2px, -8px) rotate(-30deg); 
+}
+
+#nav-content {
+  margin: -16px 0;
+  padding: 16px 0;
+  position: relative;
+  flex: 1;
+  width: var(--navbar-width);
+  background: var(--navbar-dark-primary);
+  box-shadow: 0 0 0 16px var(--navbar-dark-primary);
+  direction: rtl;
+  overflow-x: hidden;
+  transition: width .2s; 
+}
+
+  #nav-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; 
+}
+
+  #nav-content::-webkit-scrollbar-thumb {
+    border-radius: 99px;
+    background-color: #D62929; 
+}
+
+  #nav-content::-webkit-scrollbar-button {
+    height: 16px; 
+}
+
+#nav-content-highlight {
+  position: absolute;
+  left: 16px;
+  top: -70px;
+  width: calc(100% - 16px);
+  height: 54px;
+  background: var(--background);
+  background-attachment: fixed;
+  border-radius: 16px 0 0 16px;
+  transition: top .2s; 
+}
+
+  #nav-content-highlight:before, #nav-content-highlight:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    box-shadow: 16px 16px var(--background); 
+}
+
+  #nav-content-highlight:after {
+    top: 100%;
+    box-shadow: 16px -16px var(--background); 
+}
+
+.nav-button {
+  position: relative;
+  margin-left: 16px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  color: var(--navbar-light-secondary);
+  direction: ltr;
+  cursor: pointer;
+  z-index: 1;
+  transition: color .2s; 
+}
+
+  .nav-button span {
+    transition: opacity 1s; 
+    color: #000000;
+    font-weight: 550;
+}
+
+  .nav-button .fas {
+    transition: min-width .2s; 
+}
+
+  .nav-button:nth-of-type(1):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(1):hover ~ #nav-content-highlight {
+      top: 16px; 
+    }
+
+  .nav-button:nth-of-type(2):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(2):hover ~ #nav-content-highlight {
+      top: 70px; 
+    }
+
+  .nav-button:nth-of-type(3):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(3):hover ~ #nav-content-highlight {
+      top: 124px; 
+    }
+
+  .nav-button:nth-of-type(4):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(4):hover ~ #nav-content-highlight {
+      top: 178px; 
+    }
+
+  .nav-button:nth-of-type(5):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
+      top: 232px; 
+    }
+
+  .nav-button:nth-of-type(6):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
+      top: 286px; 
+    }
+
+  .nav-button:nth-of-type(7):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(7):hover ~ #nav-content-highlight {
+      top: 340px; 
+    }
+
+  .nav-button:nth-of-type(8):hover {
+    color: var(--navbar-dark-primary); 
+}
+
+    .nav-button:nth-of-type(8):hover ~ #nav-content-highlight {
+      top: 394px; 
+    }
+    
+#nav-bar .fas {
+  min-width: 3rem;
+  text-align: center; 
+}
+
+#nav-footer {
+  position: relative;
+  width: var(--navbar-width);
+  height: 54px;
+  background: var(--navbar-dark-secondary);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  transition: width .2s, height .2s; 
+  margin-bottom: 100px;
+}
+
+#nav-footer-heading {
+  position: relative;
+  width: 100%;
+  height: 54px;
+  display: flex;
+  align-items: center; 
+}
+
+#nav-footer-avatar {
+  position: relative;
+  margin: 11px 0 11px 16px;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  transform: translate(0);
+  transition: .2s; 
+}
+
+  #nav-footer-avatar img {
+    height: 100%; 
+}
+
+#nav-footer-titlebox {
+  position: relative;
+  margin-left: 16px;
+  width: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 1s; 
+}
+
+#nav-footer-subtitle {
+  color: var(--navbar-light-secondary);
+  font-size: .6rem; 
+}
+
+#nav-toggle:not(:checked) ~ #nav-footer-toggle:checked + #nav-footer {
+  height: 30%;
+  min-height: 54px; 
+}
+
+  #nav-toggle:not(:checked) ~ #nav-footer-toggle:checked + #nav-footer label[for="nav-footer-toggle"] {
+    transform: rotate(180deg); 
+}
+
+label[for="nav-footer-toggle"] {
+  position: absolute;
+  right: 0;
+  width: 3rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform .2s, opacity .2s; 
+}
+
+#nav-footer-content {
+  margin: 0 16px 16px 16px;
+  border-top: solid 1px var(--navbar-light-secondary);
+  padding: 16px 0;
+  color: var(--navbar-light-secondary);
+  font-size: .8rem;
+  overflow: auto; 
+}
+
+  #nav-footer-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; 
+}
+
+  #nav-footer-content::-webkit-scrollbar-thumb {
+    border-radius: 99px;
+    background-color: #D62929;
+ }
+
+</style>
+
+</head>
+
+<body>
+
+         <!--parte della barra a sinistra-->
+         <div class="navbar">
+            <div class="navbar-left" > 
+    
+                <!--immagine del logo-->
+                <a href="../index.html">
+                <img  src="img/logo_scritta_completo.png"  class="logo">
+                </a>
+            
+                <!--"Chi Siamo"-->
+                <div class="dropdown">
+                <a href="" style="text-decoration: none;">
+                <span class="writing">Spazi di Lavoro</span>
+                </a>
+                </div>
+    
+    
+        <a class="button" href="" style="width: 90px;"> Crea  </a>
+    </div>
+    
+    <div class="navbar-left">
+        <img src="img/solid_red.png"  class="image" >
+        <a href="" style="text-decoration: none; margin-left: 0px;">
+            <span class="writing">Account</span>
             </a>
-        
-            <!--"Chi Siamo"-->
-            <div class="dropdown">
-            <a href="" style="text-decoration: none;">
-            <span class="writing">Spazio di Lavoro</span>
-            </a>
+    </div>
+    
+        </div>
+
+<!-- menu laterale -->
+        <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
+            <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+                <hr/>
             </div>
 
+            <!--contenuto del menu laterale-->
+        <div id="nav-content">
+            <div class="nav-button"><i class="fas fa-palette"></i><span>Your Work</span></div>
 
-    <a class="button" href="" style="width: 90px;"> Crea </a>
-</div>
+            <div class="nav-button"><i class="fas fa-images"></i><span>Assets</span></div>
 
-<div class="navbar-left">
-    <img src="img/solid_red.jpg"  class="image" >
-    <a href="" style="text-decoration: none; margin-left: 0px;">
-        <span class="writing">Account</span>
-        </a>
-</div>
+            <div class="nav-button"><i class="fas fa-thumbtack"></i><span>Pinned Items</span></div>
+
+            <hr/>
+
+            <div class="nav-button"><i class="fas fa-heart"></i><span>Following</span></div>
+
+            <div class="nav-button"><i class="fas fa-chart-line"></i><span>Trending</span></div>
+
+            <div class="nav-button"><i class="fas fa-fire"></i><span>Challenges</span></div>
+
+            <div class="nav-button"><i class="fas fa-magic"></i><span>Spark</span></div>
+
+            <hr/>
+
+            <div class="nav-button"><i class="fas fa-gem"></i><span>Codepen Pro</span></div>
+
+           <div id="nav-content-highlight"></div> 
+
+        </div>
+
+      <!--  <input id="nav-footer-toggle" type="checkbox" />-->
+
+        <!-- parte inferiore menu-->
+       <!-- <div id="nav-footer">
+            <div id="nav-footer-heading">
+                <div id="nav-footer-avatar"><img src="" /></div>
+                <div id="nav-footer-titlebox"><a id="nav-footer-title" href="" target="_blank">uahnbu</a>
+                <span id="nav-footer-subtitle">Admin</span>
+            </div>
+            <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label></div>
+        </div> -->
+
 
     </div>
 </body>

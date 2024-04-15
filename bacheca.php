@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <title>Bacheca</title>
 
     <style>
+        /* */
         #cestino {
             width: 100px;
             height: 100px;

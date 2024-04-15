@@ -7,12 +7,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   
+  
+    <!-- font dei titoli-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
 
-<!--font del testo, possibilmente da cambiare-->
+    <!--font del testo, possibilmente da cambiare-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -236,7 +237,7 @@ color: #000000;
     flex-direction: column;
     background-color: #f3e0ad;
     align-items: center;
-    padding-top: 100vh;
+    padding-top: 10vh;
     padding-bottom: 100px;
 }
 
@@ -424,107 +425,40 @@ color: #000000;
 		 transform: translate3d(0, -25%, 0);
 	}
 }
- 
 
-.container {
-  position: absolute;
-  height: 300px;
-  width: 600px;
-  top: 60px;
-  left: calc(50% - 300px);
+/*paragrafi testo*/
+.paragraph-1{
   display: flex;
-  margin-top: 40vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30vh;
+  font-family: "Outfit", sans-serif;
+  font-size: 25px;
+  font-weight: 400;
+  text-align: center;
 }
 
-.card {
+p{
+  margin-bottom: 0px;
+}
+
+.paragraph-2{
   display: flex;
-  height: 280px;
-  width: 200px;
-  background-color: #e0ab23;
-  border-radius: 10px;
-  box-shadow: 0 0 1.5rem #f3e0ad;
-  transition: 0.4s ease-out;
-  position: relative;
-  left: 0px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0vh;
+  font-family: "Outfit", sans-serif;
+  font-size: 25px;
+  font-weight: 400;
+  text-align: center;
 }
 
-.card:not(:first-child) {
-    margin-left: -50px;
+span{
+  text-decoration: underline;
+  font-weight: bold;
 }
-
-.card:hover {
-  transform: translateY(-20px);
-  transition: 0.4s ease-out;
-}
-
-.card:hover ~ .card {
-  position: relative;
-  left: 50px;
-  transition: 0.4s ease-out;
-}
-
-.title {
-  color: #000000;
-  font-family: "Concert One", sans-serif;
-  font-weight: 300;
-  position: absolute;
-  left: 20px;
-  top: 15px;
-}
-
-.bar {
-  position: absolute;
-  top: 100px;
-  left: 20px;
-  height: 5px;
-  width: 150px;
-}
-
-.emptybar {
-  background-color: #2e3033;
-  width: 100%;
-  height: 100%;
-}
-
-.filledbar {
-  position: absolute;
-  top: 0px;
-  z-index: 3;
-  width: 0px;
-  height: 100%;
-  background: rgb(0,154,217);
-  background: linear-gradient(90deg, rgba(0,154,217,1) 0%, rgba(217,147,0,1) 65%, rgba(255,186,0,1) 100%);
-  transition: 0.6s ease-out;
-}
-
-.card:hover .filledbar {
-  width: 120px;
-  transition: 0.4s ease-out;
-}
-
-.circle {
-  position: absolute;
-  top: 150px;
-  left: calc(50% - 60px);
-}
-
-.stroke {
-  stroke: white;
-  stroke-dasharray: 360;
-  stroke-dashoffset: 360;
-  transition: 0.6s ease-out;
-}
-
-svg {
-  fill: #17141d;
-  stroke-width: 2px;
-}
-
-.card:hover .stroke {
-  stroke-dashoffset: 100;
-  transition: 0.6s ease-out;
-}
-
 
     </style>
 
@@ -641,27 +575,34 @@ svg {
             </div>
           </div>
 
-<!--
-<div class="paragraph">
-      <div class="container">
-        <div class="card">
-          <h3 class="title">
-          </h3>
-        </div>
-        
-        <div class="card">
-          <h3 class="title">Card 2</h3>
-        </div>
-        <div class="card">
-          <h3 class="title">Card 3</h3>
-        </div>
-        <div class="card">
-          <h3 class="title">Card 4</h3>
-        </div>
-      </div>
 
-</div>-->
+          <!--primo paragrafo-->
+          <div class="paragraph-1">
+            <p>
+              Torg è nata con l'obiettivo di offrire un'esperienza di gestione dei progetti senza pari, sappiamo quanto sia <br>
+              complicato coordinare le attività, tenere traccia dei compiti e garantire una comunicazione efficace all'interno di un team. <br><br>
+             <!--frase scollegata in grassetto-->
+              <p style="  font-family: Concert One, sans-serif; font-size: 30px;">Ed è qui che entra in gioco Torg: siamo qui per rendere tutto più semplice e efficiente. </p> <br>
+            </p>
+          </div>
 
+
+          <!--secondo paragrafo-->
+          <div class="paragraph-2">
+            <p>
+            La nostra web app è stata progettata pensando a <span>voi</span>, ai <span>vostri</span> progetti e alle <span>vostre</span>  esigenze, con Torg, potete creare <br>
+            bacheche virtuali dove organizzare tutte le attività del vostro progetto, assegnate compiti, stabilite scadenze, <br>
+            monitorare i progressi e collaborate in tempo reale con il vostro team, tutto da un'unica piattaforma centralizzata.<br><br>
+          </p>   
+          </div>
+
+          <div class="paragraph-2">
+            <p>
+              Siamo qui per fornirvi gli strumenti necessari per massimizzare la produttività e ottenere risultati tangibili, <br>
+              che siate un team di sviluppatori software, un gruppo di freelancer o un'azienda in crescita, <br>
+              Torg si adatta alle vostre esigenze specifiche, offrendovi un ambiente flessibile e personalizzabile.<br>
+            </p>
+          </div>
 
 
     <!-- barra inferiore della pagina-->
