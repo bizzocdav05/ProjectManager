@@ -47,6 +47,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <title>Bacheca</title>
 
     <style>
+        #cestino {
+            width: 100px;
+            height: 100px;
+            display: none;
+        }
+
+        .cestino {
+            margin-left: 5px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
         body {
             margin: 0;
         }
@@ -171,17 +183,60 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             cursor: pointer;
         }
 
-        p.lista-nome > span:focus {
+        p.text-mod > span:focus {
             display: inline-block;
             min-width: 200px;
+            /* width: 110%; */
             border: 1px solid black;
             padding: 2px;
             border-radius: 5px;
         }
 
+        div.etichetta-nuova {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        p.text-mod > span {
+            min-width: 20px;
+        }
+
+        div.etichetta {
+            width: fit-content;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        div.etichetta p {
+            margin: 0px;
+        }
+
+        div.lista-etichetta-box {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        div.checkbox {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
+    <div id="cestino" class="cestino">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
+            <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
+        </svg>
+    </div>
+
     <div id="popup">
         <div id="popup-box">
 
@@ -242,13 +297,53 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <div id="lista-info-prototipo" class="lista-info-box" style="display: none">
         <div class="lista-info">
             <p class="lista-codice">Codice: <span></span></p>
-            <p class="lista-nome"><span></span></p>
+            <p class="lista-nome text-mod"><span></span></p>
 
             <p class="lista-text">Descrizione</p>
-            <p class="lista-descrizione"><span></span></p>
+            <p class="lista-descrizione text-mod"><span></span></p>
+
+            <p class="lista-text">Etichetta</p>
+            <div class="lista-etichetta-box">
+            </div>
+            <div class="etichetta-nuova">
+                <input type="text" name="testo" id="" placeholder="Nome">
+                <input type="color" name="colore" id="">
+                <button class="btn-etichetta-nuova">Crea</button>
+            </div>
+
+            <p class="lista-text">Checkbox</p>
+            <div class="lista-checkbox-box">
+            </div>
+            <div class="checkbox-nuovo">
+                <textarea name="testo" id="" cols="50" rows="5" placeholder="Nome"></textarea>
+                <button class="btn-checkbox-nuovo">Crea</button>
+                <button class="btn-checkbox-reset">Annulla</button>
+            </div>
+
+            <p class="lista-text">Commento</p>
+            <div class="lista-commento-box">
+            </div>
 
             <button class="lista-delete">Cancella lista</button>
         </div>
+    </div>
+
+    <div id="etichetta-prototipo" class="etichetta"  style="display: none">
+        <p class="etichetta-text text-mod"><span></span></p>
+    </div>
+
+    <div id="checkbox-prototipo" class="checkbox">
+        <div class="checkbox-item"><input type="checkbox" name="" id=""></div>
+        <p class="checkbox-text text-mod"><span></span></p>
+        <div id="cestino" class="cestino">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
+                <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <div id="commento-prototipo" class="commento" style="display: none">
+        <p class="commento-text text-mod"><span></span></p>
     </div>
 
     <div id="lista-nuova-prototipo" style="display: none">
@@ -268,12 +363,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <script>
         class Visualizator {
             constructor (data) {
+                let searchParams = new URLSearchParams(window.location.search);
+                this.codice_bacheca = searchParams.get('codice');
+
                 this.data = data;
                 this.tipo = "isola";
 
                 this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
                     "attivita": {},
                     "lista": {},
+                    "checkbox": {}
                 };
                 /*  STRUCTURE  //
                 {
@@ -298,9 +397,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         "lista": $('<div class="lista"><p class="lista-nome"><span></span></p></div>')
                     }
                 }
-
-                let searchParams = new URLSearchParams(window.location.search);
-                this.codice_bacheca = searchParams.get('codice');
 
                 // init
                 this.init_cod_idx();
@@ -335,7 +431,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.popup.add = function (elem) {
                     self.popup.box.empty();
                     let new_ = elem.clone(true);
-                    new_.attr("id", "");
+                    // new_.attr("id", "");
                     new_.show();
                     self.popup.box.append(new_);
 
@@ -346,26 +442,39 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             init_cod_idx() {
                 for (let i = 0; i < this.data.attivita.length; i++) {
                     let dati = this.data.attivita.list[i];
-                    this.add_idx_attivita(dati.info.codice);
+                    this.add_idx_elem("attivita", dati.info.codice, this.codice_bacheca);
 
                     for (let j = 0; j < dati.lista.length; j++) {
                         let dati_lista = dati.lista.list[j];
-                        this.add_idx_lista(dati_lista.codice, dati.info.codice);
+                        this.add_idx_elem("lista", dati_lista.codice, dati.info.codice);
+
+                        for (let idx_checkbox = 0; idx_checkbox < dati_lista.checkbox.length; idx_checkbox++) {
+                            let dati_checkbox = dati_lista.checkbox.list[idx_checkbox];
+                            this.add_idx_elem("checkbox", dati_checkbox.codice, dati_lista.codice);
+                        }
+
+                        for (let idx_commento = 0; idx_commento < dati_lista.commento.length; idx_commento++) {
+                            let dati_commento = dati_lista.commento.list[idx_commento];
+                            this.add_idx_elem("checkbox", dati_commento.codice, dati_lista.codice);
+                        }
+
+                        for (let idx_etichetta = 0; idx_etichetta < dati_lista.etichetta.length; idx_etichetta++) {
+                            let dati_etichetta = dati_lista.etichetta.list[idx_etichetta];
+                            this.add_idx_elem("checkbox", dati_etichetta.codice, dati_lista.codice);
+                        }
                     }
                 }
             }
 
             // method
-            add_idx_attivita(codice, idx=Object.keys(this.cod_idx["attivita"]).length) {
-                this.cod_idx["attivita"][codice] = idx;
-            }
+            add_idx_elem(tipo, codice, codice_superiore, idx=null) {
+                // codice_superiore è il codice dell'elemento superiore per la localizzazione
 
-            add_idx_lista(codice, idx_attivita, idx=Object.keys(this.cod_idx["lista"]).length) {
-                this.cod_idx["lista"][codice] = [idx, idx_attivita];
+                if (idx === null) idx = Object.keys(this.cod_idx[tipo]).length;
+                this.cod_idx[tipo][codice] = [idx, codice_superiore];
             }
 
             get_idx(tipo, codice) {
-                console.log(tipo, codice);
                 return this.cod_idx[tipo][codice];
             }
 
@@ -401,20 +510,72 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.show();
             }
 
+            crea_checkbox(dati, idx=0) {
+                console.log(dati, idx);
+                // terminazione
+                if (dati.length <= idx) return $("");
+
+                let elem = $("#checkbox-prototipo").clone(true);
+                let info = dati.list[idx];
+                elem.attr("id", info.codice);
+
+                // TODO: check
+                elem.find("p.checkbox-text > span").text(info.testo);
+                if (info.is_check == "true") elem.find("div.checkbox-item > input").prop("checked", true);
+                else elem.find("div.checkbox-item > input").prop("checked", false);
+
+                elem.find("#cestino").show();
+                elem.find("#cestino").css("width", "15px");
+                elem.find("#cestino").css("heigth", "15px");
+                elem.find("#cestino").css("cursor", "pointer");
+                elem.find("#cestino").attr("id", "cestino-" + info.codice);
+                
+                return elem.add(this.crea_checkbox(dati, idx+1));  // Ricorsione per calcolarli tutti
+            }
+
+            crea_etichetta(dati, idx=0) {
+                console.log(dati);
+                // terminazione
+                if (dati.length <= idx) return $("");
+
+                let elem = $("#etichetta-prototipo").clone(true);
+                let info = dati.list[idx];
+                elem.attr("id", info.codice);
+
+                elem.find("p.etichetta-text > span").text(info.testo);
+                elem.css("background-color", `rgba(${info.red}, ${info.green}, ${info.blue}, 0.5)`);
+                elem.show();
+                
+                return elem.add(this.crea_etichetta(dati, idx+1));  // Ricorsione per calcolarli tutti
+            }
+
+            crea_commento(dati, idx=0) {
+                // terminazione
+                if (dati.length <= idx) return $("");
+
+                let elem = $("#commento-prototipo").clone(true);
+                let info = dati.list[idx];
+                elem.removeAttr("id");
+
+                elem.find("p.commento-text > span").text(info.testo);
+                
+                return elem.add(this.crea_etichetta(dati, idx+1));  // Ricorsione per calcolarli tutti
+            }
+
             create_new_lista(dati, codice_attivita) {
-                let idx = this.get_idx("attivita", codice_attivita);
+                let idx = this.get_idx("attivita", codice_attivita)[0];
                 console.log(idx);
                 let idx_list = this.data.attivita.list[idx].lista.list.push(dati);
                 this.data.attivita.list[idx].lista.length += 1;
 
-                this.add_idx_lista(dati.codice, codice_attivita);
+                this.add_idx_elem("lista", dati.codice, codice_attivita);
                 this.create_lista(dati).insertBefore($("#" + codice_attivita).find("div.lista-nuova"));
             }
 
             create_new_attivita(dati) {
                 let idx_att = this.data.attivita.list.push(dati);
                 this.data.attivita.length += 1;
-                this.add_idx_attivita(dati.info.codice);
+                this.add_idx_elem("attivita", dati.info.codice);
                 this.create_attivita(dati);
             }
 
@@ -425,18 +586,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             show_lista_info(dati) {
-                console.log("lista info")
                 let elem = $("#lista-info-prototipo").clone(true);
-                elem.attr("id", "");
-                
+                elem.attr("id", dati.codice);
+                console.log(elem.get(0));
+
+                // Aggiungo valori campi
                 elem.find("p.lista-codice > span").text(dati.codice);
                 elem.find("p.lista-nome > span").text(dati.nome);
-                elem.find("p.lista-nome > span").attr("contenteditable", "true");
                 elem.find("p.lista-descrizione > span").text(dati.descrizione);
-                elem.find("p.lista-descrizione > span").attr("contenteditable", "true");
+                
+                // Aggiungo elementi
+                elem.find("div.lista-checkbox-box").append(this.crea_checkbox(dati.checkbox));
+                elem.find("div.lista-etichetta-box").append(this.crea_etichetta(dati.etichetta));
+                elem.find("div.lista-etichetta-box").append(this.crea_etichetta(dati.commento));
 
-                elem.find("p.lista-nome > span").change(() => console.log($(this).text()));
+                // Aggiungo proprietà
+                elem.find(".text-mod > span").attr("contenteditable", "true");
+                elem.find(".text-mod > span").on("focus", e => e.currentTarget.value = $(e.currentTarget).text());
+                elem.find("p.text-mod > span").on('keydown', e => { if (e.keyCode === 13) { e.preventDefault(); $(e.currentTarget).blur(); } });
+                elem.find("p.text-mod > span").blur(e =>{ let target = $(e.currentTarget); if (target.get(0).value != target.text()) console.log(target.text()) });
 
+                // Mostro
                 elem.show();
                 this.popup.add(elem);
             }
@@ -461,7 +631,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
             cancella_lista(codice_lista) {
                 let idx_lista = this.get_idx("lista", codice_lista)[0];
-                let idx_att = this.get_idx("attivita", this.get_idx("lista", codice_lista)[1]);
+                let idx_att = this.get_idx("attivita", this.get_idx("lista", codice_lista)[1])[0];
                 
                 
                 delete this.cod_idx["lista"][codice_lista];
@@ -473,20 +643,44 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             cancella_attivita(codice_attivita) {
-                let idx = this.get_idx("attivita", codice_attivita);
+                let idx = this.get_idx("attivita", codice_attivita)[0];
 
                 delete this.cod_idx["attivita"][codice_attivita];
-                delete this.attivita.list[idx];
+                delete this.data.attivita.list[idx];
                 this.data.attivita.length -= 1;
 
                 $.ajax({url:"attivita.php",type:"POST",data:{"action":"delete-lista","codice_attivita":codice_attivita, "codice_bacheca":this.codice_bacheca},crossDomain:true,success:function(result){console.log(result)},error:function(err){console.log(err)}});
                 $("#" + codice_attivita).remove();
+            }
+
+            cancella_checkbox(codice_checkbox) {
+                let idx = this.get_idx("checkbox", codice_checkbox)[0];
+                console.log(idx);
+                
+                let codice_lista = this.get_idx("checkbox", codice_checkbox)[1];
+                let idx_lista = this.get_idx("lista", codice_lista)[0];
+
+                console.log(codice_lista, idx_lista);
+
+                let codice_attivita = this.get_idx("lista", codice_lista)[1];
+                console.log(codice_attivita);
+                let idx_attivita = this.get_idx("attivita", codice_attivita)[0];
+
+                delete this.cod_idx["checkbox"][codice_attivita];
+                delete this.data.attivita.list[idx_attivita].lista.list[idx_lista].checkbox.list[idx];
+                this.data.attivita.list[idx_attivita].lista.list[idx_lista].checkbox.length -= 1;
+
+                $.ajax({url:"attivita.php",type:"POST",data:{"action":"delete-checkbox","codice_checkbox":codice_checkbox, "codice_bacheca":this.codice_bacheca},crossDomain:true,success:function(result){console.log(result)},error:function(err){console.log(err)}});
+                $("#" + codice_checkbox).remove();
             }
         }
 
         // Passaggio dati
         let dati = <?php echo json_encode($data)?>;
         console.log(dati);
+
+        let searchParams = new URLSearchParams(window.location.search);
+        const CODICE_BACHECA = searchParams.get('codice');
 
         let visual = new Visualizator(dati);
 
@@ -508,14 +702,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 data[elem["name"]] = elem["value"];
             });
 
-            let searchParams = new URLSearchParams(window.location.search);
-
             $.ajax({
                 url: "attivita.php",
                 type: "POST",
                 data: {
                     "action": "new-attivita",
-                    "codice_bacheca": searchParams.get('codice'),
+                    "codice_bacheca": CODICE_BACHECA,
                     "titolo": data["titolo"]
                 },
                 crossDomain: true,
@@ -554,7 +746,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 type: "POST",
                 data: {
                     "action": "new-lista",
-                    "codice_bacheca": searchParams.get('codice'),
+                    "codice_bacheca": CODICE_BACHECA,
                     "codice_attivita": codice_attivita,
                     "nome": data["nome"],
                     "descrizione": data["descrizione"],
@@ -577,7 +769,123 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             });
         });
 
-        
+        $("body").on("click", "button.btn-etichetta-nuova", function (e) {
+            let target = $(e.currentTarget);
+            let colore = target.siblings("input[name='colore']");
+            let testo = target.siblings("input[name='testo']");
+
+            console.log(colore, testo);
+            if (colore.val() && testo.val()) {
+                let color_hex = colore.val().replace('#', '');
+
+                // Converti il valore esadecimale in RGB
+                let red = parseInt(color_hex.substring(0, 2), 16);
+                let green = parseInt(color_hex.substring(2, 4), 16);
+                let blue = parseInt(color_hex.substring(4, 6), 16);
+
+                console.log(red, green, blue); // Visualizza il colore in formato RGB
+
+                let codice_lista = target.closest("div.lista-info-box").attr("id");
+                console.log(codice_lista);
+
+                $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "new-etichetta",
+                    "codice_bacheca": CODICE_BACHECA,
+                    "testo": testo.val(),
+                    "red": red,
+                    "green": green,
+                    "blue": blue,
+                    "codice_lista": codice_lista
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    console.log(result);
+                    result =JSON.parse(result);
+                    console.log(result);
+                    if (result.esito == true) {
+                        $("#" + codice_lista).find("div.lista-etichetta-box").append(visual.crea_etichetta(result.etichetta));
+                        testo.val(""); colore.val("");
+                    }
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+            }
+        });
+
+        $("body").on("change", "div.checkbox > div.checkbox-item > input", function (e) {
+            let target = $(e.currentTarget);
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "change-checkbox",
+                    "codice_bacheca": CODICE_BACHECA,
+                    "is_check": (target.is(":checked")) ? "true" : "false",
+                    "codice": target.closest("div.checkbox").attr("id")
+                },
+                crossDomain: true,
+
+                success: function () {
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        $("body").on("click", "button.btn-checkbox-nuovo", function (e) {
+            let target = $(e.currentTarget);
+            let testo = target.siblings("textarea");
+
+            let codice_lista = target.closest("div.lista-info-box").attr("id");
+            if (testo.val()) {
+                console.log(testo.val());
+                $.ajax({
+                    url: "attivita.php",
+                    type: "POST",
+                    data: {
+                        "action": "new-checkbox",
+                        "codice_bacheca": CODICE_BACHECA,
+                        "testo": testo.val(),
+                        "codice_lista": codice_lista
+                    },
+                    crossDomain: true,
+
+                    success: function (result) {
+                        console.log(result);
+                        result =JSON.parse(result);
+                        console.log(result);
+                        if (result.esito == true) {
+                            $("#" + codice_lista).find("div.lista-checkbox-box").append(visual.crea_checkbox(result.checkbox));
+                            testo.val("");
+                        }
+                    },
+
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+
+        $("body").on("click", "button.btn-checkbox-reset", function (e) {
+            $(e.currentTarget).siblings("textarea").val('');
+        });
+
+        $("body").on("click", "div.cestino", function (e) {
+            visual.cancella_checkbox($(e.currentTarget).attr("id").split("-")[1]);
+            console.log("codice:", $(e.currentTarget).attr("id").split("-")[1]);
+        });
+
         // Informazioni lista
         $("body").on("click", "div.attivita-box div.lista", function (e) {
             let target = $(e.currentTarget);

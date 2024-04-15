@@ -7,13 +7,36 @@ $id_console = set_console();
 
 date_default_timezone_set('CET');
 
+function create_new_colore($colori) {
+    $conn = connection();
+    $red = $colori["red"];
+    $green = $colori["green"];
+    $blue = $colori["blue"];
+
+    // controllo esistenza
+    $result = $conn->query("SELECT ID FROM Colore WHERE red=$red AND green=$green AND blue=$blue");
+    if ($result->num_rows == 1) {
+        return $result->fetch_assoc()["ID"];
+    }
+
+    $conn->query(create_sql("INSERT INTO Colore",
+        array("red", "green", "blue"),
+        array($red, $green, $blue)
+    ));
+
+    $result = $conn->query("SELECT ID FROM Colori WHERE red=$red AND green=$green AND blue=$blue");
+    if ($result->num_rows == 1) {
+        return $result->fetch_assoc()["ID"];
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $action = $_POST["action"];
 
     $conn = connection();
 
     if ($action == "new-bacheca" && isset($_POST["nome"])) {
-        $codice = genera_codice(16, -1);
+        $codice = genera_codice(16, -1);  // id temp per la creazione, poi da update
     
         $result = $conn->query(create_sql("INSERT INTO Bacheca", array("console", "nome", "codice"), array($_SESSION["id_console"], $_POST["nome"], $codice)));
         
@@ -38,20 +61,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
     // cerco bacheca attraverso il codice
     $temp = set_bacheca($_POST["codice_bacheca"]);
+    $codice_bacheca = $_POST["codice_bacheca"];
     $id_bacheca = $temp[0];
     $privilegi = $temp[1];
 
     $dati = array("esito" => false);
-    // nuova attività
+    
     if ($action == "new-attivita") {
         $dati["attivita"] = array();
         if (isset($_POST["titolo"])) {
             $data = date("Y-m-d");
             $codice_attivita = genera_codice(16, $id_bacheca);
+
             $sql = create_sql("INSERT INTO Attivita",
                 array("titolo, data_creazione, data_ultima_modifica", "bacheca", "codice"),
                 array($_POST["titolo"], $data, $data, $id_bacheca, $codice_attivita));
             $result = $conn->query($sql);
+            
+            $dati["esito"] = true;
             $dati["attivita"]["info"]["titolo"] = $_POST["titolo"];
             $dati["attivita"]["info"]["dati-ultima-modifica"] = $data;
             $dati["attivita"]["info"]["data-creazione"] = $data;
@@ -62,18 +89,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     }
 
     if ($action == "new-lista") {
-        if (isset($_POST["codice_bacheca"]) && isset($_POST["codice_attivita"]) && isset($_POST["nome"]) && isset($_POST["descrizione"]))
+        if (isset($_POST["codice_attivita"]) && isset($_POST["nome"]) && isset($_POST["descrizione"]))
         {
-            $codice_bacheca = $_POST["codice_bacheca"];
             $codice_attivita = $_POST["codice_attivita"];
 
-            $codici = array("bacheca" => $codice_bacheca, "attivita" => $codice_attivita);
+            $codici = array("bacheca" => $codice_bacheca, "codice" => $codice_attivita);
 
             $nome = $_POST["nome"];
             $descrizione = $_POST["descrizione"];
             
             // cerco ID attivita (autorizzato)
-            $id_attivita = get_elem_by_code("attivita", $codici);
+            $id_attivita = get_elem_by_code("Attivita", $codici);
 
             $codice = genera_codice(16, $id_bacheca);
 
@@ -83,6 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 array($id_attivita, $nome, $descrizione, date("Y-m-d"), date("Y-m-d"), $codice)
             ));
 
+            $dati["esito"] = true;
             $dati["lista"] = array(
                 "nome" => $nome,
                 "descrizione" => $descrizione,
@@ -121,10 +148,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
     if ($action == "delete-attivita") {
         if (isset($_POST["codice_attivita"])) {
-            $codice_lista = $_POST["codice_attivita"];
+            $codice_attivita = $_POST["codice_attivita"];
 
             // cancello da codici
-            $sql = "DELETE FROM Codici WHERE codice='$codice_lista' AND bacheca=$id_bacheca;";
+            $sql = "DELETE FROM Codici WHERE codice='$codice_attivita' AND bacheca=$id_bacheca;";
             $result = $conn->query($sql);
 
             if (!$result) {
@@ -134,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             }
 
             // cancello lista
-            $sql = "DELETE FROM Attivita WHERE codice='$codice_lista';";
+            $sql = "DELETE FROM Attivita WHERE codice='$\';";
             $result = $conn->query($sql);
 
             $conn->close();
@@ -142,7 +169,123 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 
-    $dati["esito"] = true;
+    if ($action == "new-commento") {
+        if (isset($_POST["testo"]) && $_POST["codice_lista"]) {
+            $testo = isset($_POST["testo"]);
+            
+            $codice_lista = $_POST["codice_lista"];
+
+            $codice = genera_codice(16, $id_bacheca);
+            $id_lista = get_elem_by_code("Lista", array("codice" => $codice_lista, "bacheca" => $codice_bacheca));
+
+            $conn->query(create_sql("INSERT INTO Commento",
+                array("testo", "data_creazione", "user", "lista", "codice"),
+                array($testo, date("Y-m-d"), $id_utente, $id_lista, $codice)
+            ));
+
+            $dati["esito"] = true;
+            $dati["commento"] = array(
+                "length" => 1,
+                "list" => array( 0 => array(
+                    "testo" => $testo,
+                    "codice" => $codice,
+                    "data_creazione" => date("Y-m-d")
+                )));
+        }
+    }
+
+    if ($action == "new-checkbox") {
+        echo "ciao";
+        if (isset($_POST["testo"]) && isset($_POST["codice_lista"])) {
+            $testo = $_POST["testo"];
+            
+            $codice_lista = $_POST["codice_lista"];
+
+            $codice = genera_codice(16, $id_bacheca);
+            $id_lista = get_elem_by_code("Lista", array("codice" => $codice_lista, "bacheca" => $codice_bacheca));
+
+            $conn->query(create_sql("INSERT INTO Checkbox",
+                array("testo", "is_check", "lista", "codice"),
+                array($testo, "false", $id_lista, $codice)
+            ));
+
+            $dati["esito"] = true;
+            $dati["checkbox"] = array(
+                "length" => 1,
+                "list" => array( 0 => array(
+                    "testo" => $testo,
+                    "codice" => $codice,
+                    "is_check" => "false"
+            )));
+        }
+    }
+
+    if ($action == "new-etichetta") {
+        if (isset($_POST["testo"]) && isset($_POST["codice_lista"]) && isset($_POST["red"]) && isset($_POST["green"]) && isset($_POST["blue"])) {
+            $testo = $_POST["testo"];
+            $is_check = $_POST["is_check"];
+            $colori = array("red" => $_POST["red"], "green" => $_POST["green"], "blue" => $_POST["blue"]);
+
+            $id_colore = create_new_colore($colori);
+            
+            $codice_lista = $_POST["codice_lista"];
+
+            $codice = genera_codice(16, $id_bacheca);
+            $id_lista = get_elem_by_code("Lista", array("codice" => $codice_lista, "bacheca" => $codice_bacheca));
+
+            $conn->query(create_sql("INSERT INTO Etichetta",
+                array("testo", "colore", "lista", "codice"),
+                array($testo, $id_colore, $id_lista, $codice)
+            ));
+
+            $dati["esito"] = true;
+            $dati["etichetta"] = array(
+                "length" => 1,
+                "list" => array( 0 => array(
+                    "testo" => $testo,
+                    "codice" => $codice,
+                    "red" => $colori["red"],
+                    "green" => $colori["green"],
+                    "blue" => $colori["blue"]
+            )));
+        }
+    }
+
+    if ($action == "change-checkbox") {
+        if (isset($_POST["is_check"]) && isset($_POST["codice"])) {
+            $codice_checkbox = $_POST["codice"];
+            $is_check = $_POST["is_check"];
+
+            $id_checkbox = get_elem_by_code("Checkbox", array("codice" => $codice_checkbox, "bacheca" => $codice_bacheca));
+
+            $conn->query("UPDATE Checkbox SET is_check='$is_check' WHERE ID=$id_checkbox");
+        }
+    }
+
+    if ($action == "delete-checkbox") {
+        if (isset($_POST["codice_checkbox"])) {
+            $codice_checkbox = $_POST["codice_checkbox"];
+            echo $codice_checkbox;
+            
+            // cancello da codici
+            $sql = "DELETE FROM Codici WHERE codice='$codice_checkbox' AND bacheca=$id_bacheca;";
+            $result = $conn->query($sql);
+
+            if (!$result) {
+                echo "autorizzazione negata";
+                $conn->close();
+                exit();
+            }
+
+            // cancello lista
+            $sql = "DELETE FROM Attivita WHERE codice='$codice_checkbox';";
+            $result = $conn->query($sql);
+
+            $conn->close();
+            exit();
+        }
+    }
+
     echo json_encode($dati);
     $conn->close();
 }

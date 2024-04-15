@@ -99,6 +99,9 @@ function login_required() {
 }
 
 function set_bacheca($codice_bacheca) {
+    // controlla se l'utente può accedere alla bacheca
+
+    session_start();
     $conn = connection();
     $id_console = set_console();
     $id_utente = $_SESSION["id_utente"];
@@ -137,21 +140,29 @@ function set_bacheca($codice_bacheca) {
 }
 
 function get_elem_by_code($tipo, $codici) {
+    // permette di ottenere l'indice dell'elemento, se l'utente ha i permessi necessari
+    // "codice" è il codice da controllare, passare anche quello della "bacheca" per controllo
+
     $conn = connection();
     
-    if ($tipo == "bacheca")
-    {
-        $result = set_bacheca($codici[$tipo])[0];
-        return $result;
-    }
+    $temp = set_bacheca($codici["bacheca"]);
+    $id_bacheca = $temp[0];
+    $privilegi = $temp[1];
 
-    if ($tipo == "attivita") {
-        $result = $conn->query("SELECT ID FROM Attivita WHERE codice='" . $codici[$tipo] . "' AND bacheca=" . get_elem_by_code("bacheca", $codici) . ";");
-    }
+    $sql = "SELECT bacheca FROM Codici WHERE codice='" . $codici["codice"] . "'";
+    $result = $conn->query($sql);
 
     if ($result->num_rows == 1) {
-        return $result->fetch_assoc()["ID"];
-    }
+    if ($result->fetch_assoc()["bacheca"] == $id_bacheca) {
+        // controllo privilegi
+        $sql = "SELECT ID FROM $tipo WHERE codice='" . $codici["codice"] . "'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows == 1) {
+            return $result->fetch_assoc()["ID"];
+        }
+    }}
+
     exit();
 }
 
@@ -160,7 +171,7 @@ function get_dati_liste($id_attivita) {
     $id_utente = get_utente();
 
     // cerco liste
-    $sql = "SELECT nome, descrizione, data_creazione, data_ultima_modifica, codice FROM Lista WHERE attivita='" . $id_attivita . "';";
+    $sql = "SELECT ID, nome, descrizione, data_creazione, data_ultima_modifica, codice FROM Lista WHERE attivita='" . $id_attivita . "';";
     $result_lista = $conn->query($sql);
 
     if (!$result_lista) {
@@ -182,7 +193,7 @@ function get_dati_liste($id_attivita) {
             );
 
             // commenti
-            $sql = "SELECT testo, data_creazione, user FROM Commento WHERE lista=" . $row_lista["ID"] . ";";
+            $sql = "SELECT codice, testo, data_creazione, user FROM Commento WHERE lista=" . $row_lista["ID"] . ";";
             $result_commento = $conn->query($sql);
 
             $dati_commento = array("list" => array());
@@ -195,8 +206,10 @@ function get_dati_liste($id_attivita) {
             if ($result_commento->num_rows > 0) {
                 while ($row_commento = $result_commento->fetch_assoc()) {
                     array_push($dati_commento["list"], array(
+                        "codice" => $row_commento["codice"],
                         "testo" => $row_commento["testo"],
-                        "data_creazione" => $row_commento["data_creazione"]
+                        "data_creazione" => $row_commento["data_creazione"],
+                        "actual_user" => ($row_commento["user"] == $id_utente)
                     ));
                 }
             }
@@ -204,7 +217,7 @@ function get_dati_liste($id_attivita) {
             $dati_lista["commento"] = $dati_commento;
 
             // checkbox
-            $sql = "SELECT testo, is_check FROM Checkbox WHERE lista=" . $row_lista["ID"] . ";";
+            $sql = "SELECT codice, testo, is_check FROM Checkbox WHERE lista=" . $row_lista["ID"] . ";";
             $result_checkbox = $conn->query($sql);
 
             $dati_checkbox = array("list" => array());
@@ -216,6 +229,7 @@ function get_dati_liste($id_attivita) {
             if ($result_checkbox->num_rows > 0) {
                 while ($row_checkbox = $result_checkbox->fetch_assoc()) {
                     array_push($dati_checkbox["list"], array(
+                        "codice" => $row_checkbox["codice"],
                         "testo" => $row_checkbox["testo"],
                         "is_check" => $row_checkbox["is_check"]
                     ));
@@ -225,7 +239,7 @@ function get_dati_liste($id_attivita) {
             $dati_lista["checkbox"] = $dati_checkbox;
 
             // etichetta
-            $sql = "SELECT e.testo as testo, c.blue as blue, c.red as red, c.green as green, c.opacity as opacity FROM Etichetta as e, Colore as c WHERE e.lista=" . $row_lista["ID"] . "AND c.ID = e.colore;";
+            $sql = "SELECT e.codice as 'codice', e.testo as 'testo', c.blue as 'blue', c.red as 'red', c.green as 'green' FROM Etichetta as e, Colore as c WHERE e.lista=" . $row_lista["ID"] . " AND c.ID = e.colore;";
             $result_etichetta = $conn->query($sql);
 
             $dati_etichetta = array("list" => array());
@@ -234,18 +248,20 @@ function get_dati_liste($id_attivita) {
             } else {
                 $dati_etichetta["length"] = $result_etichetta->num_rows;
             }
+
             if ($result_etichetta->num_rows > 0) {
                 while ($row_etichetta = $result_etichetta->fetch_assoc()) {
                     array_push($dati_etichetta["list"], array(
+                        "codice" => $row_etichetta["codice"],
                         "testo" => $row_etichetta["testo"],
                         "blue" => $row_etichetta["blue"],
                         "red" => $row_etichetta["red"],
                         "green" => $row_etichetta["green"],
-                        "opacity" => $row_etichetta["opacity"],
                     ));
+                    // var_dump($row_etichetta["codice"]);
                 }
             }
-            
+            // var_dump($dati_etichetta);
             $dati_lista["etichetta"] = $dati_etichetta;
 
             array_push($dati["list"], $dati_lista);
