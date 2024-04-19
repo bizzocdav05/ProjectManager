@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             background-color: white;
         }
 
-        #container {
+        #container-isola {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
@@ -244,6 +244,34 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             word-wrap: break-word;
         }
 
+        div.attivita-tabella {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+
+            border-bottom: 1px solid black;
+        }
+
+        div.attivita-tabella:first-child {
+            border-top: 1px solid black;
+        }
+
+        div.attivita-tabella > div.prima-cella {
+            width: 30%;
+            /* margin-top: 20px; */
+        }
+
+        div.attivita-tabella > div.seconda-cella {
+            width: 50%;
+            /* margin-top: 20px; */
+        }
+
+        div.attivita-tabella > div.terza-cella {
+            width: 20%;
+        }
+
     </style>
 </head>
 <body>
@@ -264,13 +292,29 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <button value="isola">Table</button>
     </div>
 
-    <div id="container">
+    <div id="container-isola-isola" style="display: none">
         <div id="attivita-nuova" class="attivita-box">
             <h3 class="attivita-titolo">Crea nuova attività</h3>
             <div class="attivita-lista attivita-lista-isola">
                <div class="lista">
                 <h2>CREA</h2>
             </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container-tabella" style="diplay: none">
+        <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
+            <div class="prima-cella">
+                <h3 class="attivita-titolo">Attivita</h3>
+            </div>
+
+            <div class="seconda-cella">
+                <h3 class="attivita-titolo">Liste</h3>
+            </div>
+
+            <div class="terza-cella">
+                <h3 class="attivita-titolo">Etichette</h3>
             </div>
         </div>
     </div>
@@ -289,7 +333,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <div id="attivita-prototipo-tabella" style="display: none">
+    <div id="attivita-prototipo-tabella" class="attivita-tabella" style="display: none">
         <div class="prima-cella">
             <h3 class="attivita-titolo"><span></span></h3>
         </div>
@@ -387,7 +431,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </div>
 
     <div id="commento-prototipo" class="commento" style="display: none">
-        <p class="commento-utente"><span></span></p>
+        <p class="commento-utente"><span></span>:</p>
         <p class="commento-text text-mod"><span></span></p>
         <div id="cestino" class="cestino">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
@@ -583,6 +627,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.find("#cestino").css("heigth", "15px");
                 elem.find("#cestino").css("cursor", "pointer");
                 elem.find("#cestino").attr("id", "cestino-" + info.codice);
+                elem.show();
                 
                 return elem.add(this.crea_checkbox(dati, idx+1));  // Ricorsione per calcolarli tutti
             }
@@ -651,17 +696,44 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 if (this.tipo == "isola") {
                     for (let i = 0; i < this.data.attivita.length; i++)
                         this.create_attivita(this.data.attivita.list[i]);
+                    
+                    $("#container-isola").show();
                 }
 
                 if (this.tipo == "tabella") {
-                    let liste = this.cod_idx["lista"];
+                    for (let codice in this.cod_idx["lista"]) {
+                        let idx_attivita = this.get_idx("attivita", this.get_idx("lista", codice)[1])[0];
+                        let idx_lista = this.get_idx("lista", codice)[0];
 
-                    for (let codice in liste) {
-                        idx_attivita = this.get_idx("attivita", liste[codice][1]);
 
-                        // attivita[idx_attivita] -> codice_lista
+                        console.log(codice, this.get_idx("lista", codice)[1], this.get_idx("attivita", this.get_idx("lista", codice)[1])[0])
+
+                        let info_attivita = this.data.attivita.list[idx_attivita].info;
+                        let info_lista = this.data.attivita.list[idx_attivita].lista.list[idx_lista];
+                        let info_etichette = info_lista.etichetta;
+                        
+                        let elem = $("#attivita-prototipo-tabella").clone(true);
+                        elem.attr("id", "attivita-" + info_attivita.codice);
+
+                        elem.find("div.prima-cella > h3.attivita-titolo > span").text(info_attivita.titolo);
+                        elem.find("div.prima-cella").attr("id", info_attivita.codice);
+
+                        elem.find("div.seconda-cella > p.lista-nome > span").text(info_lista.nome);
+                        elem.find("div.seconda-cella > p.lista-nome").attr("id", info_lista.codice);
+                        
+                        let elem_eti = "";
+                        elem.find("div.terza-cella > div.lista-etichetta-box").append(this.crea_etichetta(info_etichette).find("p.etichetta-text"));
+                        
+                        elem.show();
+                        elem.appendTo("#container-tabella");
                     }
+
+                    $("#container-tabella").show();
                 }
+            }
+
+            clear_html() {
+                $("#container-tabella").empty()
             }
 
             show_lista_info(dati) {
@@ -992,7 +1064,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         result =JSON.parse(result);
                         console.log(result);
                         if (result.esito == true) {
-                            $("#" + codice_lista).find("div.lista-commento-box").append(visual.crea_commento(result.checkbox));
+                            $("#" + codice_lista).find("div.lista-commento-box").append(visual.crea_commento(result.commento));
                             testo.val("");
                         }
                     },

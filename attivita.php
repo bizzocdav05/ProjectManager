@@ -24,7 +24,7 @@ function create_new_colore($colori) {
         array($red, $green, $blue)
     ));
 
-    $result = $conn->query("SELECT ID FROM Colori WHERE red=$red AND green=$green AND blue=$blue");
+    $result = $conn->query("SELECT ID FROM Colore WHERE red=$red AND green=$green AND blue=$blue");
     if ($result->num_rows == 1) {
         return $result->fetch_assoc()["ID"];
     }
@@ -229,7 +229,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     if ($action == "new-etichetta") {
         if (isset($_POST["testo"]) && isset($_POST["codice_lista"]) && isset($_POST["red"]) && isset($_POST["green"]) && isset($_POST["blue"])) {
             $testo = $_POST["testo"];
-            $is_check = $_POST["is_check"];
             $colori = array("red" => $_POST["red"], "green" => $_POST["green"], "blue" => $_POST["blue"]);
 
             $id_colore = create_new_colore($colori);
