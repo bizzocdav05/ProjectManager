@@ -289,6 +289,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
+    <div id="attivita-prototipo-tabella" style="display: none">
+        <div class="prima-cella">
+            <h3 class="attivita-titolo"><span></span></h3>
+        </div>
+
+        <div class="seconda-cella">
+            <p class="lista-nome"><span></span></p>
+        </div>
+
+        <div class="terza-cella">
+            <div class="lista-etichetta-box"></div>
+        </div>
+    </div>
+
     <div id="lista-prototipo-isola" class="lista" style="display: none">
         <p class="lista-nome"><span></span></p>
     </div>
@@ -362,7 +376,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <div id="checkbox-prototipo" class="checkbox">
+    <div id="checkbox-prototipo" class="checkbox" style="display: none">
         <div class="checkbox-item"><input type="checkbox" name="" id=""></div>
         <p class="checkbox-text text-mod"><span></span></p>
         <div id="cestino" class="cestino">
@@ -404,6 +418,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 this.data = data;
                 this.tipo = "isola";
+                this.tipo = "tabella";
 
                 this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
                     "attivita": {},
@@ -537,9 +552,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 let info = dati.info;
                 // let elem = this.elements[this.tipo].attivita.clone(true);
                 let elem = $("#attivita-prototipo-isola").clone(true);
+                if (this.tipo == "tabella") elem = $("#attivita-prototipo-tabella").clone(true);
+
                 elem.attr("id", info.codice);
 
-                // elem.find("p.attivita-codice > span").text(info.codice);
                 elem.find("h3.attivita-titolo > span").text(info.titolo);
 
                 for (let i = 0; i < dati.lista.length; i++) 
@@ -632,9 +648,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             show_dati() {
-                for (let i = 0; i < this.data.attivita.length; i++) {
-                    this.create_attivita(this.data.attivita.list[i]);
-                } 
+                if (this.tipo == "isola") {
+                    for (let i = 0; i < this.data.attivita.length; i++)
+                        this.create_attivita(this.data.attivita.list[i]);
+                }
+
+                if (this.tipo == "tabella") {
+                    let liste = this.cod_idx["lista"];
+
+                    for (let codice in liste) {
+                        idx_attivita = this.get_idx("attivita", liste[codice][1]);
+
+                        // attivita[idx_attivita] -> codice_lista
+                    }
+                }
             }
 
             show_lista_info(dati) {

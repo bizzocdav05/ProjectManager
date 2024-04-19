@@ -16,7 +16,9 @@
 body{
             margin:0px;
             background-color: #f3e0ad;
+            overflow-x: hidden;
         }
+
                /* barra superiore della pagina*/
                .navbar {
             display: flex;
@@ -86,8 +88,8 @@ body{
         transition: filter .2s;
         vertical-align: middle;
         white-space: nowrap;
-        width: 100%;
-        text-decoration: none;
+        width: 270px;
+        text-transform: none;
     }
 
     .button:after {
@@ -105,18 +107,12 @@ body{
         z-index: -1;
     }
 
-    .button:hover {
-        filter: brightness(1.1);
- 
-    }
-
     .button:active {
         border-width: 4px 0 0;
         background: none;
-    }
+    } 
 
-    /*"Chi siamo"/"Funzioni" */
-.writing{
+  .writing{
     text-decoration: none;
     font-family: "Concert One", sans-serif;
     font-weight: bolder;
@@ -138,7 +134,7 @@ body{
 
 
 
-/*stile menu*/
+/*stile menu laterale*/
     :root {
   --background: #f3e0ad;
   --navbar-width: 256px;
@@ -194,17 +190,11 @@ body{
   transform: translate(-50%); 
 }
 
-#nav-toggle:checked ~ #nav-footer #nav-footer-titlebox, #nav-toggle:checked ~ #nav-footer label[for="nav-footer-toggle"] {
-  opacity: 0;
-  transition: opacity .1s;
-  pointer-events: none; 
-}
 
 #nav-bar {
   position: absolute;
   left: 1vw;
   top: 130px;
-  height: calc(100% - 2vw);
   background: var(--navbar-dark-primary);
   border-radius: 16px;
   display: flex;
@@ -495,25 +485,6 @@ label[for="nav-toggle"] {
   font-size: .6rem; 
 }
 
-#nav-toggle:not(:checked) ~ #nav-footer-toggle:checked + #nav-footer {
-  height: 30%;
-  min-height: 54px; 
-}
-
-  #nav-toggle:not(:checked) ~ #nav-footer-toggle:checked + #nav-footer label[for="nav-footer-toggle"] {
-    transform: rotate(180deg); 
-}
-
-label[for="nav-footer-toggle"] {
-  position: absolute;
-  right: 0;
-  width: 3rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: transform .2s, opacity .2s; 
-}
 
 #nav-footer-content {
   margin: 0 16px 16px 16px;
@@ -534,6 +505,113 @@ label[for="nav-footer-toggle"] {
     background-color: #D62929;
  }
 
+
+/* popup uno */
+.popup .popuptext {
+  visibility: hidden;
+  background-color: #e0ab23;
+  color: #fff;
+  font-size: 18px;
+  text-align: left;
+  padding-left: 8px;
+
+  text-transform: none;
+
+  border-radius: 6px;
+  border-style: solid;
+  border-color: #eee;
+  border-width: 1px;
+
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: 79.5%;
+  
+  width: 400px;
+  height: 300px;
+}
+
+.popup .show {
+  visibility: visible;
+
+  top: 65%;
+  left: 33.5%;
+}
+
+    /*Spazi di lavoro*/
+  .popup{
+    text-decoration: none;
+    font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    font-style: normal;
+    font-size: larger;
+    color: #000000;
+    
+}
+
+.popup:hover{
+   color: #f3e0ad;  
+   text-decoration: underline;
+}
+
+hr{
+  border-color: #fff;
+  border-width: 1px;
+  margin-inline-end: auto;
+  border-style: solid;
+  opacity: 0.7;
+  width: 399px;
+}
+
+
+/* popup */
+.popup-2 .popuptext-2 {
+  visibility: hidden;
+  background-color: #e0ab23;
+  color: #fff;
+  font-size: 18px;
+  text-align: left;
+  padding-left: 8px;
+
+  text-transform: none;
+
+  border-radius: 6px;
+  border-style: solid;
+  border-color: #eee;
+  border-width: 1px;
+
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  
+  width: 300px;
+  height: 500px;
+}
+
+.popup-2 .show {
+  visibility: visible;
+
+  top: 75%;
+  right: 10px;
+}
+
+    /*Spazi di lavoro*/
+  .popup-2{
+    text-decoration: none;
+    font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    font-style: normal;
+    font-size: larger;
+    color: #000000;
+    
+}
+
+.popup-2:hover{
+   color: #f3e0ad;  
+   text-decoration: underline;
+}
+
+
 </style>
 
 </head>
@@ -548,26 +626,37 @@ label[for="nav-footer-toggle"] {
                 <a href="../index.html">
                 <img  src="img/logo_scritta_completo.png"  class="logo">
                 </a>
-            
-                <!--"Chi Siamo"-->
-                <div class="dropdown">
-                <a href="" style="text-decoration: none;">
-                <span class="writing">Spazi di Lavoro</span>
-                </a>
-                </div>
+
+                <div class="button" > Crea una nuova bacheca </div>
+
+                 <!--tutte le bacheche di un account-->
+                   <div class="popup" onclick="popup_function()"> Spazi di Lavoro
+
+                   <div class="popuptext" id="myPopup"> <p style="margin: 10px;"> La tua Bacheca attuale </p>
+                   <hr/>
+                   <!-- spazio per la bacheca attuale-->
+
+
+                   <p style="margin: 10px; padding-top: 100px;"> Le tue Bacheche </p>
+                   <hr/>
+                   <!-- spazio per le bacheche-->
+                  
+                  </div>
+                 </div>
+               </div>
     
-    
-        <a class="button" href="" style="width: 90px;"> Crea  </a>
+                <div class="navbar-left">
+                  <img src="img/solid_red.jpg"  class="image" >
+                      <div class="popup-2" onclick="popup_function_2()" style="margin-left: 0px;">Account
+
+                        <div class="popuptext-2" id="myPopup_2"> prova </div>
+                      
+                      </div>
+                      
+              </div>
+
+       
     </div>
-    
-    <div class="navbar-left">
-        <img src="img/solid_red.png"  class="image" >
-        <a href="" style="text-decoration: none; margin-left: 0px;">
-            <span class="writing">Account</span>
-            </a>
-    </div>
-    
-        </div>
 
 <!-- menu laterale -->
         <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
@@ -601,19 +690,17 @@ label[for="nav-footer-toggle"] {
 
         </div>
 
-      <!--  <input id="nav-footer-toggle" type="checkbox" />-->
-
-        <!-- parte inferiore menu-->
-       <!-- <div id="nav-footer">
-            <div id="nav-footer-heading">
-                <div id="nav-footer-avatar"><img src="" /></div>
-                <div id="nav-footer-titlebox"><a id="nav-footer-title" href="" target="_blank">uahnbu</a>
-                <span id="nav-footer-subtitle">Admin</span>
-            </div>
-            <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label></div>
-        </div> -->
-
-
     </div>
+<script>
+  function popup_function(){
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+  }
+
+  function popup_function_2(){
+    var popup_2 = document.getElementById("myPopup_2");
+    popup_2.classList.toggle("show");
+  }
+</script>
 </body>
 </html>
