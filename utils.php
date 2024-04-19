@@ -96,6 +96,7 @@ function login_required() {
         header("Location: login.html");
         exit();
     }
+    return get_utente();
 }
 
 function set_bacheca($codice_bacheca) {
@@ -193,7 +194,7 @@ function get_dati_liste($id_attivita) {
             );
 
             // commenti
-            $sql = "SELECT codice, testo, data_creazione, user FROM Commento WHERE lista=" . $row_lista["ID"] . ";";
+            $sql = "SELECT c.codice as codice, c.testo as testo, c.data_creazione as data_creazione, c.user as id_user, u.nome as nome, u.cognome as cognome FROM Commento as c, Utenti as u WHERE c.lista=" . $row_lista["ID"] . " AND c.user = u.ID;";
             $result_commento = $conn->query($sql);
 
             $dati_commento = array("list" => array());
@@ -209,7 +210,8 @@ function get_dati_liste($id_attivita) {
                         "codice" => $row_commento["codice"],
                         "testo" => $row_commento["testo"],
                         "data_creazione" => $row_commento["data_creazione"],
-                        "actual_user" => ($row_commento["user"] == $id_utente)
+                        "actual_user" => ($row_commento["id_user"] == $id_utente),
+                        "nome_utente" => $row_commento["nome"] . " " . $row_commento["cognome"]
                     ));
                 }
             }

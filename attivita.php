@@ -65,6 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $id_bacheca = $temp[0];
     $privilegi = $temp[1];
 
+    $id_utente = get_utente();
+
     $dati = array("esito" => false);
     
     if ($action == "new-attivita") {
@@ -171,8 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
     if ($action == "new-commento") {
         if (isset($_POST["testo"]) && $_POST["codice_lista"]) {
-            $testo = isset($_POST["testo"]);
-            
+            $testo = $_POST["testo"];
             $codice_lista = $_POST["codice_lista"];
 
             $codice = genera_codice(16, $id_bacheca);
@@ -183,19 +184,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 array($testo, date("Y-m-d"), $id_utente, $id_lista, $codice)
             ));
 
+            $sql = "SELECT nome, cognome FROM Utenti WHERE ID = $id_utente";
+            $result = $conn->query($sql);
+            $row_utente = $result->fetch_assoc();
+
             $dati["esito"] = true;
             $dati["commento"] = array(
                 "length" => 1,
                 "list" => array( 0 => array(
                     "testo" => $testo,
                     "codice" => $codice,
-                    "data_creazione" => date("Y-m-d")
+                    "data_creazione" => date("Y-m-d"),
+                    "actual_user" => true,
+                    "nome_utente" => $row_utente["nome"] ." " . $row_utente["cognome"]
                 )));
         }
     }
 
     if ($action == "new-checkbox") {
-        echo "ciao";
         if (isset($_POST["testo"]) && isset($_POST["codice_lista"])) {
             $testo = $_POST["testo"];
             
@@ -262,13 +268,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 
-    if ($action == "delete-checkbox") {
-        if (isset($_POST["codice_checkbox"])) {
-            $codice_checkbox = $_POST["codice_checkbox"];
-            echo $codice_checkbox;
+    if ($action == "delete-etichetta" || $action == "delete-commento" || $action == "delete-checkbox") {
+        if ($action == "delete-commento") { $nome_codice = "codice_commento"; $tabella = "Commento"; }
+        if ($action == "delete-etichetta") { $nome_codice = "codice_etichetta"; $tabella = "Etichetta"; }
+        if ($action == "delete-checkbox") { $nome_codice = "codice_checkbox"; $tabella = "Checkbox"; }
+
+        if (isset($_POST[$nome_codice])) {
+            $codice = $_POST[$nome_codice];
             
             // cancello da codici
-            $sql = "DELETE FROM Codici WHERE codice='$codice_checkbox' AND bacheca=$id_bacheca;";
+            $sql = "DELETE FROM Codici WHERE codice='$codice' AND bacheca=$id_bacheca;";
             $result = $conn->query($sql);
 
             if (!$result) {
@@ -278,7 +287,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             }
 
             // cancello lista
-            $sql = "DELETE FROM Attivita WHERE codice='$codice_checkbox';";
+            $sql = "DELETE FROM $tabella WHERE codice='$codice';";
             $result = $conn->query($sql);
 
             $conn->close();
