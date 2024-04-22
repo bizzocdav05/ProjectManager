@@ -167,6 +167,17 @@ function get_elem_by_code($tipo, $codici) {
     exit();
 }
 
+function valida_data($data) {
+    $data_other = new DateTime($data);
+    $data_odierna = new DateTime();
+
+    if ($data_other <= $data_odierna) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 function get_dati_liste($id_attivita) {
     $conn = connection();
     $id_utente = get_utente();
@@ -263,8 +274,29 @@ function get_dati_liste($id_attivita) {
                     // var_dump($row_etichetta["codice"]);
                 }
             }
-            // var_dump($dati_etichetta);
             $dati_lista["etichetta"] = $dati_etichetta;
+
+            // scadenza
+            $sql = "SELECT codice, Scadenza.data as data_ FROM Scadenza WHERE lista=" . $row_lista["ID"] . ";";
+            $result_scadenza = $conn->query($sql);
+
+            $dati_scadenza = array("list" => array());
+            if (!$result_scadenza) {
+                $dati_scadenza["length"] = 0;
+            } else {
+                $dati_scadenza["length"] = $result_scadenza->num_rows;
+            }
+
+            if ($result_scadenza->num_rows > 0) {
+                while ($row_scadenza = $result_scadenza->fetch_assoc()) {
+                    array_push($dati_scadenza["list"], array(
+                        "codice" => $row_scadenza["codice"],
+                        "data" => $row_scadenza["data_"],
+                        "valida" => valida_data($row_scadenza["data_"])
+                    ));
+                }
+            }
+            $dati_lista["scadenza"] = $dati_scadenza;
 
             array_push($dati["list"], $dati_lista);
         }

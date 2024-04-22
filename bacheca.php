@@ -264,12 +264,40 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         }
 
         div.attivita-tabella > div.seconda-cella {
-            width: 50%;
+            width: 30%;
             /* margin-top: 20px; */
         }
 
         div.attivita-tabella > div.terza-cella {
             width: 20%;
+        }
+
+        div.attivita-tabella > div.quarta-cella {
+            width: 20%;
+        }
+
+        div.attivita-tabella > div.prima-cella h3.attivita-titolo {
+            text-align: center;
+        }
+
+        div.attivita-tabella > div.quarta-cella p.lista-text {
+            width: fit-content;
+            padding: 7px;
+            border-radius: 7px;
+        }
+
+        #select-type-visual > button.active {
+            background-color: green;
+        }
+
+        p.scadenza-valida {
+            background-color: green;
+            color: white;
+        }
+
+        p.scadenza-invalida {
+            background-color: red;
+            color: white;
         }
 
     </style>
@@ -289,10 +317,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     
     <div id="select-type-visual">
         <button class="active" value="isola">Isola</button>
-        <button value="isola">Table</button>
+        <button value="tabella">Table</button>
     </div>
 
-    <div id="container-isola-isola" style="display: none">
+    <div id="container-isola" style="display: none">
         <div id="attivita-nuova" class="attivita-box">
             <h3 class="attivita-titolo">Crea nuova attività</h3>
             <div class="attivita-lista attivita-lista-isola">
@@ -303,7 +331,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <div id="container-tabella" style="diplay: none">
+    <div id="container-tabella" style="display: none">
         <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
             <div class="prima-cella">
                 <h3 class="attivita-titolo">Attivita</h3>
@@ -344,6 +372,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         <div class="terza-cella">
             <div class="lista-etichetta-box"></div>
+        </div>
+
+        <div class="quarta-cella">
+            <p class="lista-text lista-scadenza"></p>
         </div>
     </div>
 
@@ -407,12 +439,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <div class="lista-commento-box">
             </div>
 
+            <p class="lista-text">Scadenza</p>
+            <div class="lista-scadenza-box"></div>
+
             <button class="lista-delete">Cancella lista</button>
         </div>
     </div>
 
     <div id="etichetta-prototipo" class="etichetta"  style="display: none">
-        <p class="etichetta-text text-mod"><span></span></p>
+        <p class="etichetta-text"><span></span></p>
         <div id="cestino" class="cestino">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
                 <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
@@ -432,12 +467,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     <div id="commento-prototipo" class="commento" style="display: none">
         <p class="commento-utente"><span></span>:</p>
-        <p class="commento-text text-mod"><span></span></p>
+        <p class="commento-text"><span></span></p>
         <div id="cestino" class="cestino">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
                 <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
             </svg>
         </div>
+    </div>
+
+    <div id="scadenza-prototipo" class="scadenza" style="display: none">
+        <input class="scadenza-text" type="date" name="scadenza">
+        <button class="btn-scadenza-nuovo">Aggiungi scadenza</button>
+        <button class="btn-scadenza-elimina">Elimina</button>
     </div>
 
     <div id="lista-nuova-prototipo" style="display: none">
@@ -462,29 +503,21 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 this.data = data;
                 this.tipo = "isola";
-                //this.tipo = "tabella";
 
                 this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
                     "attivita": {},
                     "lista": {},
                     "checkbox": {},
                     "commento": {},
-                    "etichetta": {}
+                    "etichetta": {},
+                    "scadenza": {}
                 };
                 /*  STRUCTURE  //
                 {
-                    "attivita": {
-                        "codice": 0,
-                        "codice2": 1
-                    },
-                    "lista": {
-                        "codice": 0,
-                        "codice2": 1
-                    },
                     "element": {
                         "codice": 0,
                         "codice2": 1
-                    }
+                    },
                 }
                 */
 
@@ -559,6 +592,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                             let dati_etichetta = dati_lista.etichetta.list[idx_etichetta];
                             this.add_idx_elem("etichetta", dati_etichetta.codice, dati_lista.codice);
                         }
+
+                        for (let idx_scadenza = 0; idx_scadenza < dati_lista.scadenza.length; idx_scadenza++) {
+                            let dati_scadenza = dati_lista.scadenza.list[idx_scadenza];
+                            this.add_idx_elem("scadenza", dati_scadenza.codice, dati_lista.codice);
+                        }
                     }
                 }
             }
@@ -576,7 +614,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             change_type(tipo) {
-                if (["isola", "table"].includes(tipo)) this.tipo = tipo;
+                if (["isola", "tabella"].includes(tipo)) this.tipo = tipo;
+                console.log(["isola", "tabella"].includes(tipo));
+                this.clear_html();
+                this.show_dati();
             }
 
             create_lista(dati) {
@@ -654,7 +695,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             crea_commento(dati, idx=0) {
-                console.log(dati, idx);
                 // terminazione
                 if (dati.length <= idx) return $("");
 
@@ -673,6 +713,26 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.show();
                 
                 return elem.add(this.crea_commento(dati, idx+1));  // Ricorsione per calcolarli tutti
+            }
+
+            crea_scadenza(dati) {
+                let elem = $("#scadenza-prototipo").clone(true);
+                console.log(elem);
+                if (dati.length == 0) {
+                    elem.attr("id", "");
+                    elem.find("button.btn-scadenza-elimina").hide();
+                    elem.find("button.btn-scadenza-nuovo").show();
+                } else {
+                    let info = dati.list[0];
+                    elem.attr("id", info.codice);
+                    elem.find("input[name='scadenza']").val(info.data);
+                    elem.find("button.btn-scadenza-nuovo").hide();
+                    elem.find("button.btn-scadenza-elimina").show();
+                    //TODO: scaduta?
+                }
+                console.log(elem);
+                elem.show();
+                return elem;
             }
 
             create_new_lista(dati, codice_attivita) {
@@ -705,13 +765,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         let idx_attivita = this.get_idx("attivita", this.get_idx("lista", codice)[1])[0];
                         let idx_lista = this.get_idx("lista", codice)[0];
 
-
-                        console.log(codice, this.get_idx("lista", codice)[1], this.get_idx("attivita", this.get_idx("lista", codice)[1])[0])
-
                         let info_attivita = this.data.attivita.list[idx_attivita].info;
                         let info_lista = this.data.attivita.list[idx_attivita].lista.list[idx_lista];
                         let info_etichette = info_lista.etichetta;
-                        
+                        let info_scadenza = info_lista.scadenza
+
+                        if (info_scadenza.length == 0) continue;
+                        info_scadenza = info_scadenza.list[0];
+
                         let elem = $("#attivita-prototipo-tabella").clone(true);
                         elem.attr("id", "attivita-" + info_attivita.codice);
 
@@ -723,6 +784,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         
                         let elem_eti = "";
                         elem.find("div.terza-cella > div.lista-etichetta-box").append(this.crea_etichetta(info_etichette).find("p.etichetta-text"));
+
+                        console.log(info_scadenza)
+                        elem.find("div.quarta-cella > p.lista-scadenza").text(info_scadenza.data);
+                        elem.find("div.quarta-cella > p.lista-scadenza").addClass((info_scadenza.valida) ? "scadenza-valida": "scadenza-invalida");
                         
                         elem.show();
                         elem.appendTo("#container-tabella");
@@ -733,7 +798,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             clear_html() {
-                $("#container-tabella").empty()
+                $('#container-isola').children().not('#attivita-nuova').remove();
+                $("#container-isola").hide();
+                $("#container-tabella").empty();
+                $("#container-tabella").hide();
             }
 
             show_lista_info(dati) {
@@ -750,6 +818,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.find("div.lista-checkbox-box").append(this.crea_checkbox(dati.checkbox));
                 elem.find("div.lista-etichetta-box").append(this.crea_etichetta(dati.etichetta));
                 elem.find("div.lista-commento-box").append(this.crea_commento(dati.commento));
+                elem.find("div.lista-scadenza-box").append(this.crea_scadenza(dati.scadenza));
+                console.log(dati.scadenza);
 
                 // Aggiungo proprietà
                 elem.find(".text-mod > span").attr("contenteditable", "true");
@@ -804,27 +874,41 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 $("#" + codice_attivita).remove();
             }
 
-            cancella_elemento_lista(nome, codice) {
-                let idx = this.get_idx(nome, codice)[0];
-                console.log(idx);
-                
-                let codice_lista = this.get_idx(nome, codice)[1];
-                let idx_lista = this.get_idx("lista", codice_lista)[0];
+            get_elem_location(tipo, codice) {
+                console.log(tipo, codice);
+                let [idx, cod_l] = this.get_idx(tipo, codice);
+                let [idx_l, cod_a] = this.get_idx("lista", cod_l);
+                let idx_a = this.get_idx("attivita", cod_a)[0];
 
-                console.log(codice_lista, idx_lista);
+                return [idx, idx_l, idx_a];
+            }
 
-                let codice_attivita = this.get_idx("lista", codice_lista)[1];
-                let idx_attivita = this.get_idx("attivita", codice_attivita)[0];
-                console.log(codice_attivita, idx_attivita);
+            cancella_elemento_lista(tipo, codice, cancella=true) {
+                let [idx, idx_lista, idx_attivita] = this.get_elem_location(tipo, codice);
+                let codice_attivita = this.data.attivita.list[idx_attivita].info.codice;
 
-                delete this.cod_idx[nome][codice_attivita];
-                delete this.data.attivita.list[idx_attivita].lista.list[idx_lista][nome].list[idx];
-                this.data.attivita.list[idx_attivita].lista.list[idx_lista][nome].length -= 1;
+                delete this.cod_idx[tipo][codice_attivita];
+                delete this.data.attivita.list[idx_attivita].lista.list[idx_lista][tipo].list[idx];
+                this.data.attivita.list[idx_attivita].lista.list[idx_lista][tipo].length -= 1;
 
-                let action = "delete-" + nome; let nome_codice = "codice_" + nome; 
-                console.log(nome_codice)
-                $.ajax({url:"attivita.php",type:"POST",data:{"action": action, [nome_codice]: codice, "codice_bacheca":this.codice_bacheca},crossDomain:true,success:function(result){console.log(result)},error:function(err){console.log(err)}});
-                $("#" + codice).remove();
+                if (cancella) {
+                    let action = "delete-" + tipo; let tipo_codice = "codice_" + tipo; 
+                    $.ajax({url:"attivita.php",type:"POST",data:{"action": action, [tipo_codice]: codice, "codice_bacheca":this.codice_bacheca},crossDomain:true,success:function(result){console.log(result)},error:function(err){console.log(err)}});
+                    $("#" + codice).remove();
+                }
+            }
+
+            aggiungi_elemento_lista(tipo, codice_lista, dati) {
+                this.add_idx_elem(tipo, dati.codice, codice_lista);
+                let [idx, idx_lista, idx_attivita] = this.get_elem_location(tipo, dati.codice);
+
+                this.data.attivita.list[idx_attivita].lista.list[idx_lista][tipo].list[idx] = dati;
+                this.data.attivita.list[idx_attivita].lista.list[idx_lista][tipo].length += 1;
+            }
+
+            aggiorna_elemento_lista(tipo, codice_elemento, key, valore) {
+                let [idx, idx_lista, idx_attivita] = this.get_elem_location(tipo, codice_elemento);
+                this.data.attivita.list[idx_attivita].lista.list[idx_lista][tipo].list[idx][key] = valore;
             }
         }
 
@@ -956,6 +1040,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     if (result.esito == true) {
                         $("#" + codice_lista).find("div.lista-etichetta-box").append(visual.crea_etichetta(result.etichetta));
                         testo.val(""); colore.val("");
+                        visual.aggiungi_elemento_lista("etichetta", codice_lista, result.etichetta);
                     }
                 },
 
@@ -989,6 +1074,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 crossDomain: true,
 
                 success: function () {
+                    visual.aggiorna_elemento_lista("checkbox", target.closest("div.checkbox").attr("id"), "is_check", (target.is(":checked")) ? "true" : "false")
                 },
 
                 error: function (err) {
@@ -1022,6 +1108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         if (result.esito == true) {
                             $("#" + codice_lista).find("div.lista-checkbox-box").append(visual.crea_checkbox(result.checkbox));
                             testo.val("");
+                            visual.aggiungi_elemento_lista("checkbox", codice_lista, result.checkbox);
                         }
                     },
 
@@ -1066,6 +1153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         if (result.esito == true) {
                             $("#" + codice_lista).find("div.lista-commento-box").append(visual.crea_commento(result.commento));
                             testo.val("");
+                            visual.aggiungi_elemento_lista("commento", codice_lista, result.commento);
                         }
                     },
 
@@ -1082,6 +1170,78 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("body").on("click", "div.lista-commento-box div.cestino", function (e) {
             visual.cancella_elemento_lista("commento", $(e.currentTarget).attr("id").split("-")[1]);
+        });
+
+        $("body").on("click", "button.btn-scadenza-nuovo", function (e) {
+            let target = $(e.currentTarget);
+            let data = target.siblings("input[name='scadenza']");
+            
+            let codice_lista = target.closest("div.lista-info-box").attr("id");
+            if (data.val()) {
+                console.log(data.val())
+                $.ajax({
+                    url: "attivita.php",
+                    type: "POST",
+                    data: {
+                        "action": "new-scadenza",
+                        "codice_bacheca": CODICE_BACHECA,
+                        "data": data.val(),
+                        "codice_lista": codice_lista
+                    },
+                    crossDomain: true,
+
+                    success: function (result) {
+                        result = JSON.parse(result);
+                        console.log(result);
+                        if (result.esito == true) {
+                            target.parent().remove();
+                            $("#" + codice_lista).find("div.lista-scadenza-box").append(visual.crea_scadenza(result.scadenza));
+                            visual.aggiungi_elemento_lista("scadenza", codice_lista, result.scadenza.list[0]);
+                        }
+                    },
+
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+
+        $("body").on("click", "button.btn-scadenza-elimina", function (e) {
+            visual.cancella_elemento_lista("scadenza", $(e.currentTarget).parent().attr("id"));
+        });
+
+        $("body").on("input", "div.lista-scadenza-box > div.scadenza > input", function (e) {
+            let target = $(e.currentTarget);
+
+            if (target.closest("div.scadenza").attr("id") === "") return;
+
+            let codice_lista = target.closest("div.lista-info-box").attr("id");
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "change-scadenza",
+                    "codice_bacheca": CODICE_BACHECA,
+                    "data": target.val(),
+                    "codice_lista": codice_lista
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    console.log(result);
+                    result = JSON.parse(result);
+                    console.log(result);
+                    if (result.esito == true) {
+                        visual.cancella_elemento_lista("scadenza", result.scadenza.list[0].codice, false);
+                        visual.aggiungi_elemento_lista("scadenza", codice_lista, result.scadenza.list[0]);
+                    }
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
         });
 
         // Informazioni lista
@@ -1108,10 +1268,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         // Bottone modalità
         $("#select-type-visual > button").on("click", function (e) {
-            if ($(this).hasClass("active")) return;
+            let elem = $(this);
+            if (elem.hasClass("active")) return;
 
             $("#select-type-visual > button").removeClass("active");
-            $(this).addClass("active");
+            console.log(elem.attr("value"));
+            visual.change_type(elem.attr("value"));
+            elem.addClass("active");
         });
 
     </script>

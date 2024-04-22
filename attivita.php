@@ -256,6 +256,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 
+    if ($action == "new-scadenza") {
+        if (isset($_POST["data"]) && isset($_POST["codice_lista"])) {
+            $data = $_POST["data"];            
+            $codice_lista = $_POST["codice_lista"];
+
+            $codice = genera_codice(16, $id_bacheca);
+            $id_lista = get_elem_by_code("Lista", array("codice" => $codice_lista, "bacheca" => $codice_bacheca));
+
+            $conn->query(create_sql("INSERT INTO Scadenza",
+                array("data", "lista", "codice"),
+                array($data, $id_lista, $codice)
+            ));
+
+            $dati["esito"] = true;
+            $dati["scadenza"] = array(
+                "length" => 1,
+                "list" => array( 0 => array(
+                    "data" => $data,
+                    "codice" => $codice,
+                    "valida" => valida_data($data)
+            )));
+        }
+    }
+
     if ($action == "change-checkbox") {
         if (isset($_POST["is_check"]) && isset($_POST["codice"])) {
             $codice_checkbox = $_POST["codice"];
@@ -267,10 +291,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 
-    if ($action == "delete-etichetta" || $action == "delete-commento" || $action == "delete-checkbox") {
+    if ($action == "change-scadenza") {
+        if (isset($_POST["codice_lista"]) && isset($_POST["data"])) {
+            $codice_lista = $_POST["codice_lista"];
+            $data = $_POST["data"];
+
+            $id_lista = get_elem_by_code("Lista", array("codice" => $codice_lista, "bacheca" => $codice_bacheca));
+
+            $conn->query("UPDATE Scadenza SET data='$data' WHERE lista=$id_lista");
+            $codice = $conn->query("SELECT codice FROM  Scadenza WHERE lista=$id_lista")->fetch_assoc()["codice"];
+
+            $dati["esito"] = true;
+            $dati["scadenza"] = array(
+                "length" => 1,
+                "list" => array( 0 => array(
+                    "data" => $data,
+                    "codice" => $codice,
+                    "valida" => valida_data($data)
+            )));
+        }
+    }
+
+    if ($action == "delete-etichetta" || $action == "delete-commento" || $action == "delete-checkbox" || $action == "delete-scadenza") {
         if ($action == "delete-commento") { $nome_codice = "codice_commento"; $tabella = "Commento"; }
         if ($action == "delete-etichetta") { $nome_codice = "codice_etichetta"; $tabella = "Etichetta"; }
         if ($action == "delete-checkbox") { $nome_codice = "codice_checkbox"; $tabella = "Checkbox"; }
+        if ($action == "delete-scadenza") { $nome_codice = "codice_scadenza"; $tabella = "Scadenza"; }
 
         if (isset($_POST[$nome_codice])) {
             $codice = $_POST[$nome_codice];
