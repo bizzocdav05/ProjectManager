@@ -462,7 +462,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 this.data = data;
                 this.tipo = "isola";
-                this.tipo = "tabella";
+                //this.tipo = "tabella";
 
                 this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
                     "attivita": {},
