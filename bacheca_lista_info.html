@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <!--font: Concert One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+
+    <!--font: Outfit-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+
     <title>Bacheca</title>
 
     <style>
@@ -260,6 +271,73 @@
             color: white;
         }
 
+        /* lb */
+        .lista-info {
+            text-align: center;
+            
+        }
+
+        div.etichetta-nuova {
+
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #popup-box {
+            
+            background-color: #eee6d0db;
+            border-radius: 12px;
+        }
+
+        .lista-text, .lista-codice {
+
+            font-family: 'Concert One', sans-serif;
+            font-size: large;
+        }
+
+        /* tasti lista */
+
+        .btn {
+            font-family: "Concert One", sans-serif;
+            background-color:#a94c0ac8;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            margin: 5px 5px 5px 5px;
+            width: 10%;
+            border: 1px solid black;
+
+
+        }
+        .btn:hover {
+            filter: brightness(1.3);
+        }
+
+        #elimina {
+            width: 20%;
+            height: 5%;
+            font-size: large;
+        }
+
+        #elimina:hover {
+            background-color: red;
+            color: white;
+            text-decoration: underline;
+        }
+
+        .text-box {
+            border-radius: 16px;
+            width: 40%;
+            padding: 2px;
+            font-family: 'Outfit', sans-serif;
+            border: 2px solid rgba(128, 128, 128, 0.847)
+        }
+
+        #select-color {
+            border-radius: 12px;
+        }
+
     </style>
 </head>
 <body>
@@ -375,26 +453,26 @@
             <div class="lista-etichetta-box">
             </div>
             <div class="etichetta-nuova">
-                <input type="text" name="testo" id="" placeholder="Nome">
-                <input type="color" name="colore" id="">
-                <button class="btn-etichetta-nuova">Crea</button>
-                <button class="btn-etichetta-reset">Annulla</button>
+                <input class="text-box" type="text" name="testo" id="" placeholder="Nome">
+                <input  id="select-color" type="color" name="colore" id=""> <br>
+                <button class="btn" class="btn-etichetta-nuova">Crea</button>
+                <button class="btn" class="btn-etichetta-reset">Annulla</button>
             </div>
 
             <p class="lista-text">Checkbox</p>
             <div class="lista-checkbox-box">
             </div>
             <div class="checkbox-nuovo">
-                <textarea name="testo" id="" cols="40" rows="2" placeholder="Nome"></textarea>
-                <button class="btn-checkbox-nuovo">Crea</button>
-                <button class="btn-checkbox-reset">Annulla</button>
+                <textarea class="text-box" name="testo" id="" cols="40" rows="2" placeholder="Nome"></textarea><br>
+                <button class="btn" class="btn-checkbox-nuovo">Crea</button>
+                <button class="btn" class="btn-checkbox-reset">Annulla</button>
             </div>
 
             <p class="lista-text">Commento</p>
             <div class="commento-nuovo">
-                <textarea name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento"></textarea>
-                <button class="btn-commento-nuovo">Invia</button>
-                <button class="btn-commento-reset">Annulla</button>
+                <textarea class="text-box" name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento"></textarea><br>
+                <button class="btn" class="btn-commento-nuovo">Invia</button>
+                <button class="btn" class="btn-commento-reset">Annulla</button>
             </div>
             <div class="lista-commento-box">
             </div>
@@ -402,7 +480,7 @@
             <p class="lista-text">Scadenza</p>
             <div class="lista-scadenza-box"></div>
 
-            <button class="lista-delete">Cancella lista</button>
+            <button class="btn" class="lista-delete" id="elimina">Cancella lista</button>
         </div>
     </div>
 
