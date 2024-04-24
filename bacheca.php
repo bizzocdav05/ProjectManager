@@ -300,6 +300,42 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             color: white;
         }
 
+        #container-calendario {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        div.calendario-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+        }
+
+        div.settimana,
+        div.intestazione {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        div.giorno,
+        div.intestazione-giorno {
+            text-align: center;
+            width: 14.2%;
+        }
+
+        div.giorno {
+            padding: 5px;
+            border: 1px solid black;
+            height: 30px;
+        }
+
     </style>
 </head>
 <body>
@@ -316,8 +352,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </div>
     
     <div id="select-type-visual">
-        <button class="active" value="isola">Isola</button>
+        <button value="isola">Isola</button>
         <button value="tabella">Table</button>
+        <button class="active" value="calendario">Calendario</button>
     </div>
 
     <div id="container-isola" style="display: none">
@@ -344,6 +381,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <div class="terza-cella">
                 <h3 class="attivita-titolo">Etichette</h3>
             </div>
+        </div>
+    </div>
+
+    <div id="container-calendario" style="display: none">
+        <div class="calendario-header"></div>
+        <div class="calendario-body">
         </div>
     </div>
 
@@ -481,6 +524,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <button class="btn-scadenza-elimina">Elimina</button>
     </div>
 
+    <div id="settimana-prototipo" class="settimana" style="display: none">
+    </div>
+
+    <div id="giorno-prototipo" class="giorno" style="display: none">
+    </div>
+
+    <div id="intestazione-prototipo" class="intestazione" style="display: none">
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Lun</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Mar</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Mer</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Gio</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Ven</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Sab</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Dom</p></div>
+    </div>
+
     <div id="lista-nuova-prototipo" style="display: none">
         <div class="lista-info">
             <form class="form-nuova-lista" method="post">
@@ -502,7 +561,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.codice_bacheca = searchParams.get('codice');
 
                 this.data = data;
-                this.tipo = "isola";
+                this.tipo = "calendario";
 
                 this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
                     "attivita": {},
@@ -614,8 +673,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             change_type(tipo) {
-                if (["isola", "tabella"].includes(tipo)) this.tipo = tipo;
-                console.log(["isola", "tabella"].includes(tipo));
+                if (["isola", "tabella", "calendario"].includes(tipo)) this.tipo = tipo;
+                console.log(["isola", "tabella", "calendario"].includes(tipo));
                 this.clear_html();
                 this.show_dati();
             }
@@ -735,6 +794,83 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 return elem;
             }
 
+            crea_giorno(numero, valido, attivo) {
+                let elem = $("#giorno-prototipo").clone(true);
+                elem.attr("id", "giorno-" + numero);
+
+                elem.text(numero + " " + attivo);
+                elem.css("height", elem.css("width") + "px");
+                console.log(elem.css("width") + "px")
+                elem.show();
+                return elem;
+            }
+
+            crea_settimana(giorni, numero) {
+                let elem = $("#settimana-prototipo").clone(true);
+                elem.attr("id", "settimana-" + numero);
+
+                giorni.forEach(giorno => {
+                    elem.append(this.crea_giorno(giorno.numero, giorno.is_valid, giorno.is_active));
+                    // console.log(giorno) 
+                });
+                    
+
+                elem.show();
+                return elem;
+            }
+
+            crea_calendario(anno=2024, mese=null) {
+                let date;
+                if (mese === null) date = new Date(anno, new Date().getMonth());
+                else date = new Date(anno, mese);
+                
+                console.log(date);
+                this.actual_date = new Date(date);
+
+                let giorno_settimana_mese = date.getDay() || 7;  // normalizzazione del giorno
+                let data_odierna = new Date();
+
+                // Aggiungo intestazione
+                let inst = $("#intestazione-prototipo").clone(true);
+                inst.attr("id", "intestazione-calendario");
+                
+                // Ordino in base al primo giorno
+                for (let i = 0; i < giorno_settimana_mese - 1; i++)
+                    inst.append(inst.children().first());
+                
+                    inst.show();
+                inst.appendTo("#container-calendario > div.calendario-body");
+
+                // Creo calendario
+                for (let i = 0; i < 5; i++) {
+                    let array_giorni = Array.from({length: 7}, (_, j) => {
+                        let current_date = new Date(date);
+                        current_date.setDate(i * 7 + j + 1);
+                        return {
+                            numero: current_date.getDate(),
+                            is_valid: current_date.getMonth() == data_odierna.getMonth(),
+                            is_active: current_date.getDate() == data_odierna.getDate() && current_date.getMonth() == data_odierna.getMonth()
+                        };
+                    });
+                    // console.log(array_giorni)
+
+                    this.crea_settimana(array_giorni, i+1).appendTo("#container-calendario > div.calendario-body");
+                }
+            }
+
+            skip_month(avanti=true) {
+                let date = new Date(this.actual_date);
+                if (avanti) date.setMonth(date.getMonth() + 1);
+                else date.setMonth(date.getMonth() - 1);
+
+                console.log(date, this.actual_date);
+                console.log(date.getFullYear(), date.getMonth())
+
+                this.clear_html();
+                $("#container-calendario").show();
+                this.crea_calendario(date.getFullYear(), date.getMonth());
+            }
+
             create_new_lista(dati, codice_attivita) {
                 let idx = this.get_idx("attivita", codice_attivita)[0];
                 console.log(idx);
@@ -795,13 +931,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                     $("#container-tabella").show();
                 }
+
+                if (this.tipo == "calendario") {
+                    this.crea_calendario();
+                    $("#container-calendario").show();
+                }
             }
 
             clear_html() {
                 $('#container-isola').children().not('#attivita-nuova').remove();
                 $("#container-isola").hide();
+                
                 $("#container-tabella").empty();
                 $("#container-tabella").hide();
+
+                $("#container-calendario > *").empty();
+                $("#container-calendario").hide();
             }
 
             show_lista_info(dati) {
