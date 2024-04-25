@@ -1,42 +1,3 @@
-<?php
-include "utils.php";
-
-session_start();
-login_required();
-$id_console = set_console();
-
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
-    $data = array();
-
-    $conn = connection();
-    $codice_bacheca = $_GET["codice"];
-    $id_utente = $_SESSION["id_utente"];
-
-    // controllo tu abbia l'autorizzazione per tale bacheca
-    $temp = set_bacheca($codice_bacheca);
-    $id_bacheca = $temp[0];
-    $privilegi = $temp[1];
-
-    $data["codice_bacheca"] = $codice_bacheca;
-    $data["privilegi"] = $privilegi;
-
-    //TODO: considerare l'idea di utilizzare questa pagina come API e mostra il tutto in una hmtl usando un JSON come struttura
-
-    $data["attivita"] = get_dati_attivita($id_bacheca);    
-
-    //TOOD: crea nuovo elemento (attività, lista, checkbox, ...) -> attivita.php
-
-    //TODO: gestione accessi
-
-    // echo "<script> let dati=" . json_encode($data) . ";</script>";
-    $conn->close();
-
-} else {
-    header("Location: bacheche.php");  // in caso vi accedi con POST o non specifici il codice della bacheca
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -1046,7 +1007,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 $('#container-isola').children().not('#attivita-nuova').remove();
                 $("#container-isola").hide();
                 
-                $("#container-tabella").children().not("#attivita-tabella-header").remove();
+                $("#container-tabella").empty();
                 $("#container-tabella").hide();
 
                 $("#container-calendario > div.calendario-body").empty();
