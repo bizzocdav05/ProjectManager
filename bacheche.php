@@ -45,6 +45,7 @@
         #popup {
             display: none;
 <<<<<<< HEAD
+<<<<<<< HEAD
             width: 100vw;
             height: 100vh;
 
@@ -64,6 +65,8 @@
 
 =======
 >>>>>>> parent of d157606... update bizzo
+=======
+>>>>>>> parent of d157606... update bizzo
             width: 60vw;
             height: 60vh;
 
@@ -75,8 +78,14 @@
 
             background-color: white;
 <<<<<<< HEAD
+<<<<<<< HEAD
         }
 
+=======
+            z-index: 101;
+            padding: 20px;
+        }
+>>>>>>> parent of d157606... update bizzo
 =======
             z-index: 101;
             padding: 20px;
@@ -211,6 +220,7 @@
         margin-left: 90px;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         /*immagini laterali superiori */
     .top_img{
@@ -219,6 +229,16 @@
         margin-right: 40px;
         margin-top: 70px;
 
+=======
+
+        /*immagini laterali superiori */
+    .top_img{
+        height: 300px;
+        width: 300px;
+        margin-right: 40px;
+        margin-top: 70px;
+
+>>>>>>> parent of d157606... update bizzo
 =======
 
         /*immagini laterali superiori */
@@ -302,6 +322,7 @@
         text-align: center;
         height: 30vh;
     }
+<<<<<<< HEAD
 
     .dropdown-content > div {
         justify-content: center;
@@ -314,10 +335,25 @@
         width: 50%;
     }
 
+=======
+
+    .dropdown-content > div {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dropdown-content > .dropwdown-elem {
+        justify-content: flex-start;
+        align-items: center;
+        width: 50%;
+    }
+
+>>>>>>> parent of d157606... update bizzo
     .dropdown-content {
     visibility: hidden;
     position: absolute;
     z-index: 1;
+<<<<<<< HEAD
     }
 
     .dropdown:hover .dropdown-content {
@@ -326,6 +362,16 @@
     border-radius: 16px;
     }
 
+=======
+    }
+
+    .dropdown:hover .dropdown-content {
+    visibility: visible;
+    background-color: #f7eccd;
+    border-radius: 16px;
+    }
+
+>>>>>>> parent of d157606... update bizzo
     /* barra superiore del dropdown*/
     .top-row-dropdwn {
         display: flex;
@@ -381,6 +427,7 @@
         font-weight: bolder;
         padding-bottom: 20px;
     }
+<<<<<<< HEAD
 
     /* barra per il bottone e l'ultima frase*/
     .bottom_bar{
@@ -399,6 +446,26 @@
             align-items: flex-start;
             flex-wrap: nowrap;
 
+=======
+
+    /* barra per il bottone e l'ultima frase*/
+    .bottom_bar{
+        display: flex;
+        flex-direction: column;
+        background-color: #f3e0ad;
+        align-items: center;
+        padding-top: 15vh;
+        padding-bottom: 100px;
+    }
+
+    #container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+
+>>>>>>> parent of d157606... update bizzo
             overflow-x: auto;
 
             margin: 10px;
