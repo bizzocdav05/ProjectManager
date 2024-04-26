@@ -129,6 +129,7 @@
             font-size: 20px;
             /* font-weight: 700; */
             margin: 0px;
+          
         }
 
         div.lista {
@@ -286,7 +287,7 @@
 
         #popup-box {
             
-            background-color: #eee6d0db;
+            background-color: #f3e0ad;
             border-radius: 12px;
         }
 
@@ -296,11 +297,40 @@
             font-size: large;
         }
 
+        .lista-descrizione {
+            font-family: 'Outfit', sans-serif;
+
+        }
+
+        .lista-nome {
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .lista-commento-box {
+            display: flex;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+
+        }
+
+        .lista-etichetta-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-family: 'Outfit', sans-serif;
+
+        }
+
+        .lista-checkbox-box {
+            display: flex;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+        }
         /* tasti lista */
 
-        .btn {
+        .btn, .btn-scadenza-elimina {
             font-family: "Concert One", sans-serif;
-            background-color:#a94c0ac8;
+            background-color:#e0ab23;
             border: solid transparent;
             border-radius: 16px;
             border-width: 0 0 4px;
@@ -326,6 +356,12 @@
             text-decoration: underline;
         }
 
+        .btn-scadenza-elimina:hover {
+            background-color: red;
+            color: white;
+            text-decoration: underline;
+        }
+
         .text-box {
             border-radius: 16px;
             width: 40%;
@@ -338,6 +374,7 @@
             border-radius: 12px;
         }
 
+        
     </style>
 </head>
 <body>
