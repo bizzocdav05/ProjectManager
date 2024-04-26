@@ -41,9 +41,9 @@
         body {
             background-color:  #f3e0ad;
         }
-        
         #popup {
             display: none;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             width: 100vw;
@@ -67,6 +67,8 @@
 >>>>>>> parent of d157606... update bizzo
 =======
 >>>>>>> parent of d157606... update bizzo
+=======
+>>>>>>> parent of 6bddf13... modifiche bacheche
             width: 60vw;
             height: 60vh;
 
@@ -79,6 +81,7 @@
             background-color: white;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         }
 
 =======
@@ -91,6 +94,11 @@
             padding: 20px;
         }
 >>>>>>> parent of d157606... update bizzo
+=======
+            z-index: 101;
+            padding: 20px;
+        }
+>>>>>>> parent of 6bddf13... modifiche bacheche
         #login {
             position: sticky;
             top: 10%;
@@ -475,8 +483,7 @@
 </head>
 <body>
     <div id="popup">
-        <div id="popup-box">
-        </div>
+
     </div>
 
     <!--parte della barra a sinistra-->
@@ -642,7 +649,6 @@
         });
 
         let popup = $("#popup");
-        popup.box = $("#popup-box");
 
         $("#nuova-bacheca").click(function (e) {
             e.stopPropagation();
@@ -677,7 +683,7 @@
             console.log(new_)
             new_.attr("id", "nuova-bacheca-popup");
             new_.show();
-            popup.box.append(new_);
+            new_.appendTo(popup)
 
             popup.mostra();
         }
