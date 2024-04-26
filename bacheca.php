@@ -44,10 +44,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <!--font dei titoli-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+
     <title>Bacheca</title>
 
     <style>
-        /* */
         #cestino {
             width: 100px;
             height: 100px;
@@ -60,8 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             cursor: pointer;
         }
 
-        body {
-            margin: 0;
+        body{
+            margin:0px;
+            background-color: #f3e0ad;
+            overflow-x:hidden;
         }
 
         #popup {
@@ -83,16 +89,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         #popup-box {
             padding: 10px;
 
-            width: 60vw;
-            height: 60vh;
+            width: 60vh;
+            height: 40vh;
 
             overflow-y: auto;
 
             position: absolute;
             top: 20%;
-            left: 20%;
+            left: 35%;
 
-            background-color: white;
+            background-color: #e0ab23;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+
+            border-radius: 16px;
         }
 
         #container-isola {
@@ -113,7 +125,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             align-items: center;
             justify-content: space-between;
             width: 80%;
+
+            border-style: solid;
+            border-width: 2px;
+            border-color: #000000;
+
+            box-shadow: 2px 2px 0px 0px black;
+            border-radius: 12px;
+            padding-left: 12px;
         }
+    
 
         div.attivita-box > div.attivita-info {
             display: none;
@@ -129,12 +150,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             height: auto;
             min-height: 50px;
 
-            background-color: black;
-            color: white;
-            border: 1px solid white;
+            background-color: #e0ab23;
+            color: #000000;
+
             border-radius: 10px;
 
             padding: 20px 0px;
+
+            position: relative;
+            left: 250px;
+
+            font-family: "Concert One", sans-serif;
         }
 
         div.attivita-box-isola > h3 {
@@ -163,12 +189,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         div.lista {
             text-align: left;
             width: 90%;
-            border: 1px solid black;
             border-radius: 10px;
-            background-color: rgba(145, 152, 163, 0.4);
+
 
             padding: 5px 0px 10px 5px;
             margin-bottom: 10px;
+            margin-top: 10px;
+            box-shadow: 2px 2px 0px 0px black;
+
         }
 
         div.lista > p.lista-nome {
@@ -186,6 +214,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             flex-direction: column;
             justify-content: center;
             align-items: center;
+
+            box-shadow: none;
         }
 
         #attivita-nuova div.lista:hover {
@@ -252,10 +282,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             width: 100%;
 
             border-bottom: 1px solid black;
+            padding-left: 25vh;
         }
 
         div.attivita-tabella:first-child {
             border-top: 1px solid black;
+            font-family: "Concert One", sans-serif;
         }
 
         div.attivita-tabella > div.prima-cella {
@@ -286,17 +318,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             border-radius: 7px;
         }
 
-        #select-type-visual > button.active {
+    /*    #select-type-visual > button.active {
             background-color: green;
-        }
+        }*/
 
         p.scadenza-valida {
-            background-color: green;
+            background-color: #b7e023;
             color: white;
         }
 
         p.scadenza-invalida {
-            background-color: red;
+            background-color: #E04D23;
             color: white;
         }
 
@@ -306,15 +338,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             justify-content: center;
             align-items: center;
             width: 80%;
-            margin: auto;
+            margin-left: 40vh;
+            padding-bottom: 50px;
         }
 
         div.calendario-header {
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             width: 70%;
+            padding-left: 80vh;
         }
 
         div.calendario-header svg {
@@ -361,7 +395,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         }
 
         div.numero-giorno.active {
-            background-color: red;
+            background-color: #adc0f3;
             color: white;
             border-radius: 5px;
             width: 100%;
@@ -390,12 +424,716 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         p.calendario-anno {
             font-size: 40px;
             font-weight: bold;
+            font-family: "Concert One", sans-serif;
+            text-transform: capitalize;
+
+            text-align: center;
+        }
+
+               /* barra superiore della pagina*/
+               .navbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #e0ab23;
+            width: 100%;
+        }
+
+        /* */
+        .navbar > * {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 115px;
+            background-color: #e0ab23;
             margin: 0;
         }
 
+        /* */
+        .navbar-left > *, .navbar-right > * {
+            margin: 20px;
+        }
+
+        /* tutta la pagina sotto la barra*/
+        .header {
+            background-color: #f3e0ad;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* immagine del logo nella barra superiore*/
+        .logo {
+            width: 170px;
+            height: 170px;
+        }
+
+    /* stile "bottoni" */
+    .button {
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        background-color:#8f411a;
+        border: solid transparent;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+        display: inline-block;
+        font-size:large;
+        font-weight: 700;
+        letter-spacing: .8px;
+        line-height: 20px;
+        margin: 0px 5px 0px 5px;
+        overflow: visible;
+        padding: 13px 16px;
+        text-align: center;
+        text-transform: uppercase;
+        touch-action: manipulation;
+        transform: translateZ(0);
+        transition: filter .2s;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 270px;
+        text-transform: none;
+
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+    }
+
+    .button:after {
+        background-clip: padding-box;
+        background-color: #d05e26;
+        border: solid transparent;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        bottom: -4px;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+    }
+
+    .button:active {
+        border-width: 4px 0 0;
+        background: none;
+    } 
+
+  .writing{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+    }
+
+    .writing:hover{
+        color: #f3e0ad;  
+        text-decoration: underline;
+    }
+
+    .pfp{
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+
+        background-color: black;
+        color: #eee;
+
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+
+        font-weight: 600;
+        font-family: "Concert One", sans-serif; 
+        text-transform: uppercase;
+    }
+
+
+
+    /*stile menu laterale*/
+        :root {
+    --background: #f3e0ad;
+    --navbar-width: 256px;
+    --navbar-width-min: 80px;
+    --navbar-dark-primary: #e0ab23; /*colore menu*/
+    --navbar-dark-secondary: #d05e26; /*colore righe*/
+    --navbar-light-primary: #eee; /*colore titolo avatar*/
+    --navbar-light-secondary: #eee; /*colore descrizione avatar*/
+    }
+
+
+    #nav-toggle:checked ~ #nav-header {
+    width: calc(var(--navbar-width-min) - 16px); 
+    }
+
+    #nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
+    width: var(--navbar-width-min); 
+    }
+
+    /*animazione per far sparire il titolo*/
+    #nav-toggle:checked ~ #nav-header #nav-title {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .1s; 
+    }
+
+    #nav-toggle:checked ~ #nav-header label[for="nav-toggle"] {
+    left: calc(50% - 8px);
+    transform: translate(-50%); 
+    }
+
+    #nav-toggle:checked ~ #nav-header #nav-toggle-burger {
+    background: #000000;
+    }
+
+    #nav-toggle:checked ~ #nav-header #nav-toggle-burger:before, #nav-toggle:checked ~ #nav-header #nav-toggle-burger::after {
+        width: 16px;
+        background: #000000;
+        transform: translate(0, 0) rotate(0deg); 
+    }
+
+    /*animazione per far sparire i contenuti del menu*/
+    #nav-toggle:checked ~ #nav-content .nav-button span {
+    opacity: 0;
+    transition: opacity .1s; 
+    }
+
+    /*animazione per far sparire i contenuti del menu*/
+    #nav-toggle:checked ~ #nav-content .nav-button button {
+    opacity: 0;
+    transition: opacity .1s; 
+    }
+
+    #nav-toggle:checked ~ #nav-content .nav-button .fas {
+    min-width: calc(100% - 16px); 
+    }
+
+    #nav-toggle:checked ~ #nav-footer #nav-footer-avatar {
+    margin-left: 0;
+    left: 50%;
+    transform: translate(-50%); 
+    }
+
+
+    #nav-bar {
+    position: absolute;
+    left: 1vw;
+    top: 126px;
+    background: var(--navbar-dark-primary);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    color: var(--navbar-light-primary);
+    font-family: "Concert One", sans-serif;
+    overflow: hidden;
+    user-select: none;
+    }
+
+    #nav-bar hr {
+        margin: 0;
+        position: relative;
+        left: 16px;
+        width: calc(100% - 32px);
+        border: none;
+        border-top: solid 1px var(--navbar-dark-secondary); 
+    }
+
+    #nav-bar a {
+        color: inherit;
+        text-decoration: inherit; 
+    }
+
+    #nav-bar input[type="checkbox"] {
+        visibility: hidden; 
+    }
+
+    #nav-header {
+    position: relative;
+    width: var(--navbar-width);
+    left: 16px;
+    width: calc(var(--navbar-width) - 16px);
+    min-height: 80px;
+    background: var(--navbar-dark-primary);
+    border-radius: 16px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    transition: width .2s; 
+    color: #000000;
+    font-weight: 900;
+    }
+    
+    #nav-header hr {
+        position: absolute;
+        bottom: 0; 
+    }
+
+    #nav-title {
+    font-size: 1.5rem;
+    transition: opacity 1s; 
+    }
+
+    label[for="nav-toggle"] {
+    position: absolute;
+    right: 0;
+    width: 3rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; 
+    }
+
+    #nav-toggle-burger {
+    position: relative;
+    width: 16px;
+    height: 2px;
+    background: var(--navbar-dark-primary);
+    border-radius: 99px;
+    }
+
+    #nav-toggle-burger:before, #nav-toggle-burger:after {
+        content: '';
+        position: absolute;
+        top: -6px;
+        width: 10px;
+        height: 2px;
+        background: #000000;
+        border-radius: 99px;
+        transform: translate(2px, 8px) rotate(30deg);
+        font-weight: 900;
+    }
+
+    #nav-toggle-burger:after {
+        top: 6px;
+        transform: translate(2px, -8px) rotate(-30deg); 
+    }
+
+    #nav-content {
+    margin: -16px 0;
+    padding: 16px 0;
+    position: relative;
+    flex: 1;
+    width: var(--navbar-width);
+    background: var(--navbar-dark-primary);
+    box-shadow: 0 0 0 16px var(--navbar-dark-primary);
+    overflow-x: hidden;
+    transition: width .2s; 
+    }
+
+    #nav-content::-webkit-scrollbar {
+        width: 8px;
+        height: 8px; 
+    }
+
+
+    #nav-content::-webkit-scrollbar-button {
+        height: 16px; 
+    }
+
+    #nav-content-highlight {
+    position: absolute;
+    left: 16px;
+    top: -70px;
+    width: calc(100% - 16px);
+    height: 54px;
+    background: var(--background);
+    background-attachment: fixed;
+    border-radius: 16px 0 0 16px;
+    transition: top .2s; 
+    }
+
+    #nav-content-highlight:before, #nav-content-highlight:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: 100%;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        box-shadow: 16px 16px var(--background); 
+    }
+
+    #nav-content-highlight:after {
+        top: 100%;
+        box-shadow: 16px -16px var(--background); 
+        border-radius: 16px;
+    }
+
+    .nav-button {
+    position: relative;
+    margin-left: 16px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    color: var(--navbar-light-secondary);
+    direction: ltr;
+    cursor: pointer;
+    z-index: 1;
+    transition: color .2s; 
+    }
+
+    .nav-button button{
+        transition: opacity 1s; 
+        color: #000000;
+        font-weight: 550;
+    }
+
+    .nav-button span {
+        transition: opacity 1s; 
+        color: #000000;
+        font-weight: 550;
+    }
+
+    .nav-button:nth-of-type(1):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+
+    .nav-button:nth-of-type(2):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(2):hover ~ #nav-content-highlight {
+        top: 70px; 
+        }
+
+    .nav-button:nth-of-type(3):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(3):hover ~ #nav-content-highlight {
+        top: 124px; 
+        }
+
+    .nav-button:nth-of-type(4):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(4):hover ~ #nav-content-highlight {
+        top: 178px; 
+        }
+
+    .nav-button:nth-of-type(5):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
+        top: 232px; 
+        }
+
+    .nav-button:nth-of-type(6):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
+        top: 286px; 
+        }
+
+    
+        /* margine sinistro delle scritte*/
+    #nav-bar .fas {
+    min-width: 3rem;
+    text-align: center; 
+    }
+
+
+    /* popup uno */
+    .popup .popuptext {
+    visibility: hidden;
+    background-color: #e0ab23;
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    padding-left: 8px;
+
+    text-transform: none;
+
+    border-radius: 6px;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 1px;
+
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 79.5%;
+    
+    width: 400px;
+    height: 300px;
+    }
+
+    .popup .show {
+    visibility: visible;
+
+    top: 65%;
+    left: 73vh;
+    }
+
+        /*Spazi di lavoro*/
+    .popup{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+        cursor: pointer;
+        
+    }
+
+    .popup:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+    }
+
+    hr{
+    border-color: #fff;
+    border-width: 1px;
+    margin-inline-end: auto;
+    border-style: solid;
+    opacity: 0.7;
+    width: 399px;
+    }
+
+
+    /* popup */
+    .popup-2 .popuptext-2 {
+    visibility: hidden;
+    background-color: #e0ab23;
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    padding-left: 8px;
+
+    text-transform: none;
+
+    border-radius: 6px;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 1px;
+
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    
+    width: 300px;
+    height: 500px;
+    }
+
+    .popup-2 .show {
+    visibility: visible;
+
+    top: 75%;
+    right: 10px;
+    }
+
+        /*Spazi di lavoro*/
+    .popup-2{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+        cursor: pointer;
+        
+    }
+
+    .popup-2:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+    }
+
+
+    .icon{
+        margin-right:10px;
+        height: 20px;
+        width: 20px;
+    }
+
+    .formato{
+        background-color: rgb(224, 171, 35, 0);
+        border-width: 0px;
+        font-family: "Concert One", sans-serif;
+        font-size: 16px;
+    }
+
+
+    circle{
+        fill: rgb(0, 0, 0);
+    }
+
+    .crea{
+        font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            background-color:#d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-size:large;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: none;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 300px;
+            text-decoration: none;
+
+            margin-top: 30px;
+            padding-right: 20px;
+    }
+
+    .crea:after{
+        background-clip: padding-box;
+            background-color: #d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+    }
+
+    .crea:hover{
+        filter: brightness(1.1);
+    }
+
+    .crea:active{
+        border-width: 4px 0 0;
+    }
+
+    .title{
+        font-family: "Concert One", sans-serif;
+        font-size: 25px;
+        padding-left: 30px;
+        padding-right: 15px;
+        color: white;
+    }
+
+    .input{
+        background-color: #eee;
+        font-family: "Concert One", sans-serif;
+        font-size: large;
+
+        border-width: 0px;
+        border-radius: 10px;
+
+        height: 30px;
+    }
+
+    .input:after{
+        border-width: 0px;
+    }
+
+    .calendario-nome-giorno{
+        font-family: "Concert One", sans-serif;
+    }
+
+    .numero-giorno{
+        font-family: "Concert One", sans-serif;  
+    }
+
+    .vuoto{
+        display: none;
+        background-color: #f3e0ad;
+}
     </style>
 </head>
 <body>
+    <div class="header">
+        <!--parte della barra a sinistra-->
+        <div class="navbar">
+           <div class="navbar-left" > 
+   
+               <!--immagine del logo-->
+               <a href="../index.html">
+               <img  src="img/logo_scritta_completo.png"  class="logo">
+               </a>
+
+               <div class="button" > Crea una nuova bacheca </div>
+
+                <!--tutte le bacheche di un account-->
+                  <div class="popup" onclick="popup_function()"> Spazi di Lavoro
+
+                  <div class="popuptext" id="myPopup"> <p style="margin: 10px;"> La tua Bacheca attuale </p>
+                  <hr/>
+                  <!-- spazio per la bacheca attuale-->
+
+
+                  <p style="margin: 10px; padding-top: 100px;"> Le tue Bacheche </p>
+                  <hr/>
+                  <!-- spazio per le bacheche-->
+                 
+                 </div>
+                </div>
+              </div>
+   
+               <div class="navbar-left">
+                 <div class="pfp" > E T</div>
+                     <div class="popup-2" onclick="popup_function_2()" style="margin-left: 0px;">Account
+
+                       <div class="popuptext-2" id="myPopup_2"> prova </div>
+                     
+                     </div>
+                     
+             </div>
+    </div>
+<!-- menu laterale -->
+
+    <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
+            <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+                <hr/>
+            </div> 
+
+                <!--contenuto del menu laterale-->
+
+            <div id="nav-content">
+                <div class="nav-button"><span>Viste della Bacheca</span></div>
+
+                <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
+
+                <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
+
+                <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
+
+                <hr/>
+                <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
+
+            <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
+
+
+            </div>
+        </div>
+    </div>
+
     <div id="cestino" class="cestino">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
             <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
@@ -404,31 +1142,26 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     <div id="popup">
         <div id="popup-box">
-
         </div>
     </div>
-    
-    <div id="select-type-visual">
-        <button value="isola">Isola</button>
-        <button value="tabella">Table</button>
-        <button class="active" value="calendario">Calendario</button>
-    </div>
 
-    <div id="container-isola" style="display: none">
+
+    <div id="container-isola" style="display: none" >
         <div id="attivita-nuova" class="attivita-box">
-            <h3 class="attivita-titolo">Crea nuova attività</h3>
             <div class="attivita-lista attivita-lista-isola">
                <div class="lista">
-                <h2>CREA</h2>
+                <h2 class="button" style="margin-left: 30vh; margin-top: 5vh; width: 300px;"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova attività</h2>
             </div>
             </div>
         </div>
     </div>
 
     <div id="container-tabella" style="display: none">
+ 
         <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
+           
             <div class="prima-cella">
-                <h3 class="attivita-titolo">Attivita</h3>
+                <h3 class="attivita-titolo">Attività</h3>
             </div>
 
             <div class="seconda-cella">
@@ -442,9 +1175,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <div class="quarta-cella">
                 <h3 class="attivita-titolo">Scadenza</h3>
             </div>
+
         </div>
     </div>
 
+    
     <div id="container-calendario" style="display: none">
         <div class="calendario-header">
             <p class="calendario-anno"><span></span></p>
@@ -465,7 +1200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <div class="attivita-lista attivita-lista-isola">
 
             <div class="lista lista-nuova">
-                <p class="lista-nome">+ Aggiungi una nuova lista</p>
+                <p class="lista-nome"> <img src="img/aggiungi.png" style="width: 15px; height: 15px;">  Aggiungi una nuova lista</p>
             </div>
         </div>
     </div>
@@ -504,10 +1239,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <div id="attivita-nuova-prototipo" style="display: none">
         <div class="lista-info">
             <form id="form-nuova-attivita" method="post">
-                <label for="">Titolo</label>
-                <input type="text" name="titolo" id="" required>
+                <label for="" class="title">Titolo</label>
+                <input  class="input" type="text" name="titolo" id="" required>
 
-                <input type="submit" value="Crea Attivita">
+               <div class="flex"><input type="submit" value="Crea Attività" class="crea"></div> 
             </form>
         </div>
     </div>
@@ -599,13 +1334,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </div>
 
     <div id="intestazione-prototipo" class="intestazione" style="display: none">
-        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Lun</p></div>
-        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Mar</p></div>
-        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Mer</p></div>
-        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Gio</p></div>
-        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Ven</p></div>
-        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Sab</p></div>
-        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Dom</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Lunedì</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Martedì</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Mercoledì</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Giovedì</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Venerdì</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Sabato</p></div>
+        <div class="intestazione-giorno"><p class="calendario-nome-giorno">Domenica</p></div>
     </div>
 
     <div id="lista-nuova-prototipo" style="display: none">

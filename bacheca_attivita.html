@@ -488,542 +488,542 @@
     } 
 
   .writing{
-    text-decoration: none;
-    font-family: "Concert One", sans-serif;
-    font-weight: bolder;
-    font-style: normal;
-    font-size: larger;
-    color: #000000;
-}
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+    }
 
-.writing:hover{
-   color: #f3e0ad;  
-   text-decoration: underline;
-}
+    .writing:hover{
+        color: #f3e0ad;  
+        text-decoration: underline;
+    }
 
-.pfp{
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    .pfp{
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
 
-    background-color: black;
-    color: #eee;
+        background-color: black;
+        color: #eee;
 
-    text-align: center;
-    align-items: center;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+
+        font-weight: 600;
+        font-family: "Concert One", sans-serif; 
+        text-transform: uppercase;
+    }
+
+
+
+    /*stile menu laterale*/
+        :root {
+    --background: #f3e0ad;
+    --navbar-width: 256px;
+    --navbar-width-min: 80px;
+    --navbar-dark-primary: #e0ab23; /*colore menu*/
+    --navbar-dark-secondary: #d05e26; /*colore righe*/
+    --navbar-light-primary: #eee; /*colore titolo avatar*/
+    --navbar-light-secondary: #eee; /*colore descrizione avatar*/
+    }
+
+
+    #nav-toggle:checked ~ #nav-header {
+    width: calc(var(--navbar-width-min) - 16px); 
+    }
+
+    #nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
+    width: var(--navbar-width-min); 
+    }
+
+    /*animazione per far sparire il titolo*/
+    #nav-toggle:checked ~ #nav-header #nav-title {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .1s; 
+    }
+
+    #nav-toggle:checked ~ #nav-header label[for="nav-toggle"] {
+    left: calc(50% - 8px);
+    transform: translate(-50%); 
+    }
+
+    #nav-toggle:checked ~ #nav-header #nav-toggle-burger {
+    background: #000000;
+    }
+
+    #nav-toggle:checked ~ #nav-header #nav-toggle-burger:before, #nav-toggle:checked ~ #nav-header #nav-toggle-burger::after {
+        width: 16px;
+        background: #000000;
+        transform: translate(0, 0) rotate(0deg); 
+    }
+
+    /*animazione per far sparire i contenuti del menu*/
+    #nav-toggle:checked ~ #nav-content .nav-button span {
+    opacity: 0;
+    transition: opacity .1s; 
+    }
+
+    /*animazione per far sparire i contenuti del menu*/
+    #nav-toggle:checked ~ #nav-content .nav-button button {
+    opacity: 0;
+    transition: opacity .1s; 
+    }
+
+    #nav-toggle:checked ~ #nav-content .nav-button .fas {
+    min-width: calc(100% - 16px); 
+    }
+
+    #nav-toggle:checked ~ #nav-footer #nav-footer-avatar {
+    margin-left: 0;
+    left: 50%;
+    transform: translate(-50%); 
+    }
+
+
+    #nav-bar {
+    position: absolute;
+    left: 1vw;
+    top: 126px;
+    background: var(--navbar-dark-primary);
+    border-radius: 16px;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    color: var(--navbar-light-primary);
+    font-family: "Concert One", sans-serif;
+    overflow: hidden;
+    user-select: none;
+    }
 
-    font-weight: 600;
-    font-family: "Concert One", sans-serif; 
-    text-transform: uppercase;
-}
+    #nav-bar hr {
+        margin: 0;
+        position: relative;
+        left: 16px;
+        width: calc(100% - 32px);
+        border: none;
+        border-top: solid 1px var(--navbar-dark-secondary); 
+    }
 
+    #nav-bar a {
+        color: inherit;
+        text-decoration: inherit; 
+    }
 
+    #nav-bar input[type="checkbox"] {
+        visibility: hidden; 
+    }
 
-/*stile menu laterale*/
-    :root {
-  --background: #f3e0ad;
-  --navbar-width: 256px;
-  --navbar-width-min: 80px;
-  --navbar-dark-primary: #e0ab23; /*colore menu*/
-  --navbar-dark-secondary: #d05e26; /*colore righe*/
-  --navbar-light-primary: #eee; /*colore titolo avatar*/
-  --navbar-light-secondary: #eee; /*colore descrizione avatar*/
-}
-
-
-#nav-toggle:checked ~ #nav-header {
-  width: calc(var(--navbar-width-min) - 16px); 
-}
-
-#nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
-  width: var(--navbar-width-min); 
-}
-
-/*animazione per far sparire il titolo*/
-#nav-toggle:checked ~ #nav-header #nav-title {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .1s; 
-}
-
-#nav-toggle:checked ~ #nav-header label[for="nav-toggle"] {
-  left: calc(50% - 8px);
-  transform: translate(-50%); 
-}
-
-#nav-toggle:checked ~ #nav-header #nav-toggle-burger {
-  background: #000000;
-}
-
-  #nav-toggle:checked ~ #nav-header #nav-toggle-burger:before, #nav-toggle:checked ~ #nav-header #nav-toggle-burger::after {
-    width: 16px;
-    background: #000000;
-    transform: translate(0, 0) rotate(0deg); 
-}
-
-/*animazione per far sparire i contenuti del menu*/
-#nav-toggle:checked ~ #nav-content .nav-button span {
-  opacity: 0;
-  transition: opacity .1s; 
-}
-
-/*animazione per far sparire i contenuti del menu*/
-#nav-toggle:checked ~ #nav-content .nav-button button {
-  opacity: 0;
-  transition: opacity .1s; 
-}
-
-#nav-toggle:checked ~ #nav-content .nav-button .fas {
-  min-width: calc(100% - 16px); 
-}
-
-#nav-toggle:checked ~ #nav-footer #nav-footer-avatar {
-  margin-left: 0;
-  left: 50%;
-  transform: translate(-50%); 
-}
-
-
-#nav-bar {
-  position: absolute;
-  left: 1vw;
-  top: 126px;
-  background: var(--navbar-dark-primary);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  color: var(--navbar-light-primary);
-  font-family: "Concert One", sans-serif;
-  overflow: hidden;
-  user-select: none;
-}
-
-  #nav-bar hr {
-    margin: 0;
+    #nav-header {
     position: relative;
+    width: var(--navbar-width);
     left: 16px;
-    width: calc(100% - 32px);
-    border: none;
-    border-top: solid 1px var(--navbar-dark-secondary); 
-}
-
-  #nav-bar a {
-    color: inherit;
-    text-decoration: inherit; 
-}
-
-  #nav-bar input[type="checkbox"] {
-    visibility: hidden; 
-}
-
-#nav-header {
-  position: relative;
-  width: var(--navbar-width);
-  left: 16px;
-  width: calc(var(--navbar-width) - 16px);
-  min-height: 80px;
-  background: var(--navbar-dark-primary);
-  border-radius: 16px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  transition: width .2s; 
-  color: #000000;
-  font-weight: 900;
-}
-  
-  #nav-header hr {
-    position: absolute;
-    bottom: 0; 
-}
-
-#nav-title {
-  font-size: 1.5rem;
-  transition: opacity 1s; 
-}
-
-label[for="nav-toggle"] {
-  position: absolute;
-  right: 0;
-  width: 3rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer; 
-}
-
-#nav-toggle-burger {
-  position: relative;
-  width: 16px;
-  height: 2px;
-  background: var(--navbar-dark-primary);
-  border-radius: 99px;
-}
-
-  #nav-toggle-burger:before, #nav-toggle-burger:after {
-    content: '';
-    position: absolute;
-    top: -6px;
-    width: 10px;
-    height: 2px;
-    background: #000000;
-    border-radius: 99px;
-    transform: translate(2px, 8px) rotate(30deg);
+    width: calc(var(--navbar-width) - 16px);
+    min-height: 80px;
+    background: var(--navbar-dark-primary);
+    border-radius: 16px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    transition: width .2s; 
+    color: #000000;
     font-weight: 900;
-}
+    }
+    
+    #nav-header hr {
+        position: absolute;
+        bottom: 0; 
+    }
 
-  #nav-toggle-burger:after {
-    top: 6px;
-    transform: translate(2px, -8px) rotate(-30deg); 
-}
+    #nav-title {
+    font-size: 1.5rem;
+    transition: opacity 1s; 
+    }
 
-#nav-content {
-  margin: -16px 0;
-  padding: 16px 0;
-  position: relative;
-  flex: 1;
-  width: var(--navbar-width);
-  background: var(--navbar-dark-primary);
-  box-shadow: 0 0 0 16px var(--navbar-dark-primary);
-  overflow-x: hidden;
-  transition: width .2s; 
-}
-
-  #nav-content::-webkit-scrollbar {
-    width: 8px;
-    height: 8px; 
-}
-
-
-  #nav-content::-webkit-scrollbar-button {
-    height: 16px; 
-}
-
-#nav-content-highlight {
-  position: absolute;
-  left: 16px;
-  top: -70px;
-  width: calc(100% - 16px);
-  height: 54px;
-  background: var(--background);
-  background-attachment: fixed;
-  border-radius: 16px 0 0 16px;
-  transition: top .2s; 
-}
-
-  #nav-content-highlight:before, #nav-content-highlight:after {
-    content: '';
+    label[for="nav-toggle"] {
     position: absolute;
     right: 0;
-    bottom: 100%;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    box-shadow: 16px 16px var(--background); 
-}
-
-  #nav-content-highlight:after {
-    top: 100%;
-    box-shadow: 16px -16px var(--background); 
-    border-radius: 16px;
-}
-
-.nav-button {
-  position: relative;
-  margin-left: 16px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  color: var(--navbar-light-secondary);
-  direction: ltr;
-  cursor: pointer;
-  z-index: 1;
-  transition: color .2s; 
-}
-
-.nav-button button{
-    transition: opacity 1s; 
-    color: #000000;
-    font-weight: 550;
-}
-
-  .nav-button span {
-    transition: opacity 1s; 
-    color: #000000;
-    font-weight: 550;
-}
-
-  .nav-button:nth-of-type(1):hover {
-    color: var(--navbar-dark-primary); 
-}
-
-
-  .nav-button:nth-of-type(2):hover {
-    color: var(--navbar-dark-primary); 
-}
-
-    .nav-button:nth-of-type(2):hover ~ #nav-content-highlight {
-      top: 70px; 
+    width: 3rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; 
     }
 
-  .nav-button:nth-of-type(3):hover {
-    color: var(--navbar-dark-primary); 
-}
-
-    .nav-button:nth-of-type(3):hover ~ #nav-content-highlight {
-      top: 124px; 
+    #nav-toggle-burger {
+    position: relative;
+    width: 16px;
+    height: 2px;
+    background: var(--navbar-dark-primary);
+    border-radius: 99px;
     }
 
-  .nav-button:nth-of-type(4):hover {
-    color: var(--navbar-dark-primary); 
-}
-
-    .nav-button:nth-of-type(4):hover ~ #nav-content-highlight {
-      top: 178px; 
+    #nav-toggle-burger:before, #nav-toggle-burger:after {
+        content: '';
+        position: absolute;
+        top: -6px;
+        width: 10px;
+        height: 2px;
+        background: #000000;
+        border-radius: 99px;
+        transform: translate(2px, 8px) rotate(30deg);
+        font-weight: 900;
     }
 
-  .nav-button:nth-of-type(5):hover {
-    color: var(--navbar-dark-primary); 
-}
-
-    .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
-      top: 232px; 
+    #nav-toggle-burger:after {
+        top: 6px;
+        transform: translate(2px, -8px) rotate(-30deg); 
     }
 
-  .nav-button:nth-of-type(6):hover {
-    color: var(--navbar-dark-primary); 
-}
-
-    .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
-      top: 286px; 
+    #nav-content {
+    margin: -16px 0;
+    padding: 16px 0;
+    position: relative;
+    flex: 1;
+    width: var(--navbar-width);
+    background: var(--navbar-dark-primary);
+    box-shadow: 0 0 0 16px var(--navbar-dark-primary);
+    overflow-x: hidden;
+    transition: width .2s; 
     }
 
- 
-    /* margine sinistro delle scritte*/
-#nav-bar .fas {
-  min-width: 3rem;
-  text-align: center; 
-}
+    #nav-content::-webkit-scrollbar {
+        width: 8px;
+        height: 8px; 
+    }
 
 
-/* popup uno */
-.popup .popuptext {
-  visibility: hidden;
-  background-color: #e0ab23;
-  color: #fff;
-  font-size: 18px;
-  text-align: left;
-  padding-left: 8px;
+    #nav-content::-webkit-scrollbar-button {
+        height: 16px; 
+    }
 
-  text-transform: none;
+    #nav-content-highlight {
+    position: absolute;
+    left: 16px;
+    top: -70px;
+    width: calc(100% - 16px);
+    height: 54px;
+    background: var(--background);
+    background-attachment: fixed;
+    border-radius: 16px 0 0 16px;
+    transition: top .2s; 
+    }
 
-  border-radius: 6px;
-  border-style: solid;
-  border-color: #eee;
-  border-width: 1px;
-
-  position: absolute;
-  z-index: 1;
-  top: 125%;
-  left: 79.5%;
-  
-  width: 400px;
-  height: 300px;
-}
-
-.popup .show {
-  visibility: visible;
-
-  top: 65%;
-  left: 73vh;
-}
-
-    /*Spazi di lavoro*/
-  .popup{
-    text-decoration: none;
-    font-family: "Concert One", sans-serif;
-    font-weight: bolder;
-    font-style: normal;
-    font-size: larger;
-    color: #000000;
-    cursor: pointer;
-    
-}
-
-.popup:hover{
-   color: #f3e0ad;  
-   text-decoration: underline;
-}
-
-hr{
-  border-color: #fff;
-  border-width: 1px;
-  margin-inline-end: auto;
-  border-style: solid;
-  opacity: 0.7;
-  width: 399px;
-}
-
-
-/* popup */
-.popup-2 .popuptext-2 {
-  visibility: hidden;
-  background-color: #e0ab23;
-  color: #fff;
-  font-size: 18px;
-  text-align: left;
-  padding-left: 8px;
-
-  text-transform: none;
-
-  border-radius: 6px;
-  border-style: solid;
-  border-color: #eee;
-  border-width: 1px;
-
-  position: absolute;
-  z-index: 1;
-  top: 125%;
-  
-  width: 300px;
-  height: 500px;
-}
-
-.popup-2 .show {
-  visibility: visible;
-
-  top: 75%;
-  right: 10px;
-}
-
-    /*Spazi di lavoro*/
-  .popup-2{
-    text-decoration: none;
-    font-family: "Concert One", sans-serif;
-    font-weight: bolder;
-    font-style: normal;
-    font-size: larger;
-    color: #000000;
-    cursor: pointer;
-    
-}
-
-.popup-2:hover{
-   color: #f3e0ad;  
-   text-decoration: underline;
-}
-
-
-.icon{
-    margin-right:10px;
-    height: 20px;
-    width: 20px;
-}
-
-.formato{
-    background-color: rgb(224, 171, 35, 0);
-    border-width: 0px;
-    font-family: "Concert One", sans-serif;
-    font-size: 16px;
-}
-
-
-circle{
-    fill: rgb(0, 0, 0);
-}
-
-.crea{
-    font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        background-color:#d05e26;
-        border: solid #8f411a;
-        border-radius: 16px;
-        border-width: 0 0 4px;
-        box-sizing: border-box;
-        color: #000000;
-        cursor: pointer;
-        display: inline-block;
-        font-size:large;
-        font-weight: 700;
-        letter-spacing: .8px;
-        line-height: 20px;
-        margin: 0px 5px 0px 5px;
-        overflow: visible;
-        padding: 13px 16px;
-        text-align: center;
-        text-transform: none;
-        touch-action: manipulation;
-        transform: translateZ(0);
-        transition: filter .2s;
-        vertical-align: middle;
-        white-space: nowrap;
-        width: 300px;
-        text-decoration: none;
-
-        margin-top: 30px;
-        padding-right: 20px;
-}
-
-.crea:after{
-    background-clip: padding-box;
-        background-color: #d05e26;
-        border: solid #8f411a;
-        border-radius: 16px;
-        border-width: 0 0 4px;
-        bottom: -4px;
-        content: "";
-        left: 0;
+    #nav-content-highlight:before, #nav-content-highlight:after {
+        content: '';
         position: absolute;
         right: 0;
-        top: 0;
-        z-index: -1;
-}
+        bottom: 100%;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        box-shadow: 16px 16px var(--background); 
+    }
 
-.crea:hover{
-    filter: brightness(1.1);
-}
+    #nav-content-highlight:after {
+        top: 100%;
+        box-shadow: 16px -16px var(--background); 
+        border-radius: 16px;
+    }
 
-.crea:active{
-    border-width: 4px 0 0;
-}
+    .nav-button {
+    position: relative;
+    margin-left: 16px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    color: var(--navbar-light-secondary);
+    direction: ltr;
+    cursor: pointer;
+    z-index: 1;
+    transition: color .2s; 
+    }
 
-.title{
-    font-family: "Concert One", sans-serif;
-    font-size: 25px;
-    padding-left: 30px;
-    padding-right: 15px;
-    color: white;
-}
+    .nav-button button{
+        transition: opacity 1s; 
+        color: #000000;
+        font-weight: 550;
+    }
 
-.input{
-    background-color: #eee;
-    font-family: "Concert One", sans-serif;
-    font-size: large;
+    .nav-button span {
+        transition: opacity 1s; 
+        color: #000000;
+        font-weight: 550;
+    }
 
-    border-width: 0px;
-    border-radius: 10px;
+    .nav-button:nth-of-type(1):hover {
+        color: var(--navbar-dark-primary); 
+    }
 
-    height: 30px;
-}
 
-.input:after{
-    border-width: 0px;
-}
+    .nav-button:nth-of-type(2):hover {
+        color: var(--navbar-dark-primary); 
+    }
 
-.calendario-nome-giorno{
-    font-family: "Concert One", sans-serif;
-}
+        .nav-button:nth-of-type(2):hover ~ #nav-content-highlight {
+        top: 70px; 
+        }
 
-.numero-giorno{
-    font-family: "Concert One", sans-serif;  
-}
+    .nav-button:nth-of-type(3):hover {
+        color: var(--navbar-dark-primary); 
+    }
 
-.vuoto{
-    display: none;
-    background-color: #f3e0ad;
+        .nav-button:nth-of-type(3):hover ~ #nav-content-highlight {
+        top: 124px; 
+        }
+
+    .nav-button:nth-of-type(4):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(4):hover ~ #nav-content-highlight {
+        top: 178px; 
+        }
+
+    .nav-button:nth-of-type(5):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
+        top: 232px; 
+        }
+
+    .nav-button:nth-of-type(6):hover {
+        color: var(--navbar-dark-primary); 
+    }
+
+        .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
+        top: 286px; 
+        }
+
+    
+        /* margine sinistro delle scritte*/
+    #nav-bar .fas {
+    min-width: 3rem;
+    text-align: center; 
+    }
+
+
+    /* popup uno */
+    .popup .popuptext {
+    visibility: hidden;
+    background-color: #e0ab23;
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    padding-left: 8px;
+
+    text-transform: none;
+
+    border-radius: 6px;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 1px;
+
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 79.5%;
+    
+    width: 400px;
+    height: 300px;
+    }
+
+    .popup .show {
+    visibility: visible;
+
+    top: 65%;
+    left: 73vh;
+    }
+
+        /*Spazi di lavoro*/
+    .popup{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+        cursor: pointer;
+        
+    }
+
+    .popup:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+    }
+
+    hr{
+    border-color: #fff;
+    border-width: 1px;
+    margin-inline-end: auto;
+    border-style: solid;
+    opacity: 0.7;
+    width: 399px;
+    }
+
+
+    /* popup */
+    .popup-2 .popuptext-2 {
+    visibility: hidden;
+    background-color: #e0ab23;
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    padding-left: 8px;
+
+    text-transform: none;
+
+    border-radius: 6px;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 1px;
+
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    
+    width: 300px;
+    height: 500px;
+    }
+
+    .popup-2 .show {
+    visibility: visible;
+
+    top: 75%;
+    right: 10px;
+    }
+
+        /*Spazi di lavoro*/
+    .popup-2{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+        cursor: pointer;
+        
+    }
+
+    .popup-2:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+    }
+
+
+    .icon{
+        margin-right:10px;
+        height: 20px;
+        width: 20px;
+    }
+
+    .formato{
+        background-color: rgb(224, 171, 35, 0);
+        border-width: 0px;
+        font-family: "Concert One", sans-serif;
+        font-size: 16px;
+    }
+
+
+    circle{
+        fill: rgb(0, 0, 0);
+    }
+
+    .crea{
+        font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            background-color:#d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-size:large;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: none;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 300px;
+            text-decoration: none;
+
+            margin-top: 30px;
+            padding-right: 20px;
+    }
+
+    .crea:after{
+        background-clip: padding-box;
+            background-color: #d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+    }
+
+    .crea:hover{
+        filter: brightness(1.1);
+    }
+
+    .crea:active{
+        border-width: 4px 0 0;
+    }
+
+    .title{
+        font-family: "Concert One", sans-serif;
+        font-size: 25px;
+        padding-left: 30px;
+        padding-right: 15px;
+        color: white;
+    }
+
+    .input{
+        background-color: #eee;
+        font-family: "Concert One", sans-serif;
+        font-size: large;
+
+        border-width: 0px;
+        border-radius: 10px;
+
+        height: 30px;
+    }
+
+    .input:after{
+        border-width: 0px;
+    }
+
+    .calendario-nome-giorno{
+        font-family: "Concert One", sans-serif;
+    }
+
+    .numero-giorno{
+        font-family: "Concert One", sans-serif;  
+    }
+
+    .vuoto{
+        display: none;
+        background-color: #f3e0ad;
 }
     </style>
 </head>
@@ -1065,35 +1065,35 @@ circle{
                      </div>
                      
              </div>
-
-      
-   </div>
+    </div>
 <!-- menu laterale -->
 
-   <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
-    <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
-        <hr/>
-    </div> 
+    <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
+            <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+                <hr/>
+            </div> 
 
-    <!--contenuto del menu laterale-->
+                <!--contenuto del menu laterale-->
 
-<div id="nav-content">
-    <div class="nav-button"><span>Viste della Bacheca</span></div>
+            <div id="nav-content">
+                <div class="nav-button"><span>Viste della Bacheca</span></div>
 
-    <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
+                <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
 
-    <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
+                <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
 
-    <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
+                <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
 
-    <hr/>
-    <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
+                <hr/>
+                <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
 
-   <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
+            <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
 
 
-</div>
-</div>
+            </div>
+        </div>
+    </div>
+
     <div id="cestino" class="cestino">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
             <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
@@ -1315,7 +1315,6 @@ circle{
                 <input type="submit" value="Aggiungi Lista">
             </form>
         </div>
-    </div>
     </div>
     <script>
         class Visualizator {

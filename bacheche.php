@@ -605,7 +605,7 @@
         }
 
         popup.add = function (elem) {
-            popup.empty();
+            popup.box.empty();
             let new_ = elem.clone(true);
             console.log(new_)
             new_.attr("id", "nuova-bacheca-popup");
