@@ -41,8 +41,26 @@
         body {
             background-color:  #f3e0ad;
         }
+        
         #popup {
             display: none;
+            width: 100vw;
+            height: 100vh;
+
+            overflow: hidden;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            background: rgba(145, 152, 163, 0.8);
+            box-sizing: border-box;
+            z-index: 200;
+        }
+
+        #popup-box {
+            padding: 10px;
+
             width: 60vw;
             height: 60vh;
 
@@ -53,9 +71,8 @@
             left: 20%;
 
             background-color: white;
-            z-index: 101;
-            padding: 20px;
         }
+
         #login {
             position: sticky;
             top: 10%;
@@ -371,7 +388,8 @@
 </head>
 <body>
     <div id="popup">
-
+        <div id="popup-box">
+        </div>
     </div>
 
     <!--parte della barra a sinistra-->
@@ -537,6 +555,7 @@
         });
 
         let popup = $("#popup");
+        popup.box = $("#popup-box");
 
         $("#nuova-bacheca").click(function (e) {
             e.stopPropagation();
@@ -571,7 +590,7 @@
             console.log(new_)
             new_.attr("id", "nuova-bacheca-popup");
             new_.show();
-            new_.appendTo(popup)
+            popup.box.append(new_);
 
             popup.mostra();
         }
