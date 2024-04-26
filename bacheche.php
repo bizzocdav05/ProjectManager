@@ -43,9 +43,6 @@
         }
         #popup {
             display: none;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             width: 100vw;
             height: 100vh;
 
@@ -63,12 +60,6 @@
         #popup-box {
             padding: 10px;
 
-=======
->>>>>>> parent of d157606... update bizzo
-=======
->>>>>>> parent of d157606... update bizzo
-=======
->>>>>>> parent of 6bddf13... modifiche bacheche
             width: 60vw;
             height: 60vh;
 
@@ -79,26 +70,10 @@
             left: 20%;
 
             background-color: white;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+            z-index: 101;
+            padding: 20px;
         }
 
-=======
-            z-index: 101;
-            padding: 20px;
-        }
->>>>>>> parent of d157606... update bizzo
-=======
-            z-index: 101;
-            padding: 20px;
-        }
->>>>>>> parent of d157606... update bizzo
-=======
-            z-index: 101;
-            padding: 20px;
-        }
->>>>>>> parent of 6bddf13... modifiche bacheche
         #login {
             position: sticky;
             top: 10%;
@@ -149,331 +124,314 @@
             height: 170px;
         }
 
-    /* stile "bottoni" */
-    .button {
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        background-color:#8f411a;
-        border: solid transparent;
-        border-radius: 16px;
-        border-width: 0 0 4px;
-        box-sizing: border-box;
-        color: #000000;
-        cursor: pointer;
-        display: inline-block;
-        font-size:large;
-        font-weight: 700;
-        letter-spacing: .8px;
-        line-height: 20px;
-        margin: 0px 5px 0px 5px;
-        overflow: visible;
-        padding: 13px 16px;
-        text-align: center;
-        text-transform: uppercase;
-        touch-action: manipulation;
-        transform: translateZ(0);
-        transition: filter .2s;
-        vertical-align: middle;
-        white-space: nowrap;
-        width: 100%;
-        text-decoration: none;
-    }
+        /* stile "bottoni" */
+        .button {
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            background-color:#8f411a;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-size:large;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 100%;
+            text-decoration: none;
+        }
 
-    .button:after {
-        background-clip: padding-box;
-        background-color: #d05e26;
-        border: solid transparent;
-        border-radius: 16px;
-        border-width: 0 0 4px;
-        bottom: -4px;
-        content: "";
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: -1;
-    }
+        .button:after {
+            background-clip: padding-box;
+            background-color: #d05e26;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+        }
 
-    .button:hover {
-        filter: brightness(1.1);
- 
-    }
+        .button:hover {
+            filter: brightness(1.1);
+    
+        }
 
-    .button:active {
-        border-width: 4px 0 0;
-        background: none;
-    }
+        .button:active {
+            border-width: 4px 0 0;
+            background: none;
+        }
 
-    /*"Chi siamo"/"Funzioni" */
-    .writing{
-        text-decoration: none;
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        font-style: normal;
-        font-size: larger;
-        color: #000000;
-    }
+        /*"Chi siamo"/"Funzioni" */
+        .writing{
+            text-decoration: none;
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            font-style: normal;
+            font-size: larger;
+            color: #000000;
+        }
 
-    .writing:hover{
-    color: #f3e0ad;  
-    text-decoration: underline;
-    }
+        .writing:hover{
+        color: #f3e0ad;  
+        text-decoration: underline;
+        }
 
-        /* stile "slogan" */
-    .title{
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        padding-top: 120px;
-        margin-right: 80px;
-        margin-left: 90px;
-    }
-<<<<<<< HEAD
-<<<<<<< HEAD
+            /* stile "slogan" */
+        .title{
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            padding-top: 120px;
+            margin-right: 80px;
+            margin-left: 90px;
+        }
 
-        /*immagini laterali superiori */
-    .top_img{
-        height: 300px;
-        width: 300px;
-        margin-right: 40px;
-        margin-top: 70px;
+            /*immagini laterali superiori */
+        .top_img{
+            height: 300px;
+            width: 300px;
+            margin-right: 40px;
+            margin-top: 70px;
 
-=======
+        }
+            /*immagini laterali superiori */
+        .top_img{
+            height: 300px;
+            width: 300px;
+            margin-right: 40px;
+            margin-top: 70px;
 
-        /*immagini laterali superiori */
-    .top_img{
-        height: 300px;
-        width: 300px;
-        margin-right: 40px;
-        margin-top: 70px;
+        }
 
->>>>>>> parent of d157606... update bizzo
-=======
+            /*immagini laterali superiori */
+        .top_img{
+            height: 300px;
+            width: 300px;
+            margin-right: 40px;
+            margin-top: 70px;
 
-        /*immagini laterali superiori */
-    .top_img{
-        height: 300px;
-        width: 300px;
-        margin-right: 40px;
-        margin-top: 70px;
+        }
 
->>>>>>> parent of d157606... update bizzo
-    }
+            /* parte superiore dell'header*/
+        .top_bar{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            
+        }
 
-        /* parte superiore dell'header*/
-    .top_bar{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        
-    }
+        /* parte intermedia dell'header*/
+        .middle_bar{
+            display: flex;
+            flex-direction:column;
+            background-color: #f3e0ad;
+        }
 
-    /* parte intermedia dell'header*/
-    .middle_bar{
-        display: flex;
-        flex-direction:column;
-        background-color: #f3e0ad;
-    }
+        /* titolo istruzioni*/
+        .subtitle{
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            margin-left: 90px;
+            padding-top: 200px;
+        }
 
-    /* titolo istruzioni*/
-    .subtitle{
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        margin-left: 90px;
-        padding-top: 200px;
-    }
+        /* introduzione istruzioni*/
+        .text{
+            font-family: "Outfit", sans-serif;
+            font-weight:900px;
+            font-optical-sizing: auto;
+            font-weight: 100px;
+            font-style: normal;
+            font-size: 25px;
+            margin-left: 90px;
+        }
 
-    /* introduzione istruzioni*/
-    .text{
-        font-family: "Outfit", sans-serif;
-        font-weight:900px;
+        /* titoli liste*/
+        .paragraph_title{
+            font-family: "Concert One", sans-serif;
         font-optical-sizing: auto;
         font-weight: 100px;
         font-style: normal;
-        font-size: 25px;
-        margin-left: 90px;
-    }
+        margin-left: 130px;
+        }
 
-    /* titoli liste*/
-    .paragraph_title{
-        font-family: "Concert One", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 100px;
-    font-style: normal;
-    margin-left: 130px;
-    }
-
-    /* body liste*/
-    .lista{
-        font-family: "Outfit", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 900px;
-        font-size: larger;
-        font-style: normal;
-        margin-left: 130px; 
-    }
+        /* body liste*/
+        .lista{
+            font-family: "Outfit", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 900px;
+            font-size: larger;
+            font-style: normal;
+            margin-left: 130px; 
+        }
 
 
-    /* dropdown di "Funzioni"*/
-    .dropdown {
-    position: relative;
-    display: inline-block;
-    }
+        /* dropdown di "Funzioni"*/
+        .dropdown {
+        position: relative;
+        display: inline-block;
+        }
 
-    /* contenuto del dropdown*/
-    .dropdown-content {
-        font-family: "Concert One", sans-serif;
-        font-weight: bold;
-        justify-content: flex-start;
-        align-items: center;
-        width: 130vh;
-        text-align: center;
-        height: 30vh;
-    }
-<<<<<<< HEAD
+        /* contenuto del dropdown*/
+        .dropdown-content {
+            font-family: "Concert One", sans-serif;
+            font-weight: bold;
+            justify-content: flex-start;
+            align-items: center;
+            width: 130vh;
+            text-align: center;
+            height: 30vh;
+        }
 
-    .dropdown-content > div {
-        justify-content: center;
-        align-items: center;
-    }
+        .dropdown-content > div {
+            justify-content: center;
+            align-items: center;
+        }
 
-    .dropdown-content > .dropwdown-elem {
-        justify-content: flex-start;
-        align-items: center;
-        width: 50%;
-    }
+        .dropdown-content > .dropwdown-elem {
+            justify-content: flex-start;
+            align-items: center;
+            width: 50%;
+        }
 
-=======
 
-    .dropdown-content > div {
-        justify-content: center;
-        align-items: center;
-    }
+        .dropdown-content > div {
+            justify-content: center;
+            align-items: center;
+        }
 
-    .dropdown-content > .dropwdown-elem {
-        justify-content: flex-start;
-        align-items: center;
-        width: 50%;
-    }
+        .dropdown-content > .dropwdown-elem {
+            justify-content: flex-start;
+            align-items: center;
+            width: 50%;
+        }
 
->>>>>>> parent of d157606... update bizzo
-    .dropdown-content {
-    visibility: hidden;
-    position: absolute;
-    z-index: 1;
-<<<<<<< HEAD
-    }
+        .dropdown-content {
+        visibility: hidden;
+        position: absolute;
+        z-index: 1;
+        }
 
-    .dropdown:hover .dropdown-content {
-    visibility: visible;
-    background-color: #f7eccd;
-    border-radius: 16px;
-    }
+        .dropdown:hover .dropdown-content {
+        visibility: visible;
+        background-color: #f7eccd;
+        border-radius: 16px;
+        }
 
-=======
-    }
+        .dropdown:hover .dropdown-content {
+        visibility: visible;
+        background-color: #f7eccd;
+        border-radius: 16px;
+        }
 
-    .dropdown:hover .dropdown-content {
-    visibility: visible;
-    background-color: #f7eccd;
-    border-radius: 16px;
-    }
+        /* barra superiore del dropdown*/
+        .top-row-dropdwn {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-wrap: nowrap;
+            padding-top: 10px;
+            padding-left: 10px;
+            padding-bottom: 10px;
+            padding-right: 10px;
+        }
 
->>>>>>> parent of d157606... update bizzo
-    /* barra superiore del dropdown*/
-    .top-row-dropdwn {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-        flex-wrap: nowrap;
-        padding-top: 10px;
-        padding-left: 10px;
-        padding-bottom: 10px;
-        padding-right: 10px;
-    }
+        /* parte inferiore del dropdown*/
+        .bottom-row-dropdwn {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: baseline;
+            flex-wrap: nowrap;
+            padding-top: 10px;
+            padding-left: 10px;
+            padding-bottom: 10px;
+            padding-right: 10px;
+        }
 
-    /* parte inferiore del dropdown*/
-    .bottom-row-dropdwn {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: baseline;
-        flex-wrap: nowrap;
-        padding-top: 10px;
-        padding-left: 10px;
-        padding-bottom: 10px;
-        padding-right: 10px;
-    }
+        /* icone all'interno di "Funzioni" */
+        .icons{
+            width: 50px;
+            height: 50px;
+        }
 
-    /* icone all'interno di "Funzioni" */
-    .icons{
-        width: 50px;
-        height: 50px;
-    }
+        /* stile link all'interno di "Funzioni" */
+        .Funzioni_link{
+        text-decoration: none;
+        color: #000000;
+        }
 
-    /* stile link all'interno di "Funzioni" */
-    .Funzioni_link{
-    text-decoration: none;
-    color: #000000;
-    }
+        .Funzioni_link:hover{
+            text-decoration: underline;
+        }
 
-    .Funzioni_link:hover{
-        text-decoration: underline;
-    }
+        /* barra per il bottone e l'ultima frase*/
+        .testo{
+            margin-left: 30px;
+            margin-top: 20px;
+            font-family: "Concert One", sans-serif;
+        }
 
-    /* barra per il bottone e l'ultima frase*/
-    .testo{
-        margin-left: 30px;
-        margin-top: 20px;
-        font-family: "Concert One", sans-serif;
-    }
+        /* ultima frase della pagina*/
+        .slogan{
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            padding-bottom: 20px;
+        }
 
-    /* ultima frase della pagina*/
-    .slogan{
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        padding-bottom: 20px;
-    }
-<<<<<<< HEAD
+        /* barra per il bottone e l'ultima frase*/
+        .bottom_bar{
+            display: flex;
+            flex-direction: column;
+            background-color: #f3e0ad;
+            align-items: center;
+            padding-top: 15vh;
+            padding-bottom: 100px;
+        }
 
-    /* barra per il bottone e l'ultima frase*/
-    .bottom_bar{
-        display: flex;
-        flex-direction: column;
-        background-color: #f3e0ad;
-        align-items: center;
-        padding-top: 15vh;
-        padding-bottom: 100px;
-    }
+        #container {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: flex-start;
+                flex-wrap: nowrap;
+        }
 
-    #container {
+        /* barra per il bottone e l'ultima frase*/
+        .bottom_bar{
+            display: flex;
+            flex-direction: column;
+            background-color: #f3e0ad;
+            align-items: center;
+            padding-top: 15vh;
+            padding-bottom: 100px;
+        }
+
+        #container {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
             align-items: flex-start;
             flex-wrap: nowrap;
-
-=======
-
-    /* barra per il bottone e l'ultima frase*/
-    .bottom_bar{
-        display: flex;
-        flex-direction: column;
-        background-color: #f3e0ad;
-        align-items: center;
-        padding-top: 15vh;
-        padding-bottom: 100px;
-    }
-
-    #container {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: flex-start;
-            flex-wrap: nowrap;
-
->>>>>>> parent of d157606... update bizzo
             overflow-x: auto;
 
             margin: 10px;
