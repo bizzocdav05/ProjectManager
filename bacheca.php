@@ -24,8 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     $data["attivita"] = get_dati_attivita($id_bacheca);    
 
-    $sql = "SELECT nome, cognome FROM Utenti WHERE ID=$id_utente;";
-    $data["nome_utente"] = $conn->query($sql)->fetch_assoc()["nome"] . " " . $conn->query($sql)->fetch_assoc()["cognome"];
+    //TOOD: crea nuovo elemento (attività, lista, checkbox, ...) -> attivita.php
 
     //TODO: gestione accessi
 
@@ -383,7 +382,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             border-radius: 10px;
         }
 
-        .calendario-arrow {
+        svg.calendario-arrow {
             width: 30px;
             height: 30px;
         }
@@ -941,6 +940,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     let array_giorni = Array.from({length: 7}, (_, j) => {
                         let current_date = new Date(date);
                         current_date.setDate(i * 7 + j + 1);
+                        console.log(current_date.toDateString())
                         return {
                             numero: current_date.getDate(),
                             is_valid: current_date.getMonth() == this.actual_date.getMonth() && current_date.getFullYear() == this.actual_date.getFullYear(),
@@ -1040,10 +1040,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     this.crea_calendario();
                     $("#container-calendario").show();
                 }
-            }
-
-            show_user_name() {
-                $(".pfp").text(dati.nome_utente.split(" ")[0][0] + " " + dati.nome_utente.split(" ")[1][0]);
             }
 
             clear_html() {
@@ -1166,7 +1162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         }
 
         // Passaggio dati
-        let dati = <?php echo json_encode($data); ?>;
+        let dati = {"codice_bacheca":"cT8rR4pAUo2rFTsT","privilegi":0,"attivita":{"length":3,"list":[{"info":{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","titolo":"prova","codice":"YVmAK5g3EscWUYUD"},"lista":{"length":2,"list":[{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","nome":"f","descrizione":"f","codice":"5049DcFe4Jzwpmpu","commento":{"list":[{"codice":"4dNtVFH7Bfw0YEw9","testo":"ciao","data_creazione":"2024-04-19","actual_user":true,"nome_utente":"d d"}],"length":1},"checkbox":{"list":[{"codice":"daEPAlhXM1lrc37g","testo":"prova2","is_check":"false"}],"length":1},"etichetta":{"list":[{"codice":"d525JXGMdmWJPJHE","testo":"prova","blue":"0","red":"122","green":"74"},{"codice":"in72eeAkAKgxYyCo","testo":"prova","blue":"0","red":"0","green":"0"}],"length":2},"scadenza":{"list":[{"codice":"tA8hnIv4h2Yc64B3","data":"2024-04-22","valida":false}],"length":1}},{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","nome":"f","descrizione":"f","codice":"NlrVwrPjLVOBPfNU","commento":{"list":[],"length":0},"checkbox":{"list":[],"length":0},"etichetta":{"list":[],"length":0},"scadenza":{"list":[],"length":0}}]}},{"info":{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","titolo":"prova","codice":"Y3HINakbhXS7hsUa"},"lista":{"length":0,"list":[]}},{"info":{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","titolo":"prova","codice":"bFWiV9JqfZVWGySU"},"lista":{"length":0,"list":[]}}]}};
 
         console.log(dati);
 
@@ -1175,7 +1171,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         let visual = new Visualizator(dati);
         visual.show_dati();
-        visual.show_user_name();
 
         $("body").on("submit", "#form-nuova-attivita", (function (e) {
             e.preventDefault();
@@ -1533,7 +1528,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         });
 
         // svg girare calendario
-        $(".calendario-arrow").click(function (e) {
+        $("svg.calendario-arrow").click(function (e) {
             let target = $(e.currentTarget);
             visual.skip_month(target.attr("direction") == "right");
         });

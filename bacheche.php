@@ -44,6 +44,7 @@
         
         #popup {
             display: none;
+<<<<<<< HEAD
             width: 100vw;
             height: 100vh;
 
@@ -61,6 +62,8 @@
         #popup-box {
             padding: 10px;
 
+=======
+>>>>>>> parent of d157606... update bizzo
             width: 60vw;
             height: 60vh;
 
@@ -71,8 +74,14 @@
             left: 20%;
 
             background-color: white;
+<<<<<<< HEAD
         }
 
+=======
+            z-index: 101;
+            padding: 20px;
+        }
+>>>>>>> parent of d157606... update bizzo
         #login {
             position: sticky;
             top: 10%;
@@ -201,6 +210,7 @@
         margin-right: 80px;
         margin-left: 90px;
     }
+<<<<<<< HEAD
 
         /*immagini laterali superiori */
     .top_img{
@@ -209,6 +219,16 @@
         margin-right: 40px;
         margin-top: 70px;
 
+=======
+
+        /*immagini laterali superiori */
+    .top_img{
+        height: 300px;
+        width: 300px;
+        margin-right: 40px;
+        margin-top: 70px;
+
+>>>>>>> parent of d157606... update bizzo
     }
 
         /* parte superiore dell'header*/
