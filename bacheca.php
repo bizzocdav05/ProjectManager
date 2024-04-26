@@ -1064,7 +1064,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     .vuoto{
         display: none;
         background-color: #f3e0ad;
-}
+    }
+
+    #content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: start;
+    }
     </style>
 </head>
 <body>
@@ -1106,30 +1113,81 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                      
              </div>
     </div>
-<!-- menu laterale -->
+    </div>
 
-    <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
-            <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
-                <hr/>
-            </div> 
+    <div id="content">
+        <!-- menu laterale -->
+        <div id="content-left">
+            <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
+                <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+                    <hr/>
+                </div> 
 
-                <!--contenuto del menu laterale-->
+                    <!--contenuto del menu laterale-->
 
-            <div id="nav-content">
-                <div class="nav-button"><span>Viste della Bacheca</span></div>
+                <div id="nav-content">
+                    <div class="nav-button"><span>Viste della Bacheca</span></div>
 
-                <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
+                    <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
 
-                <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
+                    <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
 
-                <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
+                    <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
 
-                <hr/>
-                <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
+                    <hr/>
+                    <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
 
-            <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
+                    <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
 
 
+                </div>
+            </div>
+        </div>
+
+        <div id="content-right">
+            <div id="container-isola" style="display: none" >
+                <div id="attivita-nuova" class="attivita-box">
+                    <div class="attivita-lista attivita-lista-isola">
+                    <div class="lista">
+                        <h2 class="button" style="margin-left: 30vh; margin-top: 5vh; width: 300px;"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova attività</h2>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-tabella" style="display: none">
+        
+                <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
+                
+                    <div class="prima-cella">
+                        <h3 class="attivita-titolo">Attività</h3>
+                    </div>
+
+                    <div class="seconda-cella">
+                        <h3 class="attivita-titolo">Liste</h3>
+                    </div>
+
+                    <div class="terza-cella">
+                        <h3 class="attivita-titolo">Etichette</h3>
+                    </div>
+
+                    <div class="quarta-cella">
+                        <h3 class="attivita-titolo">Scadenza</h3>
+                    </div>
+
+                </div>
+            </div>
+
+            
+            <div id="container-calendario" style="display: none">
+                <div class="calendario-header">
+                    <p class="calendario-anno"><span></span></p>
+                    <div>
+                        <svg class="calendario-arrow" direction="left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 493.468 493.468" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M246.736 0C110.688 0 .008 110.692.008 246.732c0 136.056 110.68 246.736 246.728 246.736S493.46 382.788 493.46 246.732C493.46 110.692 382.784 0 246.736 0m-49.144 249.536 94.764 94.776a5.28 5.28 0 0 1 1.568 3.776c0 1.448-.556 2.784-1.568 3.772l-8.96 8.98c-2.004 2.004-5.568 2.012-7.568 0l-110.14-110.136c-1.008-1.016-1.556-2.38-1.54-3.932a5.35 5.35 0 0 1 1.536-3.852l110.312-110.304a5.3 5.3 0 0 1 3.776-1.56c1.424 0 2.788.556 3.78 1.56l8.968 8.98c2.1 2.06 2.1 5.468.004 7.548l-94.932 94.944a3.846 3.846 0 0 0 0 5.448"/></svg>
+                        <svg class="calendario-arrow" direction="right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455 455" xml:space="preserve" stroke="#000" stroke-width=".005"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round" stroke="#CCC" stroke-width="2.73"/><path d="M227.5 0C101.855 0 0 101.855 0 227.5S101.855 455 227.5 455 455 353.145 455 227.5 353.145 0 227.5 0zm-28.024 355.589-21.248-21.178L284.791 227.5 178.228 120.589l21.248-21.178L327.148 227.5z"/></svg>
+                    </div>
+                </div>
+                <div class="calendario-body"></div>
             </div>
         </div>
     </div>
@@ -1143,52 +1201,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <div id="popup">
         <div id="popup-box">
         </div>
-    </div>
-
-
-    <div id="container-isola" style="display: none" >
-        <div id="attivita-nuova" class="attivita-box">
-            <div class="attivita-lista attivita-lista-isola">
-               <div class="lista">
-                <h2 class="button" style="margin-left: 30vh; margin-top: 5vh; width: 300px;"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova attività</h2>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="container-tabella" style="display: none">
- 
-        <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
-           
-            <div class="prima-cella">
-                <h3 class="attivita-titolo">Attività</h3>
-            </div>
-
-            <div class="seconda-cella">
-                <h3 class="attivita-titolo">Liste</h3>
-            </div>
-
-            <div class="terza-cella">
-                <h3 class="attivita-titolo">Etichette</h3>
-            </div>
-
-            <div class="quarta-cella">
-                <h3 class="attivita-titolo">Scadenza</h3>
-            </div>
-
-        </div>
-    </div>
-
-    
-    <div id="container-calendario" style="display: none">
-        <div class="calendario-header">
-            <p class="calendario-anno"><span></span></p>
-            <div>
-                <svg class="calendario-arrow" direction="left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 493.468 493.468" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M246.736 0C110.688 0 .008 110.692.008 246.732c0 136.056 110.68 246.736 246.728 246.736S493.46 382.788 493.46 246.732C493.46 110.692 382.784 0 246.736 0m-49.144 249.536 94.764 94.776a5.28 5.28 0 0 1 1.568 3.776c0 1.448-.556 2.784-1.568 3.772l-8.96 8.98c-2.004 2.004-5.568 2.012-7.568 0l-110.14-110.136c-1.008-1.016-1.556-2.38-1.54-3.932a5.35 5.35 0 0 1 1.536-3.852l110.312-110.304a5.3 5.3 0 0 1 3.776-1.56c1.424 0 2.788.556 3.78 1.56l8.968 8.98c2.1 2.06 2.1 5.468.004 7.548l-94.932 94.944a3.846 3.846 0 0 0 0 5.448"/></svg>
-                <svg class="calendario-arrow" direction="right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455 455" xml:space="preserve" stroke="#000" stroke-width=".005"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round" stroke="#CCC" stroke-width="2.73"/><path d="M227.5 0C101.855 0 0 101.855 0 227.5S101.855 455 227.5 455 455 353.145 455 227.5 353.145 0 227.5 0zm-28.024 355.589-21.248-21.178L284.791 227.5 178.228 120.589l21.248-21.178L327.148 227.5z"/></svg>
-            </div>
-        </div>
-        <div class="calendario-body"></div>
     </div>
 
     <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
