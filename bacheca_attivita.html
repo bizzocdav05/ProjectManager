@@ -49,8 +49,8 @@
         #popup-box {
             padding: 10px;
 
-            width: 60vh;
-            height: 40vh;
+            width: 80vh;
+            height: 70vh;
 
             overflow-y: auto;
 
@@ -118,9 +118,11 @@
             padding: 20px 0px;
 
             position: relative;
-            left: 250px;
+            left: 50px;
 
             font-family: "Concert One", sans-serif;
+
+            margin-right: 30px;
         }
 
         div.attivita-box-isola > h3 {
@@ -141,9 +143,11 @@
         }
 
         p.lista-nome {
-            font-size: 20px;
+            font-size: 23px;
             /* font-weight: 700; */
             margin: 0px;
+            font-family: "Concert One", sans-serif;
+
         }
 
         div.lista {
@@ -242,7 +246,8 @@
             width: 100%;
 
             border-bottom: 1px solid black;
-            padding-left: 25vh;
+            padding-left: 2vh;
+        
         }
 
         div.attivita-tabella:first-child {
@@ -297,9 +302,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 80%;
-            margin-left: 40vh;
-            padding-bottom: 50px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         div.calendario-header {
@@ -307,8 +312,9 @@
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            width: 70%;
-            padding-left: 80vh;
+            width: 50%;
+            margin-left: 50%;
+            margin-right: 50%;
         }
 
         div.calendario-header svg {
@@ -423,7 +429,6 @@
         /* tutta la pagina sotto la barra*/
         .header {
             background-color: #f3e0ad;
-            height: 100vh;
             width: 100%;
         }
 
@@ -496,7 +501,6 @@
         color: #000000;
     }
 
-<<<<<<< HEAD
     .writing:hover{
         color: #f3e0ad;  
         text-decoration: underline;
@@ -514,21 +518,6 @@
         align-items: center;
         display: flex;
         justify-content: space-around;
-=======
-.pfp{
-  border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    background-color: black;
-    color: #eee;
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-    font-weight: 600;
-    font-family: "Concert One", sans-serif; 
-}
->>>>>>> parent of 6bddf13... modifiche bacheche
 
         font-weight: 600;
         font-family: "Concert One", sans-serif; 
@@ -549,10 +538,12 @@
     }
 
 
+    /* spessore menu chiuso*/
     #nav-toggle:checked ~ #nav-header {
     width: calc(var(--navbar-width-min) - 16px); 
     }
 
+    /* spessore menu chiuso*/
     #nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
     width: var(--navbar-width-min); 
     }
@@ -564,15 +555,18 @@
     transition: opacity .1s; 
     }
 
+    /*posizione icona menu chiuso*/
     #nav-toggle:checked ~ #nav-header label[for="nav-toggle"] {
     left: calc(50% - 8px);
     transform: translate(-50%); 
     }
 
+    /*pare dell'icona del menu*/
     #nav-toggle:checked ~ #nav-header #nav-toggle-burger {
     background: #000000;
     }
 
+    /*posizione icona menu chiuso*/
     #nav-toggle:checked ~ #nav-header #nav-toggle-burger:before, #nav-toggle:checked ~ #nav-header #nav-toggle-burger::after {
         width: 16px;
         background: #000000;
@@ -591,21 +585,20 @@
     transition: opacity .1s; 
     }
 
+    /**/
     #nav-toggle:checked ~ #nav-content .nav-button .fas {
     min-width: calc(100% - 16px); 
     }
 
+    /**/
     #nav-toggle:checked ~ #nav-footer #nav-footer-avatar {
     margin-left: 0;
     left: 50%;
     transform: translate(-50%); 
     }
 
-
+    /*tutto il menu*/
     #nav-bar {
-    position: absolute;
-    left: 1vw;
-    top: 126px;
     background: var(--navbar-dark-primary);
     border-radius: 16px;
     display: flex;
@@ -614,8 +607,11 @@
     font-family: "Concert One", sans-serif;
     overflow: hidden;
     user-select: none;
+    margin-top:30px;
+    margin-left: 30px;
     }
 
+    /*linee del menu*/
     #nav-bar hr {
         margin: 0;
         position: relative;
@@ -630,6 +626,7 @@
         text-decoration: inherit; 
     }
 
+    /*rende invisibile la checkbox*/
     #nav-bar input[type="checkbox"] {
         visibility: hidden; 
     }
@@ -677,6 +674,7 @@
     height: 2px;
     background: var(--navbar-dark-primary);
     border-radius: 99px;
+    transition: background .2s;
     }
 
     #nav-toggle-burger:before, #nav-toggle-burger:after {
@@ -688,6 +686,7 @@
         background: #000000;
         border-radius: 99px;
         transform: translate(2px, 8px) rotate(30deg);
+        transition: .2s; 
         font-weight: 900;
     }
 
@@ -706,6 +705,8 @@
     box-shadow: 0 0 0 16px var(--navbar-dark-primary);
     overflow-x: hidden;
     transition: width .2s; 
+    direction: rtl;
+    height: var(--navbar-width);
     }
 
     #nav-content::-webkit-scrollbar {
@@ -730,7 +731,7 @@
     transition: top .2s; 
     }
 
- /*   #nav-content-highlight:before, #nav-content-highlight:after {
+    #nav-content-highlight:before, #nav-content-highlight:after {
         content: '';
         position: absolute;
         right: 0;
@@ -744,8 +745,7 @@
     #nav-content-highlight:after {
         top: 100%;
         box-shadow: 16px -16px var(--background); 
-        border-radius: 16px;
-    }*/
+    }
 
     .nav-button {
     position: relative;
@@ -805,17 +805,17 @@
         color: var(--navbar-dark-primary); 
     }
 
-        .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
+    .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
         top: 232px; 
-        }
+    }
 
     .nav-button:nth-of-type(6):hover {
         color: var(--navbar-dark-primary); 
     }
 
-        .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
+    .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
         top: 286px; 
-        }
+    }
 
     
         /* margine sinistro delle scritte*/
@@ -1040,7 +1040,137 @@
     .vuoto{
         display: none;
         background-color: #f3e0ad;
-}
+    }
+
+    #content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: start;
+    }
+
+    #content-right {
+        width: 100%;
+        padding-bottom: 50px;
+    }
+
+    .btn-scadenza-nuovo{
+        font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            background-color:#d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-size:large;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: none;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 180px;
+            text-decoration: none;
+    }
+
+    .btn-scadenza-nuovo:after{
+        background-clip: padding-box;
+            background-color: #d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+    }
+
+    .btn-scadenza-nuovo:hover{
+        filter: brightness(1.1);
+    }
+
+    .btn-scadenza-nuovo:active{
+        border-width: 4px 0 0;
+    }
+
+    .lista-text{
+        font-family: "Concert One", sans-serif;
+        font-size: 25px;
+        padding-left: 30px;
+        padding-right: 15px;
+        color: white;
+    }
+
+    .btn-etichetta-nuova , .btn-etichetta-reset , .btn-checkbox-crea{
+        font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            background-color:#d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-size:large;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: none;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 150px;
+            text-decoration: none;
+    }
+
+    .btn-etichetta-nuova .btn-etichetta-reset:after{
+        background-clip: padding-box;
+            background-color: #d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+    }
+
+    .btn-etichetta-nuova .btn-etichetta-reset:hover{
+        filter: brightness(1.1);
+    }
+
+    .btn-etichetta-nuova .btn-etichetta-reset:active{
+        border-width: 4px 0 0;
+    }
+
+    .lista-descrizione{
+        font-family: "Concert One", sans-serif;
+        font-size: 23px;
+    }
+
     </style>
 </head>
 <body>
@@ -1057,7 +1187,7 @@
                <div class="button" > Crea una nuova bacheca </div>
 
                 <!--tutte le bacheche di un account-->
-                  <div class="popup" onclick="popup_function()"> Spazi di Lavoro
+                  <div class="popup"> Spazi di Lavoro
 
                   <div class="popuptext" id="myPopup"> <p style="margin: 10px;"> La tua Bacheca attuale </p>
                   <hr/>
@@ -1074,7 +1204,7 @@
    
                <div class="navbar-left">
                  <div class="pfp" > E T</div>
-                     <div class="popup-2" onclick="popup_function_2()" style="margin-left: 0px;">Account
+                     <div class="popup-2"  style="margin-left: 0px;">Account
 
                        <div class="popuptext-2" id="myPopup_2"> prova </div>
                      
@@ -1082,87 +1212,94 @@
                      
              </div>
     </div>
-<!-- menu laterale -->
+    </div>
 
-    <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
-            <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
-                <hr/>
-            </div> 
+    <div id="content">
+        <!-- menu laterale -->
+        <div id="content-left">
+            <div id="nav-bar"><input id="nav-toggle" type="checkbox" />
+                <div id="nav-header"><a id="nav-title" target="_blank">S<i class="fab fa-codepen"></i>pazio di Lavoro</a><label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+                    <hr/>
+                </div> 
 
-                <!--contenuto del menu laterale-->
+                    <!--contenuto del menu laterale-->
 
-            <div id="nav-content">
-                <div class="nav-button"><span>Viste della Bacheca</span></div>
+                <div id="nav-content">
+                    <div class="nav-button"><span>Viste della Bacheca</span></div>
 
-                <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
+                    <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
 
-                <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
+                    <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
 
-                <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
+                    <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
 
-                <hr/>
-                <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
+                    <hr/>
+                    <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
 
-            <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
+                    <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
 
 
+                </div>
+            </div>
+        </div>
+
+        <div id="content-right">
+            <div id="container-isola" style="display: none" >
+                <div id="attivita-nuova" class="attivita-box">
+                    <div class="attivita-lista attivita-lista-isola">
+                    <div class="lista">
+                        <h2 class="button" style="margin-left: 30vh; margin-top: 5vh; width: 300px;"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova attività</h2>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-tabella" style="display: none">
+        
+                <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
+                
+                    <div class="prima-cella">
+                        <h3 class="attivita-titolo">Attività</h3>
+                    </div>
+
+                    <div class="seconda-cella">
+                        <h3 class="attivita-titolo">Liste</h3>
+                    </div>
+
+                    <div class="terza-cella">
+                        <h3 class="attivita-titolo">Etichette</h3>
+                    </div>
+
+                    <div class="quarta-cella">
+                        <h3 class="attivita-titolo">Scadenza</h3>
+                    </div>
+
+                </div>
+            </div>
+
+            
+            <div id="container-calendario" style="display: none">
+                <div class="calendario-header">
+                    <p class="calendario-anno"><span></span></p>
+                    <div>
+                        <svg class="calendario-arrow" direction="left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 493.468 493.468" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M246.736 0C110.688 0 .008 110.692.008 246.732c0 136.056 110.68 246.736 246.728 246.736S493.46 382.788 493.46 246.732C493.46 110.692 382.784 0 246.736 0m-49.144 249.536 94.764 94.776a5.28 5.28 0 0 1 1.568 3.776c0 1.448-.556 2.784-1.568 3.772l-8.96 8.98c-2.004 2.004-5.568 2.012-7.568 0l-110.14-110.136c-1.008-1.016-1.556-2.38-1.54-3.932a5.35 5.35 0 0 1 1.536-3.852l110.312-110.304a5.3 5.3 0 0 1 3.776-1.56c1.424 0 2.788.556 3.78 1.56l8.968 8.98c2.1 2.06 2.1 5.468.004 7.548l-94.932 94.944a3.846 3.846 0 0 0 0 5.448"/></svg>
+                        <svg class="calendario-arrow" direction="right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455 455" xml:space="preserve" stroke="#000" stroke-width=".005"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round" stroke="#CCC" stroke-width="2.73"/><path d="M227.5 0C101.855 0 0 101.855 0 227.5S101.855 455 227.5 455 455 353.145 455 227.5 353.145 0 227.5 0zm-28.024 355.589-21.248-21.178L284.791 227.5 178.228 120.589l21.248-21.178L327.148 227.5z"/></svg>
+                    </div>
+                </div>
+                <div class="calendario-body"></div>
             </div>
         </div>
     </div>
 
     <div id="cestino" class="cestino">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><circle cx="256" cy="256" r="48" fill="#000000"></circle><circle cx="256" cy="128" r="48" fill="#000000"></circle><circle cx="256" cy="384" r="48" fill="#000000"></circle></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
+            <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
+        </svg>
     </div>
 
     <div id="popup">
         <div id="popup-box">
         </div>
-    </div>
-
-
-    <div id="container-isola" style="display: none" >
-        <div id="attivita-nuova" class="attivita-box">
-            <div class="attivita-lista attivita-lista-isola">
-               <div class="lista">
-                <h2 class="button" style="margin-left: 30vh; margin-top: 5vh; width: 300px;"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova attività</h2>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="container-tabella" style="display: none">
- 
-        <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
-           
-            <div class="prima-cella">
-                <h3 class="attivita-titolo">Attività</h3>
-            </div>
-
-            <div class="seconda-cella">
-                <h3 class="attivita-titolo">Liste</h3>
-            </div>
-
-            <div class="terza-cella">
-                <h3 class="attivita-titolo">Etichette</h3>
-            </div>
-
-            <div class="quarta-cella">
-                <h3 class="attivita-titolo">Scadenza</h3>
-            </div>
-
-        </div>
-    </div>
-
-    
-    <div id="container-calendario" style="display: none">
-        <div class="calendario-header">
-            <p class="calendario-anno"><span></span></p>
-            <div>
-                <svg class="calendario-arrow" direction="left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 493.468 493.468" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M246.736 0C110.688 0 .008 110.692.008 246.732c0 136.056 110.68 246.736 246.728 246.736S493.46 382.788 493.46 246.732C493.46 110.692 382.784 0 246.736 0m-49.144 249.536 94.764 94.776a5.28 5.28 0 0 1 1.568 3.776c0 1.448-.556 2.784-1.568 3.772l-8.96 8.98c-2.004 2.004-5.568 2.012-7.568 0l-110.14-110.136c-1.008-1.016-1.556-2.38-1.54-3.932a5.35 5.35 0 0 1 1.536-3.852l110.312-110.304a5.3 5.3 0 0 1 3.776-1.56c1.424 0 2.788.556 3.78 1.56l8.968 8.98c2.1 2.06 2.1 5.468.004 7.548l-94.932 94.944a3.846 3.846 0 0 0 0 5.448"/></svg>
-                <svg class="calendario-arrow" direction="right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455 455" xml:space="preserve" stroke="#000" stroke-width=".005"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round" stroke="#CCC" stroke-width="2.73"/><path d="M227.5 0C101.855 0 0 101.855 0 227.5S101.855 455 227.5 455 455 353.145 455 227.5 353.145 0 227.5 0zm-28.024 355.589-21.248-21.178L284.791 227.5 178.228 120.589l21.248-21.178L327.148 227.5z"/></svg>
-            </div>
-        </div>
-        <div class="calendario-body"></div>
     </div>
 
     <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
@@ -1233,8 +1370,8 @@
             <div class="lista-etichetta-box">
             </div>
             <div class="etichetta-nuova">
-                <input type="text" name="testo" id="" placeholder="Nome">
-                <input type="color" name="colore" id="">
+                <input type="text" name="testo" id="" placeholder="Nome" class="input">
+                <input type="color" name="colore" id="" class="input">
                 <button class="btn-etichetta-nuova">Crea</button>
                 <button class="btn-etichetta-reset">Annulla</button>
             </div>
@@ -1243,14 +1380,14 @@
             <div class="lista-checkbox-box">
             </div>
             <div class="checkbox-nuovo">
-                <textarea name="testo" id="" cols="40" rows="2" placeholder="Nome"></textarea>
+                <textarea name="testo" id="" cols="40" rows="2" placeholder="Inserisci la tua checkbox" class="input"></textarea>
                 <button class="btn-checkbox-nuovo">Crea</button>
                 <button class="btn-checkbox-reset">Annulla</button>
             </div>
 
             <p class="lista-text">Commento</p>
             <div class="commento-nuovo">
-                <textarea name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento"></textarea>
+                <textarea name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento" class="input"></textarea>
                 <button class="btn-commento-nuovo">Invia</button>
                 <button class="btn-commento-reset">Annulla</button>
             </div>
@@ -1320,13 +1457,13 @@
     <div id="lista-nuova-prototipo" style="display: none">
         <div class="lista-info">
             <form class="form-nuova-lista" method="post">
-                <label for="">Nome</label>
-                <input type="text" name="nome" id="">
+                <label for="" class="title" style="margin-left: 70px;">Nome</label>
+                <input type="text" name="nome" id="" class="input">
 
-                <label for="">Descrizione</label>
-                <textarea name="descrizione" id="" cols="30" rows="10"></textarea>
+                <label for="" class="title" style="margin-left: 30px;">Descrizione</label>
+                <textarea name="descrizione" id="" cols="10" rows="40" class="input" style="margin-top: 30px; height: 90px; width: 150px;"></textarea>
 
-                <input type="submit" value="Aggiungi Lista">
+                <input type="submit" value="Aggiungi Lista" class="crea" style="margin-left: 70px;">
             </form>
         </div>
     </div>
