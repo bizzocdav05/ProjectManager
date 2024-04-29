@@ -337,9 +337,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 80%;
-            margin-left: 40vh;
-            padding-bottom: 50px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         div.calendario-header {
@@ -347,8 +347,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            width: 70%;
-            padding-left: 80vh;
+            width: 50%;
+            margin-left: 50%;
         }
 
         div.calendario-header svg {
@@ -463,7 +463,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         /* tutta la pagina sotto la barra*/
         .header {
             background-color: #f3e0ad;
-            height: 100vh;
             width: 100%;
         }
 
@@ -627,9 +626,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
 
     #nav-bar {
-    position: absolute;
-    left: 1vw;
-    top: 126px;
     background: var(--navbar-dark-primary);
     border-radius: 16px;
     display: flex;
@@ -1071,6 +1067,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         flex-direction: row;
         justify-content: flex-start;
         align-items: start;
+    }
+
+    #content-right {
+        width: 100%;
     }
     </style>
 </head>
