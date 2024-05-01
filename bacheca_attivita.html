@@ -143,10 +143,10 @@
         }
 
         p.lista-nome {
-            font-size: 23px;
             /* font-weight: 700; */
             margin: 0px;
             font-family: "Concert One", sans-serif;
+          /*  font-size:23px;*/
 
         }
 
@@ -229,6 +229,7 @@
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
+            padding-left: 30px;
         }
 
         p.commento-utente {
@@ -1166,10 +1167,21 @@
         border-width: 4px 0 0;
     }
 
-    .lista-descrizione{
-        font-family: "Concert One", sans-serif;
-        font-size: 23px;
+    .name{
+        display: flex;
+        justify-content: space-around;
+        font-size: 30px;
+        color: #eee;
+        text-align: center;
     }
+
+    .description{
+        font-size: 23px;
+        font-family: "Concert One", sans-serif;
+        padding-left: 30px;
+        color: #000000;
+    }
+
 
     </style>
 </head>
@@ -1361,10 +1373,10 @@
     <div id="lista-info-prototipo" class="lista-info-box" style="display: none">
         <div class="lista-info">
             <p class="lista-codice">Codice: <span></span></p>
-            <p class="lista-nome text-mod"><span></span></p>
+            <p class="lista-nome text-mod name"><span></span></p>
 
             <p class="lista-text">Descrizione</p>
-            <p class="lista-descrizione text-mod"><span></span></p>
+            <p class="lista-descrizione text-mod description"><span></span></p>
 
             <p class="lista-text">Etichetta</p>
             <div class="lista-etichetta-box">
