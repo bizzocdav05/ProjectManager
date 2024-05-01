@@ -16,19 +16,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     $temp = set_bacheca($codice_bacheca);
     $id_bacheca = $temp[0];
     $privilegi = $temp[1];
+    $id_console_bacheca = $conn->query("SELECT console FROM Bacheca WHERE ID=$id_bacheca;")->fetch_assoc()["console"];
 
     $data["codice_bacheca"] = $codice_bacheca;
     $data["privilegi"] = $privilegi;
-
-    //TODO: considerare l'idea di utilizzare questa pagina come API e mostra il tutto in una hmtl usando un JSON come struttura
 
     $data["attivita"] = get_dati_attivita($id_bacheca);    
 
     //TOOD: crea nuovo elemento (attività, lista, checkbox, ...) -> attivita.php
 
     //TODO: gestione accessi
+    $data["membri"] = get_membri_bacheca($id_bacheca, $id_utente);
+    $data["membri"]["proprietario"] = ($id_console_bacheca == $id_console);
+    
+    if (!$data["membri"]["proprietario"]) {
+        $data["membri"]["proprietario_nome"] = get_nome_utente(null, $id_console_bacheca);
+    }
 
-    // echo "<script> let dati=" . json_encode($data) . ";</script>";
+    $data["codice_invito"] = get_codice_invito($id_bacheca);
+
+    $data["nome_utente"] = get_nome_utente($id_utente);
+
     $conn->close();
 
 } else {
@@ -52,425 +60,423 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <title>Bacheca</title>
 
     <style>
-        #cestino {
-            width: 100px;
-            height: 100px;
-            display: none;
-        }
-
-        .cestino {
-            margin-left: 5px;
-            margin-right: 5px;
-            cursor: pointer;
-        }
-
-        body{
-            margin:0px;
-            background-color: #f3e0ad;
-            overflow-x:hidden;
-        }
-
-        #popup {
-            display: none;
-            width: 100vw;
-            height: 100vh;
-
-            overflow: hidden;
-
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            background: rgba(145, 152, 163, 0.8);
-            box-sizing: border-box;
-            z-index: 200;
-        }
-
-        #popup-box {
-            padding: 10px;
-
-            width: 60vh;
-            height: 40vh;
-
-            overflow-y: auto;
-
-            position: absolute;
-            top: 20%;
-            left: 35%;
-
-            background-color: #e0ab23;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-
-            border-radius: 16px;
-        }
-
-        #container-isola {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: flex-start;
-            flex-wrap: nowrap;
-
-            overflow-x: auto;
-
-            margin: 10px;
-        }
-
-        div.attivita-header {
-            display: flex;
-            flex-direction: revert;
-            align-items: center;
-            justify-content: space-between;
-            width: 80%;
-
-            border-style: solid;
-            border-width: 2px;
-            border-color: #000000;
-
-            box-shadow: 2px 2px 0px 0px black;
-            border-radius: 12px;
-            padding-left: 12px;
-        }
-    
-
-        div.attivita-box > div.attivita-info {
-            display: none;
-        }
-
-        div.attivita-box-isola {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            min-width: 250px;
-            width: fit-content;
-            height: auto;
-            min-height: 50px;
-
-            background-color: #e0ab23;
-            color: #000000;
-
-            border-radius: 10px;
-
-            padding: 20px 0px;
-
-            position: relative;
-            left: 250px;
-
-            font-family: "Concert One", sans-serif;
-        }
-
-        div.attivita-box-isola > h3 {
-            border-bottom: 1px solid white;
-            width: 80%;
-            font-size: 30px;
-            margin-top: 0px;
-        }
-
-        div.attivita-lista-isola {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            padding-bottom: 10px;
-            width: 100%;
-        }
-
-        p.lista-nome {
-            font-size: 20px;
-            /* font-weight: 700; */
-            margin: 0px;
-        }
-
-        div.lista {
-            text-align: left;
-            width: 90%;
-            border-radius: 10px;
-
-
-            padding: 5px 0px 10px 5px;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            box-shadow: 2px 2px 0px 0px black;
-
-        }
-
-        div.lista > p.lista-nome {
-            margin: 0px;
-        }
-
-        div.lista > p.lista-nome:hover {
-            cursor: pointer;
-        }
-
-        /* nuova attivta */
-        #attivita-nuova div.lista {
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            box-shadow: none;
-        }
-
-        #attivita-nuova div.lista:hover {
-            cursor: pointer;
-        }
-
-        p.text-mod > span:focus {
-            display: inline-block;
-            min-width: 200px;
-            /* width: 110%; */
-            border: 1px solid black;
-            padding: 2px;
-            border-radius: 5px;
-        }
-
-        div.etichetta-nuova {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        p.text-mod > span {
-            min-width: 20px;
-        }
-
-        p.etichetta-text {
-            width: fit-content;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        div.etichetta p {
-            margin: 0px;
-        }
-
-        /* div.lista-etichetta-box {
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-        } */
-
-        div.checkbox, div.commento, div.etichetta {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        p.commento-utente {
-            width: 40px;
-            min-width: 40px;
-            max-width: 40px;
-            word-wrap: break-word;
-        }
-
-        div.attivita-tabella {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-
-            border-bottom: 1px solid black;
-            padding-left: 25vh;
-        }
-
-        div.attivita-tabella:first-child {
-            border-top: 1px solid black;
-            font-family: "Concert One", sans-serif;
-        }
-
-        div.attivita-tabella > div.prima-cella {
-            width: 30%;
-            /* margin-top: 20px; */
-        }
-
-        div.attivita-tabella > div.seconda-cella {
-            width: 30%;
-            /* margin-top: 20px; */
-        }
-
-        div.attivita-tabella > div.terza-cella {
-            width: 20%;
-        }
-
-        div.attivita-tabella > div.quarta-cella {
-            width: 20%;
-        }
-
-        div.attivita-tabella > div.prima-cella h3.attivita-titolo {
-            text-align: center;
-        }
-
-        div.attivita-tabella > div.quarta-cella p.lista-text {
-            width: fit-content;
-            padding: 7px;
-            border-radius: 7px;
-        }
-
-    /*    #select-type-visual > button.active {
-            background-color: green;
-        }*/
-
-        p.scadenza-valida {
-            background-color: #b7e023;
-            color: white;
-        }
-
-        p.scadenza-invalida {
-            background-color: #E04D23;
-            color: white;
-        }
-
-        #container-calendario {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        div.calendario-header {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            width: 50%;
-            margin-left: 50%;
-        }
-
-        div.calendario-header svg {
-            margin-left: 20px;
-            margin-right: 20px;
-        }
-
-        div.calendario-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        div.settimana,
-        div.intestazione {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        div.giorno,
-        div.intestazione-giorno {
-            text-align: center;
-            width: 14.2%;
-        }
-
-        div.giorno {
-            padding: 5px;
-            border: 1px solid black;
-            /* height: 30px; */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: start;
-        }
-
-        div.giorno.invalid {
-            background-color: rgb(214, 208, 208);
-            opacity: 0.6;
-        }
-
-        div.numero-giorno.active {
-            background-color: #adc0f3;
-            color: white;
-            border-radius: 5px;
-            width: 100%;
-        }
-
-        div.scadenza-giorno {
-            height: 8vw;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 90%;
-            margin-left: 5%;
-        }
-
-        div.scadenza-giorno.active {
-            background-color: gray;
-            border-radius: 10px;
-        }
-
-        svg.calendario-arrow {
-            width: 30px;
-            height: 30px;
-        }
-
-        p.calendario-anno {
-            font-size: 40px;
-            font-weight: bold;
-            font-family: "Concert One", sans-serif;
-            text-transform: capitalize;
-
-            text-align: center;
-        }
-
-               /* barra superiore della pagina*/
-               .navbar {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            background-color: #e0ab23;
-            width: 100%;
-        }
-
-        /* */
-        .navbar > * {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: center;
-            height: 115px;
-            background-color: #e0ab23;
-            margin: 0;
-        }
-
-        /* */
-        .navbar-left > *, .navbar-right > * {
-            margin: 20px;
-        }
-
-        /* tutta la pagina sotto la barra*/
-        .header {
-            background-color: #f3e0ad;
-            width: 100%;
-        }
-
-        /* immagine del logo nella barra superiore*/
-        .logo {
-            width: 170px;
-            height: 170px;
-        }
+    #cestino {
+        width: 100px;
+        height: 100px;
+        display: none;
+    }
+
+    .cestino {
+        margin-left: 5px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    body{
+        margin:0px;
+        background-color: #f3e0ad;
+        overflow-x:hidden;
+    }
+
+    #popup {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+
+        overflow: hidden;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        background: rgba(145, 152, 163, 0.8);
+        box-sizing: border-box;
+        z-index: 200;
+    }
+
+    #popup-box {
+        padding: 10px;
+
+        width: 60vh;
+        height: 40vh;
+
+        overflow-y: auto;
+
+        position: absolute;
+        top: 20%;
+        left: 35%;
+
+        background-color: #e0ab23;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        border-radius: 16px;
+    }
+
+    #container-isola {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+
+        overflow-x: auto;
+
+        margin: 10px;
+    }
+
+    div.attivita-header {
+        display: flex;
+        flex-direction: revert;
+        align-items: center;
+        justify-content: space-between;
+        width: 80%;
+
+        border-style: solid;
+        border-width: 2px;
+        border-color: #000000;
+
+        box-shadow: 2px 2px 0px 0px black;
+        border-radius: 12px;
+        padding-left: 12px;
+    }
+
+
+    div.attivita-box > div.attivita-info {
+        display: none;
+    }
+
+    div.attivita-box-isola {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        min-width: 250px;
+        width: fit-content;
+        height: auto;
+        min-height: 50px;
+
+        background-color: #e0ab23;
+        color: #000000;
+
+        border-radius: 10px;
+
+        padding: 20px 0px;
+
+        position: relative;
+
+        font-family: "Concert One", sans-serif;
+    }
+
+    div.attivita-box-isola > h3 {
+        border-bottom: 1px solid white;
+        width: 80%;
+        font-size: 30px;
+        margin-top: 0px;
+    }
+
+    div.attivita-lista-isola {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        padding-bottom: 10px;
+        width: 100%;
+    }
+
+    p.lista-nome {
+        font-size: 20px;
+        /* font-weight: 700; */
+        margin: 0px;
+    }
+
+    div.lista {
+        text-align: left;
+        width: 90%;
+        border-radius: 10px;
+
+
+        padding: 5px 0px 10px 5px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        box-shadow: 2px 2px 0px 0px black;
+
+    }
+
+    div.lista > p.lista-nome {
+        margin: 0px;
+    }
+
+    div.lista > p.lista-nome:hover {
+        cursor: pointer;
+    }
+
+    /* nuova attivta */
+    #attivita-nuova div.lista {
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        box-shadow: none;
+    }
+
+    #attivita-nuova div.lista:hover {
+        cursor: pointer;
+    }
+
+    p.text-mod > span:focus {
+        display: inline-block;
+        min-width: 200px;
+        /* width: 110%; */
+        border: 1px solid black;
+        padding: 2px;
+        border-radius: 5px;
+    }
+
+    div.etichetta-nuova {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    p.text-mod > span {
+        min-width: 20px;
+    }
+
+    p.etichetta-text {
+        width: fit-content;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    div.etichetta p {
+        margin: 0px;
+    }
+
+    /* div.lista-etichetta-box {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    } */
+
+    div.checkbox, div.commento, div.etichetta {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    p.commento-utente {
+        width: 40px;
+        min-width: 40px;
+        max-width: 40px;
+        word-wrap: break-word;
+    }
+
+    div.attivita-tabella {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        border-bottom: 1px solid black;
+    }
+
+    div.attivita-tabella:first-child {
+        border-top: 1px solid black;
+        font-family: "Concert One", sans-serif;
+    }
+
+    div.attivita-tabella > div.prima-cella {
+        width: 30%;
+        /* margin-top: 20px; */
+    }
+
+    div.attivita-tabella > div.seconda-cella {
+        width: 30%;
+        /* margin-top: 20px; */
+    }
+
+    div.attivita-tabella > div.terza-cella {
+        width: 20%;
+    }
+
+    div.attivita-tabella > div.quarta-cella {
+        width: 20%;
+    }
+
+    div.attivita-tabella > div.prima-cella h3.attivita-titolo {
+        text-align: center;
+    }
+
+    div.attivita-tabella > div.quarta-cella p.lista-text {
+        width: fit-content;
+        padding: 7px;
+        border-radius: 7px;
+    }
+
+/*    #select-type-visual > button.active {
+        background-color: green;
+    }*/
+
+    p.scadenza-valida {
+        background-color: #b7e023;
+        color: white;
+    }
+
+    p.scadenza-invalida {
+        background-color: #E04D23;
+        color: white;
+    }
+
+    #container-calendario {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    div.calendario-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        width: 50%;
+        margin-left: 50%;
+    }
+
+    div.calendario-header svg {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    div.calendario-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    div.settimana,
+    div.intestazione {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    div.giorno,
+    div.intestazione-giorno {
+        text-align: center;
+        width: 14.2%;
+    }
+
+    div.giorno {
+        padding: 5px;
+        border: 1px solid black;
+        /* height: 30px; */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+    }
+
+    div.giorno.invalid {
+        background-color: rgb(214, 208, 208);
+        opacity: 0.6;
+    }
+
+    div.numero-giorno.active {
+        background-color: #adc0f3;
+        color: white;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    div.scadenza-giorno {
+        height: 8vw;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        margin-left: 5%;
+    }
+
+    div.scadenza-giorno.active {
+        background-color: gray;
+        border-radius: 10px;
+    }
+
+    svg.calendario-arrow {
+        width: 30px;
+        height: 30px;
+    }
+
+    p.calendario-anno {
+        font-size: 40px;
+        font-weight: bold;
+        font-family: "Concert One", sans-serif;
+        text-transform: capitalize;
+
+        text-align: center;
+    }
+
+    /* barra superiore della pagina*/
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background-color: #e0ab23;
+        width: 100%;
+    }
+
+    /* */
+    .navbar > * {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 115px;
+        background-color: #e0ab23;
+        margin: 0;
+    }
+
+    /* */
+    .navbar-left > *, .navbar-right > * {
+        margin: 20px;
+    }
+
+    /* tutta la pagina sotto la barra*/
+    .header {
+        background-color: #f3e0ad;
+        width: 100%;
+    }
+
+    /* immagine del logo nella barra superiore*/
+    .logo {
+        width: 170px;
+        height: 170px;
+    }
 
     /* stile "bottoni" */
     .button {
@@ -526,14 +532,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         background: none;
     } 
 
-  .writing{
+    .writing{
         text-decoration: none;
         font-family: "Concert One", sans-serif;
         font-weight: bolder;
         font-style: normal;
         font-size: larger;
         color: #000000;
-    }
+        }
 
     .writing:hover{
         color: #f3e0ad;  
@@ -561,14 +567,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
 
     /*stile menu laterale*/
-        :root {
-    --background: #f3e0ad;
-    --navbar-width: 256px;
-    --navbar-width-min: 80px;
-    --navbar-dark-primary: #e0ab23; /*colore menu*/
-    --navbar-dark-secondary: #d05e26; /*colore righe*/
-    --navbar-light-primary: #eee; /*colore titolo avatar*/
-    --navbar-light-secondary: #eee; /*colore descrizione avatar*/
+    :root {
+        --background: #f3e0ad;
+        --navbar-width: 256px;
+        --navbar-width-min: 80px;
+        --navbar-dark-primary: #e0ab23; /*colore menu*/
+        --navbar-dark-secondary: #d05e26; /*colore righe*/
+        --navbar-light-primary: #eee; /*colore titolo avatar*/
+        --navbar-light-secondary: #eee; /*colore descrizione avatar*/
+
+        --color-primary: #e0ab23;  /* uguale colore menu */
     }
 
 
@@ -959,11 +967,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         width: 20px;
     }
 
-    .formato{
+    p.select-visual-format {
         background-color: rgb(224, 171, 35, 0);
         border-width: 0px;
         font-family: "Concert One", sans-serif;
         font-size: 16px;
+        color: black;
     }
 
 
@@ -1072,6 +1081,80 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     #content-right {
         width: 100%;
     }
+
+    div.lista h2 {
+        width: fit-content;
+    }
+
+    #container-membri {
+        margin-left: 10%;
+    }
+
+    div.membri-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: start;
+        flex-wrap: wrap;
+
+
+        width: 70%;
+        border: 2px solid black;
+        border-radius: 16px;
+        padding: 20px;
+        min-height: 30%;
+    }
+
+    div.membro {
+        border-radius: 10px;
+        background-color: var(--color-primary);
+        padding: 10px;
+        height: 30px;
+        text-align: center;
+        min-width: 200px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    p.link-invito > svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    div.membro p.select-visual-format {
+        background-color: transparent;
+        width: 100%;
+    }
+
+    div.membro p {
+        margin: 0;
+    }
+
+    div.membro  button.btn-membro-elimina {
+        border: 0;
+        margin: 0;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: var(--navbar-dark-secondary);
+        color: white;
+    }
+
+    div.membro button.btn-membro-elimina > p.select-visual-format {
+        font-size: 14px;
+        font-weight: 100;
+    }
+
+    span.link-text {
+        margin-right: 10px;
+    }
+
+    span.link-support {
+        color: green;
+    }
+
     </style>
 </head>
 <body>
@@ -1085,7 +1168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                <img  src="img/logo_scritta_completo.png"  class="logo">
                </a>
 
-               <div class="button" > Crea una nuova bacheca </div>
+               <div class="button" >Crea una nuova bacheca </div>
 
                 <!--tutte le bacheche di un account-->
                   <div class="popup" onclick="popup_function()"> Spazi di Lavoro
@@ -1105,7 +1188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
    
                <div class="navbar-left">
                  <div class="pfp" > E T</div>
-                     <div class="popup-2" onclick="popup_function_2()" style="margin-left: 0px;">Account
+                     <div class="popup-2" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
 
                        <div class="popuptext-2" id="myPopup_2"> prova </div>
                      
@@ -1128,14 +1211,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <div id="nav-content">
                     <div class="nav-button"><span>Viste della Bacheca</span></div>
 
-                    <div class="nav-button" id="select-type-visual" ><i class="fas fa-images"></i><button value="isola" class="active" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Bacheca</button></div>
+                    <div class="nav-button select-type-visual" value="isola">
+                        <i class="fas fa-heart"></i>
+                        <p class="select-visual-format">Isola</p>
+                    </div>
 
-                    <div class="nav-button" id="select-type-visual" ><i class="fas fa-thumbtack"></i><button value="tabella" class="formato" > Tabella</button></div>
-
-                    <div class="nav-button" id="select-type-visual"><i class="fas fa-heart"></i><button class="active" value="calendario" style="background-color: rgb(224, 171, 35, 0); border-width: 0px; font-family: concert one, sans-serif; font-size: 16px;">Calendario</button></div>
+                    <div class="nav-button select-type-visual" value="tabella">
+                        <i class="fas fa-heart"></i>
+                        <p class="select-visual-format">Tabella</p>
+                    </div>
+                    
+                    <div class="nav-button select-type-visual" value="calendario">
+                        <i class="fas fa-heart"></i>
+                        <p class="select-visual-format">Calendario</p>
+                    </div>
 
                     <hr/>
-                    <div class="nav-button"><i class="fas fa-thumbtack"></i><span> Membri</span></div>
+
+                    <div class="nav-button active select-type-visual" value="membri">
+                        <i class="fas fa-thumbtack"></i>
+                        <p class="select-visual-format">Membri</p>
+                    </div>
+
 
                     <div id="nav-content-highlight"></div> <!--barra del colore dello sfondo che si muove-->
 
@@ -1149,7 +1246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <div id="attivita-nuova" class="attivita-box">
                     <div class="attivita-lista attivita-lista-isola">
                     <div class="lista">
-                        <h2 class="button" style="margin-left: 30vh; margin-top: 5vh; width: 300px;"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova attività</h2>
+                        <h2 class="button"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova attività</h2>
                     </div>
                     </div>
                 </div>
@@ -1188,6 +1285,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     </div>
                 </div>
                 <div class="calendario-body"></div>
+            </div>
+
+            <div id="container-membri" style="display: none">
+                <h1>Membri</h1>
+                <p class="link-invito">Link invito:
+                    <span class="link-text">http://torg.altervista.org/bacheca_invito.php?sharing=<span class="link-value"></span>  </span>
+                    <svg class="link-support" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M208 0h124.1C344.8 0 357 5.1 366 14.1L433.9 82c9 9 14.1 21.2 14.1 33.9V336c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V48c0-26.5 21.5-48 48-48M48 128h80v64H64v256h192v-32h64v48c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48"/></svg>
+                    <span class="link-support">Copied!</span>
+                </p>    
+
+                <div class="membri-box">
+                </div>
             </div>
         </div>
     </div>
@@ -1369,6 +1478,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
+    <div id="membro-prototipo" class="membro" style="display: none">
+        <p class="membro-proprietario select-visual-format"></p>
+        <p class="membro-other select-visual-format"></p>
+        <button class="btn-membro-elimina" style="display: none"><p class="select-visual-format">Elimina</p></button>
+    </div>
+    
     <script>
         class Visualizator {
             constructor (data) {
@@ -1376,7 +1491,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.codice_bacheca = searchParams.get('codice');
 
                 this.data = data;
-                this.tipo = "calendario";
+                this.tipo = "membri";
 
                 this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
                     "attivita": {},
@@ -1384,7 +1499,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     "checkbox": {},
                     "commento": {},
                     "etichetta": {},
-                    "scadenza": {}
+                    "scadenza": {},
+                    "membri": {}
                 };
                 /*  STRUCTURE  //
                 {
@@ -1473,9 +1589,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         }
                     }
                 }
+
+                for (let i = 0; i < this.data.membri.length; i++) {
+                    let dati = this.data.membri.list[i];
+                    this.add_idx_elem("membri", dati.codice, this.codice_bacheca);
+                }
             }
 
             // method
+            show_user_name() {
+                $("div.header div.pfp").text(this.data["nome_utente"].split(" ").map(p=>p.charAt(0).toUpperCase()).join(" "));
+            }
+
             add_idx_elem(tipo, codice, codice_superiore, idx=null) {
                 // codice_superiore è il codice dell'elemento superiore per la localizzazione
 
@@ -1488,8 +1613,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             change_type(tipo) {
-                if (["isola", "tabella", "calendario"].includes(tipo)) this.tipo = tipo;
-                console.log(["isola", "tabella", "calendario"].includes(tipo));
+                this.tipo = tipo;
                 this.clear_html();
                 this.show_dati();
             }
@@ -1500,9 +1624,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 elem.find("p.lista-nome > span").text(dati.nome);
 
-                elem.show();
-                // elem.insertBefore($("#" + codice_attivita + " div.lista-nuova"))
-                
+                elem.show();                
                 elem.get(0).dati = dati;
                 return elem;
             }
@@ -1591,7 +1713,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
             crea_scadenza(dati) {
                 let elem = $("#scadenza-prototipo").clone(true);
-                console.log(elem);
                 if (dati.length == 0) {
                     elem.attr("id", "");
                     elem.find("button.btn-scadenza-elimina").hide();
@@ -1604,7 +1725,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     elem.find("button.btn-scadenza-elimina").show();
                     //TODO: scaduta?
                 }
-                console.log(elem);
                 elem.show();
                 return elem;
             }
@@ -1665,7 +1785,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     this.data.attivita.list[lista[1]].lista.list[lista[0]].scadenza.list
                     .forEach((scadenza) => {
                         let data_scadenza = new Date(scadenza.data);
-                        console.log(data_scadenza.getDate())
                         if (data_scadenza.getMonth() == date.getMonth())
                             scadenze[data_scadenza.toDateString()] = scadenza.codice;
                     });
@@ -1687,7 +1806,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     let array_giorni = Array.from({length: 7}, (_, j) => {
                         let current_date = new Date(date);
                         current_date.setDate(i * 7 + j + 1);
-                        console.log(current_date.toDateString())
                         return {
                             numero: current_date.getDate(),
                             is_valid: current_date.getMonth() == this.actual_date.getMonth() && current_date.getFullYear() == this.actual_date.getFullYear(),
@@ -1699,13 +1817,54 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 }
             }
 
+            crea_membro(tipo) {
+                if (tipo == "settings")
+                {
+                    $("#container-membri > p.link-invito span.link-value").text(this.data.codice_invito);
+                    $("#container-membri span.link-support").hide();
+                    $("#container-membri svg.link-support").show();
+                }
+
+                if (tipo == "proprietario") {
+                    let elem = $("#membro-prototipo").clone(true);
+                    elem.attr("id", "");
+
+                    elem.find("p.membro-other").remove();
+                    elem.find("button.btn-membro-elimina").remove();
+
+                    if (this.data.membri.proprietario == true) elem.find("p.membro-proprietario").text("TU");
+                    else elem.find("p.membro-proprietario").text(this.data.membri.proprietario_nome.toUpperCase());
+
+                    elem.find("p.membro-proprietario").text(elem.find("p.membro-proprietario").text() + " (proprietario)");
+
+                    elem.show();
+                    elem.appendTo("#container-membri > div.membri-box");
+                }
+
+                if (tipo == "other") {
+                    for (let i = 0; i < this.data.membri.length; i++) {
+                        let dati = this.data.membri.list[i];
+                        let elem = $("#membro-prototipo").clone(true);
+                        elem.attr("id", dati.codice);
+
+                        elem.find("p.membro-proprietario").remove();
+
+                        if (dati.current) elem.find("button.btn-membro-elimina").hide();
+                        else elem.find("button.btn-membro-elimina").show();
+
+                        if (dati.current) elem.find("p.membro-other").append("TU");
+                        else elem.find("p.membro-other").append(dati.nome);
+
+                        elem.show();
+                        elem.appendTo("#container-membri > div.membri-box");
+                    }
+                }
+            }
+
             skip_month(avanti=true) {
                 let date = new Date(this.actual_date);
                 if (avanti) date.setMonth(date.getMonth() + 1);
                 else date.setMonth(date.getMonth() - 1);
-
-                console.log(date, this.actual_date);
-                console.log(date.getFullYear(), date.getMonth())
 
                 this.clear_html();
                 $("#container-calendario").show();
@@ -1714,7 +1873,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
             create_new_lista(dati, codice_attivita) {
                 let idx = this.get_idx("attivita", codice_attivita)[0];
-                console.log(idx);
                 let idx_list = this.data.attivita.list[idx].lista.list.push(dati);
                 this.data.attivita.list[idx].lista.length += 1;
 
@@ -1772,7 +1930,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         let elem_eti = "";
                         elem.find("div.terza-cella > div.lista-etichetta-box").append(this.crea_etichetta(info_etichette).find("p.etichetta-text"));
 
-                        console.log(info_scadenza)
                         elem.find("div.quarta-cella > p.lista-scadenza").text(info_scadenza.data);
                         elem.find("div.quarta-cella > p.lista-scadenza").addClass((info_scadenza.valida) ? "scadenza-valida": "scadenza-invalida");
                         
@@ -1787,6 +1944,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     this.crea_calendario();
                     $("#container-calendario").show();
                 }
+
+                if (this.tipo == "membri") {
+                    this.crea_membro("settings");
+                    this.crea_membro("proprietario");
+                    this.crea_membro("other");
+                    $("#container-membri").show();
+                }
             }
 
             clear_html() {
@@ -1798,12 +1962,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 $("#container-calendario > div.calendario-body").empty();
                 $("#container-calendario").hide();
+
+                $("#container-membri > div.membri-box").empty();
+                $("#container-membri").hide();
             }
 
             show_lista_info(dati) {
                 let elem = $("#lista-info-prototipo").clone(true);
                 elem.attr("id", dati.codice);
-                console.log(elem.get(0));
 
                 // Aggiungo valori campi
                 elem.find("p.lista-codice > span").text(dati.codice);
@@ -1815,7 +1981,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.find("div.lista-etichetta-box").append(this.crea_etichetta(dati.etichetta));
                 elem.find("div.lista-commento-box").append(this.crea_commento(dati.commento));
                 elem.find("div.lista-scadenza-box").append(this.crea_scadenza(dati.scadenza));
-                console.log(dati.scadenza);
 
                 // Aggiungo proprietà
                 elem.find(".text-mod > span").attr("contenteditable", "true");
@@ -1871,7 +2036,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             get_elem_location(tipo, codice) {
-                console.log(tipo, codice);
                 let [idx, cod_l] = this.get_idx(tipo, codice);
                 let [idx_l, cod_a] = this.get_idx("lista", cod_l);
                 let idx_a = this.get_idx("attivita", cod_a)[0];
@@ -1909,7 +2073,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         }
 
         // Passaggio dati
-        let dati = {"codice_bacheca":"cT8rR4pAUo2rFTsT","privilegi":0,"attivita":{"length":3,"list":[{"info":{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","titolo":"prova","codice":"YVmAK5g3EscWUYUD"},"lista":{"length":2,"list":[{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","nome":"f","descrizione":"f","codice":"5049DcFe4Jzwpmpu","commento":{"list":[{"codice":"4dNtVFH7Bfw0YEw9","testo":"ciao","data_creazione":"2024-04-19","actual_user":true,"nome_utente":"d d"}],"length":1},"checkbox":{"list":[{"codice":"daEPAlhXM1lrc37g","testo":"prova2","is_check":"false"}],"length":1},"etichetta":{"list":[{"codice":"d525JXGMdmWJPJHE","testo":"prova","blue":"0","red":"122","green":"74"},{"codice":"in72eeAkAKgxYyCo","testo":"prova","blue":"0","red":"0","green":"0"}],"length":2},"scadenza":{"list":[{"codice":"tA8hnIv4h2Yc64B3","data":"2024-04-22","valida":false}],"length":1}},{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","nome":"f","descrizione":"f","codice":"NlrVwrPjLVOBPfNU","commento":{"list":[],"length":0},"checkbox":{"list":[],"length":0},"etichetta":{"list":[],"length":0},"scadenza":{"list":[],"length":0}}]}},{"info":{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","titolo":"prova","codice":"Y3HINakbhXS7hsUa"},"lista":{"length":0,"list":[]}},{"info":{"data_creazione":"2024-04-11","data_ultima_modifica":"2024-04-11","titolo":"prova","codice":"bFWiV9JqfZVWGySU"},"lista":{"length":0,"list":[]}}]}};
+        let dati = <?php echo json_encode($data); ?>;
 
         console.log(dati);
 
@@ -1917,6 +2081,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         const CODICE_BACHECA = searchParams.get('codice');
 
         let visual = new Visualizator(dati);
+        visual.show_user_name();
         visual.show_dati();
 
         $("body").on("submit", "#form-nuova-attivita", (function (e) {
@@ -1982,7 +2147,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 crossDomain: true,
 
                 success: function (result) {
-                    console.log(result);
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
@@ -2002,7 +2166,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             let colore = target.siblings("input[name='colore']");
             let testo = target.siblings("input[name='testo']");
 
-            console.log(colore, testo);
             if (colore.val() && testo.val()) {
                 let color_hex = colore.val().replace('#', '');
 
@@ -2011,10 +2174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 let green = parseInt(color_hex.substring(2, 4), 16);
                 let blue = parseInt(color_hex.substring(4, 6), 16);
 
-                console.log(red, green, blue); // Visualizza il colore in formato RGB
-
                 let codice_lista = target.closest("div.lista-info-box").attr("id");
-                console.log(codice_lista);
 
                 $.ajax({
                 url: "attivita.php",
@@ -2031,7 +2191,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 crossDomain: true,
 
                 success: function (result) {
-                    console.log(result);
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
@@ -2086,7 +2245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
             let codice_lista = target.closest("div.lista-info-box").attr("id");
             if (testo.val()) {
-                console.log(testo.val());
                 $.ajax({
                     url: "attivita.php",
                     type: "POST",
@@ -2099,7 +2257,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     crossDomain: true,
 
                     success: function (result) {
-                        console.log(result);
                         result =JSON.parse(result);
                         console.log(result);
                         if (result.esito == true) {
@@ -2131,7 +2288,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
             let codice_lista = target.closest("div.lista-info-box").attr("id");
             if (testo.val()) {
-                console.log(testo.val());
                 $.ajax({
                     url: "attivita.php",
                     type: "POST",
@@ -2144,7 +2300,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     crossDomain: true,
 
                     success: function (result) {
-                        console.log(result);
                         result =JSON.parse(result);
                         console.log(result);
                         if (result.esito == true) {
@@ -2175,7 +2330,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             
             let codice_lista = target.closest("div.lista-info-box").attr("id");
             if (data.val()) {
-                console.log(data.val())
                 $.ajax({
                     url: "attivita.php",
                     type: "POST",
@@ -2226,13 +2380,39 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 crossDomain: true,
 
                 success: function (result) {
-                    console.log(result);
                     result = JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
                         visual.cancella_elemento_lista("scadenza", result.scadenza.list[0].codice, false);
                         visual.aggiungi_elemento_lista("scadenza", codice_lista, result.scadenza.list[0]);
                     }
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        $("body").on("click", "div.membro > button.btn-membro-elimina", function (e) {
+            let target = $(e.currentTarget);
+            let codice = target.closest("div.membro").attr("id");
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "delete-membro",
+                    "codice_bacheca": CODICE_BACHECA,
+                    "codice": codice
+                },
+                crossDomain: true,
+
+                success: function () {
+                    target.closest("div.membro").remove();
+                    let idx_membro = visual.get_idx("membri", codice)[0];
+                    delete visual.data.membri.list[idx_membro];
+                    visual.data.membri.length -= 1;
+                    delete visual.cod_idx["membri"][codice];
                 },
 
                 error: function (err) {
@@ -2257,19 +2437,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         // Cancellazione lista
         $("body").on("click", "#popup div.lista-info-box button.lista-delete", function (e) {
             let target = $(e.currentTarget);
-            console.log(target.closest("div.lista-info").find(".lista-codice > span").text());
             visual.cancella_lista(target.closest("div.lista-info").find(".lista-codice > span").text());
             visual.popup.close();
             e.stopPropagation();
         });
 
         // Bottone modalità
-        $("#select-type-visual > button").on("click", function (e) {
-            let elem = $(this);
+        $("div.select-type-visual").on("click", function (e) {
+            let elem = $(e.currentTarget);
             if (elem.hasClass("active")) return;
 
-            $("#select-type-visual > button").removeClass("active");
-            console.log(elem.attr("value"));
+            $("div.select-type-visual").removeClass("active");
             visual.change_type(elem.attr("value"));
             elem.addClass("active");
         });
@@ -2278,6 +2456,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         $("svg.calendario-arrow").click(function (e) {
             let target = $(e.currentTarget);
             visual.skip_month(target.attr("direction") == "right");
+        });
+
+        // svg copiare link invito
+        $("p.link-invito > svg.link-support").click(function (e) {
+            let svg = $(e.currentTarget);
+            let p = svg.siblings("span.link-support");
+            let link = svg.siblings("span.link-text").text();
+
+            let elem = $("<input>").appendTo("body").val(link).select();
+            document.execCommand("copy");
+            elem.remove();
+
+            svg.hide();
+            p.show();
+
+            setTimeout(() => {
+                svg.show();
+                p.hide();
+            }, 2000);
         });
 
     </script>

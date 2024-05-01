@@ -1,4 +1,6 @@
 <?php
+// bacheca
+
 include "utils.php";
 
 session_start();
@@ -334,6 +336,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             // cancello lista
             $sql = "DELETE FROM $tabella WHERE codice='$codice';";
             $result = $conn->query($sql);
+
+            $conn->close();
+            exit();
+        }
+    }
+
+    if ($action == "delete-membro") {
+        if (isset($_POST["codice"])) {
+            $codice = $_POST["codice"];
+
+            // cancello codice
+            $sql = "DELETE FROM Codici WHERE codice='$codice' AND bacheca=$id_bacheca;";
+            $conn->query($sql);
+
+            // cancello associazione
+            $sql = "DELETE FROM Bacheca_assoc WHERE codice='$codice';";
+            $conn->query($sql);
 
             $conn->close();
             exit();

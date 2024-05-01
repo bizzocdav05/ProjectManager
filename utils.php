@@ -33,7 +33,6 @@ function set_console() {
     $_SESSION["id_console"] = $id_console;
     
     $conn->close();
-
     return $id_console;
 }
 
@@ -77,8 +76,8 @@ function genera_codice($length = 16, $id_bacheca) {
 
     // salvo il codice
     $conn->query(create_sql("INSERT INTO Codici", array("codice", "bacheca"), array($code, $id_bacheca)));
-    $conn->close();
 
+    $conn->close();
     return $code;
 }
 
@@ -99,7 +98,7 @@ function login_required() {
     return get_utente();
 }
 
-function set_bacheca($codice_bacheca) {
+function set_bacheca($codice_bacheca, $silent=false) {
     // controlla se l'utente può accedere alla bacheca
 
     session_start();
@@ -114,12 +113,18 @@ function set_bacheca($codice_bacheca) {
     $result = $conn->query($sql);
 
     if (!$result) {
-        echo "<h1>Questa bacheca non esiste</h1>";
-        exit();
+        $conn->close();
+
+        if ($silent) {
+            return array(false, "bacheca_non_esiste");
+        } else {
+            echo "<h1>Questa bacheca non esiste</h1>";
+            exit();
+        }
     }
 
     if ($result->num_rows == 0) {
-        $sql = "SELECT bacheca, privilegi FROM Bacheca_assoc WHERE other=$id_utente AND codice='$codice_bacheca';";
+        $sql = "SELECT bacheca, privilegi FROM Bacheca_assoc WHERE other=$id_utente AND codice_bacheca='$codice_bacheca';";
         $result_assoc = $conn->query($sql);
 
         if ($result_assoc->num_rows > 0) {
@@ -127,16 +132,22 @@ function set_bacheca($codice_bacheca) {
             $id_bacheca = $data["bacheca"];
             $privilegi = $data["privilegi"];
         } else {
-            echo "<h1>Non puoi accede a questa bacheca</h1>";
-            exit();
+            $conn->close();
+
+            if ($silent) {
+                return array(false, "bacheca_non_accesso");
+            } else {
+                echo "<h1>Non puoi accede a questa bacheca</h1>";
+                exit();
+            }
         }
     }
 
     if ($result->num_rows > 0) {
         $id_bacheca = $result->fetch_assoc()["ID"];
     }
-    $conn->close();
 
+    $conn->close();
     return array($id_bacheca, $privilegi);
 }
 
@@ -160,10 +171,12 @@ function get_elem_by_code($tipo, $codici) {
         $result = $conn->query($sql);
 
         if ($result->num_rows == 1) {
+            $conn->close();
             return $result->fetch_assoc()["ID"];
         }
     }}
 
+    $conn->close();
     exit();
 }
 
@@ -302,6 +315,7 @@ function get_dati_liste($id_attivita) {
         }
     }
 
+    $conn->close();
     return $dati;
 }
 
@@ -333,7 +347,80 @@ function get_dati_attivita($id_bacheca) {
         }
     }
 
+    $conn->close();
     return $data;
+}
+
+function get_nome_utente($id_utente = null, $id_console = null) {
+    if ($id_utente != null)
+        $sql = "SELECT nome, cognome FROM Utenti WHERE ID=$id_utente;";
+    elseif ($id_console != null) {
+        $sql = "SELECT nome, cognome FROM Utenti WHERE console=$id_console;";
+    } else {
+        exit();
+    }
+
+    $conn = connection();
+    $result = $conn->query($sql)->fetch_assoc();
+
+    return $result["nome"] . " " . $result["cognome"];
+}
+
+function get_membri_bacheca($id_bacheca, $id_utente) {
+    $id_utente = get_utente();
+
+    $conn = connection();
+    $sql = "SELECT other, codice FROM Bacheca_assoc WHERE bacheca=$id_bacheca";
+    $result = $conn->query($sql);
+
+    $dati = array("length" => $result->num_rows, "list" => array());
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($dati["list"], array(
+                "codice" => $row["codice"],
+                "current" => ($row["other"] == $id_utente),
+                "privilegi" => $row["privilegi"],
+                "nome" => get_nome_utente($id_utente)
+            ));
+        }
+    }
+
+    $conn->close();
+    return $dati;
+}
+
+function get_codice_invito($id_bacheca) {
+    $conn = connection();
+    $sql = "SELECT codice FROM Bacheca WHERE ID=$id_bacheca";
+    $result = $conn->query($sql);
+
+    $codice = $result->fetch_assoc()["codice"];
+    $codice_invito = substr(hash("sha256", $codice), 0, 32);
+
+    $conn->close();
+    return $codice_invito;
+}
+
+function send_email($id_utente, $oggetto, $corpo) {
+    $conn = connection();
+    $destinatario = $conn->query("SELECT mail FROM Utenti WHERE ID=$id_utente")->fetch_assoc()["mail"];
+    $mittente = "no-reply@torg.com";
+
+    // Aggiungi intestazioni per specificare il mittente e altri dettagli
+    $headers = "From: $mittente\r\n";
+    $headers .= "Reply-To: $mittente\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion();
+
+    // Invia l'email
+    return mail($destinatario, $oggetto, $corpo);
+}
+
+mail("bizzocdav05@zanelli.edu.it", "ciao", "<!DOCTYPE html><html lang='it'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Resetta Password</title></head><body><p>Prova</p></body></html>");
+
+function logout() {
+    if(isset($_COOKIE[session_name()])) {
+        setcookie(session_name(), '', time()-7000000, '/');
+    }
 }
 
 ?>

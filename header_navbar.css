@@ -1,0 +1,284 @@
+/* barra superiore della pagina*/
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: #e0ab23;
+    width: 100%;
+}
+
+/* */
+.navbar > * {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 115px;
+    background-color: #e0ab23;
+    margin: 0;
+}
+
+/* */
+.navbar-left > *, .navbar-right > * {
+    margin: 20px;
+}
+
+/* tutta la pagina sotto la barra*/
+.header {
+    background-color: #f3e0ad;
+    width: 100%;
+}
+
+/* immagine del logo nella barra superiore*/
+.logo {
+    width: 170px;
+    height: 170px;
+}
+
+/* stile "bottoni" */
+.button {
+    font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    background-color:#8f411a;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: inline-block;
+    font-size:large;
+    font-weight: 700;
+    letter-spacing: .8px;
+    line-height: 20px;
+    margin: 0px 5px 0px 5px;
+    overflow: visible;
+    padding: 13px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transform: translateZ(0);
+    transition: filter .2s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 270px;
+    text-transform: none;
+
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+}
+
+.button:after {
+    background-clip: padding-box;
+    background-color: #d05e26;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    bottom: -4px;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.button:active {
+    border-width: 4px 0 0;
+    background: none;
+} 
+
+.writing{
+    text-decoration: none;
+    font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    font-style: normal;
+    font-size: larger;
+    color: #000000;
+    }
+
+.writing:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+}
+
+.pfp{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+
+    background-color: black;
+    color: #eee;
+
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+
+    font-weight: 600;
+    font-family: "Concert One", sans-serif; 
+    text-transform: uppercase;
+}
+
+/*stile menu laterale*/
+:root {
+    --background: #f3e0ad;
+    --navbar-width: 256px;
+    --navbar-width-min: 80px;
+    --navbar-dark-primary: #e0ab23; /*colore menu*/
+    --navbar-dark-secondary: #d05e26; /*colore righe*/
+    --navbar-light-primary: #eee; /*colore titolo avatar*/
+    --navbar-light-secondary: #eee; /*colore descrizione avatar*/
+
+    --color-primary: #e0ab23;  /* uguale colore menu */
+}
+
+#nav-toggle:checked ~ #nav-header {
+    width: calc(var(--navbar-width-min) - 16px); 
+}
+
+#nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
+width: var(--navbar-width-min); 
+}
+
+/*animazione per far sparire il titolo*/
+#nav-toggle:checked ~ #nav-header #nav-title {
+opacity: 0;
+pointer-events: none;
+transition: opacity .1s; 
+}
+
+#nav-toggle:checked ~ #nav-header label[for="nav-toggle"] {
+left: calc(50% - 8px);
+transform: translate(-50%); 
+}
+
+#nav-toggle:checked ~ #nav-header #nav-toggle-burger {
+background: #000000;
+}
+
+#nav-toggle:checked ~ #nav-header #nav-toggle-burger:before, #nav-toggle:checked ~ #nav-header #nav-toggle-burger::after {
+    width: 16px;
+    background: #000000;
+    transform: translate(0, 0) rotate(0deg); 
+}
+
+/*animazione per far sparire i contenuti del menu*/
+#nav-toggle:checked ~ #nav-content .nav-button span {
+opacity: 0;
+transition: opacity .1s; 
+}
+
+/*animazione per far sparire i contenuti del menu*/
+#nav-toggle:checked ~ #nav-content .nav-button button {
+opacity: 0;
+transition: opacity .1s; 
+}
+
+#nav-toggle:checked ~ #nav-content .nav-button .fas {
+min-width: calc(100% - 16px); 
+}
+
+#nav-toggle:checked ~ #nav-footer #nav-footer-avatar {
+margin-left: 0;
+left: 50%;
+transform: translate(-50%); 
+}
+
+
+#nav-bar {
+background: var(--navbar-dark-primary);
+border-radius: 16px;
+display: flex;
+flex-direction: column;
+color: var(--navbar-light-primary);
+font-family: "Concert One", sans-serif;
+overflow: hidden;
+user-select: none;
+}
+
+#nav-bar hr {
+    margin: 0;
+    position: relative;
+    left: 16px;
+    width: calc(100% - 32px);
+    border: none;
+    border-top: solid 1px var(--navbar-dark-secondary); 
+}
+
+#nav-bar a {
+    color: inherit;
+    text-decoration: inherit; 
+}
+
+#nav-bar input[type="checkbox"] {
+    visibility: hidden; 
+}
+
+#nav-header {
+position: relative;
+width: var(--navbar-width);
+left: 16px;
+width: calc(var(--navbar-width) - 16px);
+min-height: 80px;
+background: var(--navbar-dark-primary);
+border-radius: 16px;
+z-index: 2;
+display: flex;
+align-items: center;
+transition: width .2s; 
+color: #000000;
+font-weight: 900;
+}
+
+#nav-header hr {
+    position: absolute;
+    bottom: 0; 
+}
+
+#nav-title {
+font-size: 1.5rem;
+transition: opacity 1s; 
+}
+
+label[for="nav-toggle"] {
+position: absolute;
+right: 0;
+width: 3rem;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer; 
+}
+
+#nav-toggle-burger {
+position: relative;
+width: 16px;
+height: 2px;
+background: var(--navbar-dark-primary);
+border-radius: 99px;
+}
+
+#nav-toggle-burger:before, #nav-toggle-burger:after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    width: 10px;
+    height: 2px;
+    background: #000000;
+    border-radius: 99px;
+    transform: translate(2px, 8px) rotate(30deg);
+    font-weight: 900;
+}
+
+#nav-toggle-burger:after {
+    top: 6px;
+    transform: translate(2px, -8px) rotate(-30deg); 
+}
