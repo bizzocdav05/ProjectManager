@@ -12,6 +12,12 @@ $data["email_utente"] = $result["mail"];
 $data["nome_utente"] = $result["nome"];
 $data["cognome_utente"] = $result["cognome"];
 
+$img_profilo = get_user_img_profilo();
+if ($img_profilo == false) {
+    $data["img_profilo"] = "default";
+} else {
+    $data["img_profilo"] = $img_profilo;
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +50,7 @@ $data["cognome_utente"] = $result["cognome"];
             margin: 0px;
             background-color: var(--background);
             overflow-x: hidden;
+            padding-bottom: 30px;
         }
 
         #popup {
@@ -99,6 +106,7 @@ $data["cognome_utente"] = $result["cognome"];
         #img-logo {
             width: 170px;
             height: auto;
+            cursor: pointer;
         }
 
         .pfp{
@@ -132,7 +140,6 @@ $data["cognome_utente"] = $result["cognome"];
             background-color: rgb(224, 171, 35, 0);
             border-width: 0px;
             font-family: "Concert One", sans-serif;
-            font-size: 16px;
             color: black;
         }
 
@@ -143,9 +150,10 @@ $data["cognome_utente"] = $result["cognome"];
         }
 
         #container {
-            margin: auto;
-            margin-top: 5%;
-
+            margin-right: 25px;
+            margin-top: 0px;
+            margin-left: auto;
+            
             width: 80%;
             display: flex;
             flex-direction: row;
@@ -162,15 +170,15 @@ $data["cognome_utente"] = $result["cognome"];
         }
 
         div.content-right {
-            width: 40%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
+            margin-top: 5%;
+    		width: 40%;
+   			display: flex;
+    		flex-direction: column;
+    		align-items: center;
         }
 
         div.content-right > * {
-            margin-top: 10%;
+            margin-top: 15px;
         }
 
         form {
@@ -207,27 +215,42 @@ $data["cognome_utente"] = $result["cognome"];
             font-size: large;
             border: 1px solid black;
             padding: 5px;
+            font-family: "Concert One", sans-serif;
+            min-width: 250px;
         }
 
         .btn {
             font-family: "Concert One", sans-serif;
-            border: 0;
-            margin: 0;
-            padding: 5px;
-            border-radius: 5px;
-
-            background-color: var(--color-primary);
-            color: black;
-            
-            text-align: center;
-            font-weight: bold;
-            font-size: 20px;
+            background-color: #e0ab23;
+            border: solid #c9991f;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
             cursor: pointer;
+            display: inline-block;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-decoration: none;
+            font-size: 20px;
+            text-transform: none;
         }
 
         .btn-primary {
-            background-color: var(--color-secondary);
-            font-size: 20px;
+            font-family: "Concert One", sans-serif;
+            background-color: #d05e26;
+            border-color: #8f411a;
         }
 
         .btn-red {
@@ -236,7 +259,7 @@ $data["cognome_utente"] = $result["cognome"];
         }
 
         div.content-right button {
-            font-size: 25px;
+            font-size: 18px;
         }
 
         form p.save-success {
@@ -267,6 +290,27 @@ $data["cognome_utente"] = $result["cognome"];
             min-width: 200px;
         }
 
+        .btn-lat {
+            font-family: "Concert One", sans-serif;
+            background-color: #d05e26;
+            border-color: #8f411a;
+        }
+        
+        #preview-img-profilo > img {
+            width: 200px;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        div.pfp-image {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .btn > p.text-format {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -292,9 +336,20 @@ $data["cognome_utente"] = $result["cognome"];
 
     <div id="container">
         <div class="content-left">
+            <div class="separator"></div>
 
-            <form class="info">
-                
+            <form id="form-immagine-profilo" method="post">
+                <div id="preview-img-profilo"></div>
+
+                <div class="form-content">
+                    <label for="inp-immagine-profilo"><p class="text-format">Immagine</p></label>
+                    <input type="file" name="immagine" id="inp-immagine-profilo" accept="image/*" required>
+                </div>
+
+                <div class="form-content-button">
+                    <input type="submit" class="btn btn-primary" value="Carica">
+                    <input type="reset" class="btn" value="Annulla">
+                </div>
             </form>
 
             <div class="separator"></div>
@@ -351,9 +406,9 @@ $data["cognome_utente"] = $result["cognome"];
 
         </div>
         <div class="content-right">
-            <button class="btn btn-primary" id="btn-logout"><p class="text-format">LOGOUT</p></button>
-            <button class="btn btn-primary" id="btn-password-reset"><p class="text-format">RESETTA PASSWORD</p></button>
-            <button class="btn btn-red" id="btn-delete-account"><p class="text-format">CANCELLA ACCOUNT</p></button>
+            <button class="btn btn-primary btn-lat" id="btn-logout"><p class="text-format">Log Out</p></button>
+            <button class="btn btn-primary btn-lat" id="btn-password-reset"><p class="text-format">Reset Password</p></button>
+            <button class="btn btn-red btn-lat" id="btn-delete-account"><p class="text-format">Cancella Account</p></button>
         </div>
     </div>
 
@@ -393,7 +448,16 @@ $data["cognome_utente"] = $result["cognome"];
         }
         
         function init_dati_utente() {
-            $("div.pfp > h2").text(dati["nome_utente"][0] + " " + dati["cognome_utente"][0]);
+            if (dati["img_profilo"] == "default") {
+                $("div.pfp").removeClass("pfp-image");
+                $("div.pfp > h2").show();
+                $("div.pfp > h2").empty().text(dati["nome_utente"][0] + " " + dati["cognome_utente"][0]);
+            } else {
+                $("div.pfp").css("background-image", `url('data:${dati.img_profilo.tipo};base64,${dati.img_profilo.dati}')`);
+                $("div.pfp").addClass("pfp-image");
+                $("div.pfp > h2").hide();
+            }
+
             $("#inp-email-utente").val(dati["email_utente"]);
             $("#inp-nome-utente").val(dati["nome_utente"]);
             $("#inp-cognome-utente").val(dati["cognome_utente"]);
@@ -404,7 +468,7 @@ $data["cognome_utente"] = $result["cognome"];
 
         init_dati_utente();
 
-        $("#img-logo").click(() => location.href = "index.html");
+        $("#img-logo").click(() => location.href = "index.php");
 
         $("#form-dati-utente").submit(function (e) {
             let target = $(e.currentTarget);
@@ -517,15 +581,17 @@ $data["cognome_utente"] = $result["cognome"];
         })
 
         $("#btn-logout").click(() => locatoin.href = "logout.php");
+        
         $("#btn-password-reset").click( () => 
             $.ajax({
                 url: "server.php",
                 type: "POST",
                 data: {
-                    "action": "password_reset"
+                    "action": "password-reset"
                 },
-                success: function () {
-                    location.href = "login.html";
+                success: function (result) {
+                    console.log(result);
+                    // location.href = "login.html";
                 },
                 error: function (err) {
                     console.log(err);
@@ -538,10 +604,10 @@ $data["cognome_utente"] = $result["cognome"];
                 url: "server.php",
                 type: "POST",
                 data: {
-                    "action": "delete_account"
+                    "action": "delete-account"
                 },
                 success: function () {
-                    location.href = "login.html";
+                    // location.href = "login.html";
                 },
                 error: function (err) {
                     console.log(err);
@@ -549,6 +615,52 @@ $data["cognome_utente"] = $result["cognome"];
             })
         );
         
+        $("#form-immagine-profilo").submit(function (e) { 
+            e.preventDefault();
+            let target = $(e.currentTarget);
+
+            let form_data = new FormData(this);
+
+            form_data.append("action", "new-profile-image");
+            form_data.append("file_immagine", target.find("input[type='file']").get(0).files[0]);
+            console.log(form_data);
+            $.ajax({
+                url: "server.php",
+                type: "POST",
+                
+                data: form_data,
+                processData: false,
+                contentType: false,
+
+                success: function (result) {
+                    result = JSON.parse(result);
+                    dati.img_profilo = result;
+                    init_dati_utente();
+                    target.trigger("reset");
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        });
+    
+        $("#inp-immagine-profilo").change(function(e) {
+            let preview = $("#preview-img-profilo");
+            let file = e.currentTarget.files[0];
+
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function() {
+                    let img = $("<img>").attr("src", reader.result);
+                    preview.empty().append(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $("#form-immagine-profilo").on("reset", () =>
+            $("#preview-img-profilo").empty()
+        );
     </script>
 </body>
 </html>

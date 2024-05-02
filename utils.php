@@ -407,15 +407,54 @@ function send_email($id_utente, $oggetto, $corpo) {
     $mittente = "no-reply@torg.com";
 
     // Aggiungi intestazioni per specificare il mittente e altri dettagli
-    $headers = "From: $mittente\r\n";
-    $headers .= "Reply-To: $mittente\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion();
+    $headers = "From: no-reply@torg.com\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
     // Invia l'email
-    return mail($destinatario, $oggetto, $corpo);
+    echo $destinatario;
+    mail($destinatario, $oggetto, $corpo, $headers);
 }
+$to = 'bizzocdav05@zanelli.edu.it'; // note the comma
 
-mail("bizzocdav05@zanelli.edu.it", "ciao", "<!DOCTYPE html><html lang='it'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Resetta Password</title></head><body><p>Prova</p></body></html>");
+// Subject
+$subject = 'Birthday Reminders for August';
+
+// Message
+$message = '
+<html>
+<head>
+  <title>Birthday Reminders for August</title>
+</head>
+<body>
+  <p>Here are the birthdays upcoming in August!</p>
+  <table>
+    <tr>
+      <th>Person</th><th>Day</th><th>Month</th><th>Year</th>
+    </tr>
+    <tr>
+      <td>Johny</td><td>10th</td><td>August</td><td>1970</td>
+    </tr>
+    <tr>
+      <td>Sally</td><td>17th</td><td>August</td><td>1973</td>
+    </tr>
+  </table>
+</body>
+</html>
+';
+
+// To send HTML mail, the Content-type header must be set
+$headers[] = 'MIME-Version: 1.0';
+$headers[] = 'Content-type: text/html; charset=iso-8859-1';
+
+// Additional headers
+$headers[] = 'To: Mary <mary@example.com>, Kelly <kelly@example.com>';
+$headers[] = 'From: Birthday Reminder <birthday@example.com>';
+$headers[] = 'Cc: birthdayarchive@example.com';
+$headers[] = 'Bcc: birthdaycheck@example.com';
+
+// Mail it
+// mail($to, $subject, $message, implode("\r\n", $headers));
 
 function logout() {
     if(isset($_COOKIE[session_name()])) {
@@ -423,4 +462,21 @@ function logout() {
     }
 }
 
+function get_user_img_profilo() {
+    $id_utente = login_required();
+    $conn = connection();
+
+    $result = $conn->query("SELECT img_profilo FROM Utenti WHERE ID=$id_utente AND img_profilo IS NOT NULL;");
+    if ($result->num_rows == 0) {
+        $conn->close();
+        return false;
+    }
+    
+    $id_img = $result->fetch_assoc()["img_profilo"];
+    $result = $conn->query("SELECT tipo, dati FROM Immagine WHERE ID=$id_img;")->fetch_assoc();
+    
+    $conn->close();
+    return array( "tipo" => $result["tipo"], "dati" => base64_encode($result["dati"]) );
+
+}
 ?>

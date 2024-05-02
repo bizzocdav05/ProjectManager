@@ -122,16 +122,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
         }
     }
 
-    if ($action == "reset-password") {
+    if ($action == "password-reset") {
         $id_utente = login_required();
         $password = genera_codice(16, 0);
         
+        echo $password;
         $conn->query("UPDATE Utenti SET password='$password' WHERE ID=$id_utente;");
         $conn->query("DELETE FROM Codici WHERE codice='$password';");
+
+        echo "UPDATE Utenti SET password='$password' WHERE ID=$id_utente;";
+        echo "DELETE FROM Codici WHERE codice='$password';";
         
-        send_email($idutente, "Reset Password", "<!DOCTYPE html><html lang='it'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Resetta Password</title></head><body><p>Nuova password: $password</p></body></html>");
+        send_email($id_utente, "Reset Password", "<html lang='it'><head><title>Resetta Password</title></head><body><p>Nuova password: $password</p></body></html>");
 
         logout();
+    }
+
+    if ($action == "new-profile-image") {
+        $id_utente = login_required();
+        if(isset($_FILES["file_immagine"])) {
+            $nome_file = "immagine profilo $id_utente";
+            $tipo_file = $_FILES["file_immagine"]["type"];
+            $dati_file = file_get_contents($_FILES["file_immagine"]["tmp_name"]);
+        
+            // Prepara la query per l'inserimento dei dati nel database
+            $stmt = $conn->prepare("INSERT INTO Immagine (nome, tipo, dati) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $nome_file, $tipo_file, $dati_file);
+        
+            // Esegue la query
+            $stmt->execute();
+        
+            // Chiudi la connessione al database
+            $stmt->close();
+
+            $id_immagine = $conn->insert_id;
+
+            $result = $conn->query("SELECT img_profilo FROM Utenti WHERE ID=$id_utente AND img_profilo IS NOT NULL");
+            if ($result->num_rows == 1) {
+                $old_img = $result->fetch_assoc()["img_profilo"];
+                $conn->query("DELETE FROM Immagine WHERE ID=$old_img;");
+            }
+
+            $conn->query("UPDATE Utenti SET img_profilo=$id_immagine WHERE ID=$id_utente;");
+
+            echo json_encode(get_user_img_profilo());
+        }
     }
 
     $conn->close();
