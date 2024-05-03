@@ -479,4 +479,19 @@ function get_user_img_profilo() {
     return array( "tipo" => $result["tipo"], "dati" => base64_encode($result["dati"]) );
 
 }
+
+function get_msg_from_query($result, $id_utente) {
+    $data = array();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $row["current"] = ($row["utente"] == $id_utente) ? true : false;
+            $row["nome_utente"] = get_nome_utente($id_utente);
+            unset($row["utente"]); // Rimuovi l'id dal messaggio
+            $data[] = $row;
+        }
+    }
+
+    return $data;
+}
 ?>
