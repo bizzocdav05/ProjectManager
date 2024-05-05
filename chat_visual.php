@@ -28,12 +28,17 @@ $conn->close();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
-
+    
+    <!--font del testo-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    
     <style>
         p.text-format {
             background-color: rgb(224, 171, 35, 0);
             border-width: 0px;
-            font-family: "Concert One", sans-serif;
+            
             color: black;
             margin: 0;
         }
@@ -63,7 +68,7 @@ $conn->close();
         }
 
         div.messaggio-chat {
-            background-color: gray;
+           /* background-color: gray;*/
             margin-top: 10%;
         }
 
@@ -86,7 +91,42 @@ $conn->close();
             width: 20px;
             height: 20px;
         }
-    
+        /*lb*/
+        p.mittente{
+        	font-family: "Concert One", sans-serif;
+            border-radius: 50%;
+            border: 2px solid;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+
+        }
+        
+        p.testo{
+        	font-family: "Outfit", sans-serif;
+            background-color: #80808087;
+            border-radius: 10px;
+            margin: 5px;
+            padding: 2%;
+        }
+        
+        p.orario{
+        	font-family: "Outfit", sans-serif;
+            text-align: right;
+            font-size: x-small;
+        }
+        
+        input {
+        	font-family: "Outfit", sans-serif;
+            border-radius: 10px;
+            padding: 1%;
+        }
+        
     </style>
 </head>
 <body>
@@ -102,7 +142,10 @@ $conn->close();
     </div>
 
     <div id="messaggio-prototipo" class="messaggio-chat" style="display: none">
-        <p class="text-format mittente"></p>
+        <div class="mittente-box">
+            <div class="user-icon"></div>
+            <p class="text-format mittente"></p>
+        </div>
         <p class="text-format testo"></p>
         <p class="text-format orario"></p>
     </div>

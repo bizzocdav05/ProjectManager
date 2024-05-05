@@ -448,7 +448,7 @@ if ($img_profilo == false) {
         }
         
         function init_dati_utente() {
-            if (dati["img_profilo"] == "default") {
+            if (dati["img_profilo"]["tipo"] == "default") {
                 $("div.pfp").removeClass("pfp-image");
                 $("div.pfp > h2").show();
                 $("div.pfp > h2").empty().text(dati["nome_utente"][0] + " " + dati["cognome_utente"][0]);
@@ -580,7 +580,7 @@ if ($img_profilo == false) {
             $("#inp-cognome-utente").val(dati["cognome_utente"]);
         })
 
-        $("#btn-logout").click(() => locatoin.href = "logout.php");
+        $("#btn-logout").click(() => location.href = "logout.php");
         
         $("#btn-password-reset").click( () => 
             $.ajax({

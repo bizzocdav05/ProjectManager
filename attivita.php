@@ -387,6 +387,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 
+    if ($action == "get-msg-init") {
+        $sql = "SELECT utente, testo, orario, codice FROM Chat WHERE bacheca=$id_bacheca ORDER BY orario ASC LIMIT 100;";
+        $result = $conn->query($sql);
+        
+        $dati["esito"] = true;
+        $dati["data"] = array();
+        $dati["data"]["length"] = $result->num_rows;
+        $dati["data"]["list"] = get_msg_from_query($result, $id_utente);
+    }
+
+    if ($action == "get-new-msg") {
+        if (isset($_POST["codice_ultimo_messaggio"])) {
+            $last_code = $_POST["codice_ultimo_messaggio"];
+            if ($last_code !== "")
+            {
+                $sql = "SELECT utente, testo, orario, codice FROM Chat WHERE bacheca=$id_bacheca AND orario > (SELECT orario FROM Chat WHERE codice = '$last_code') ORDER BY orario ASC;";
+                $result = $conn->query($sql);
+
+                $dati["esito"] = true;
+                $dati["data"] = array();
+                $dati["data"]["length"] = $result->num_rows;
+                $dati["data"]["list"] = get_msg_from_query($result, $id_utente);
+            }
+            else {
+                $sql = "SELECT utente, testo, orario, codice FROM Chat WHERE bacheca=$id_bacheca ORDER BY orario ASC LIMIT 100;";
+                $result = $conn->query($sql);
+
+                $dati["esito"] = true;
+                $dati["data"] = array();
+                $dati["data"]["length"] = $result->num_rows;
+                $dati["data"]["list"] = get_msg_from_query($result, $id_utente);
+            }
+        }
+    }
+
+    if ($action == "create-new-msg") {
+        if (isset($_POST["testo"])) {
+            $testo = $_POST["testo"];
+            $codice = genera_codice(16, $id_bacheca);
+            $conn->query(create_sql(
+                "INSERT INTO Chat",
+                array("testo", "codice", "utente", "bacheca"),
+                array($testo, $codice, $id_utente, $id_bacheca)
+            ));
+
+            $dati["esito"] = true;
+            $dati["data"] = array();
+            $dati["data"]["length"] = 1;
+            $dati["data"]["list"] = array();
+            $dati["data"]["list"][0]["codice"] = $codice;
+            $dati["data"]["list"][0]["nome_utente"] = get_nome_utente($id_utente);
+        }
+    }
+
+    if ($action == "img-user-profile") {
+        if (isset($_POST["codice_utente"])) {
+            $conn = connection();
+            $codice = $_POST["codice_utente"];
+
+            $result = $conn->query("SELECT ID FROM Utenti WHERE codice='$codice';");
+            $id_utente = $result->fetch_assoc()["ID"];
+            $dati["esito"] = true;
+            $dati["data"] = get_user_img_profilo($id_utente);
+        }
+    }
+
     echo json_encode($dati);
     $conn->close();
 }

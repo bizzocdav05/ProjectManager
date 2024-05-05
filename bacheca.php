@@ -31,11 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     
     if (!$data["membri"]["proprietario"]) {
         $data["membri"]["proprietario_nome"] = get_nome_utente(null, $id_console_bacheca);
+        $id_proprietario = $conn->query("SELECT ID FROM Utenti WHERE console=$id_console_bacheca;")->fetch_assoc()["ID"];
+        $data["membri"]["proprietario_codice"] = hash("sha256", $id_proprietario);
     }
 
     $data["codice_invito"] = get_codice_invito($id_bacheca);
 
     $data["nome_utente"] = get_nome_utente($id_utente);
+    $data["img_profilo"] = get_user_img_profilo();
 
     $conn->close();
 
@@ -565,22 +568,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         text-decoration: underline;
     }
 
-    .pfp{
+    div.user-icon {
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
 
         background-color: black;
-        color: #eee;
+        color: var(--color-light);
 
-        text-align: center;
-        align-items: center;
         display: flex;
+        flex-direction: row;
+        align-items: center;
         justify-content: space-around;
 
-        font-weight: 600;
+        text-align: center;
+        font-weight: bold;
         font-family: "Concert One", sans-serif; 
         text-transform: uppercase;
+
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
     }
 
 
@@ -595,9 +603,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         --navbar-light-primary: #eee; /*colore titolo avatar*/
         --navbar-light-secondary: #eee; /*colore descrizione avatar*/
 
-        --color-primary: #e0ab23;  /* uguale colore menu */
+        --color-primary: #e0ab23;
+        --color-secondary: #d05e26;
+        --color-tertiary: #8f411a;
     }
-
 
     #nav-toggle:checked ~ #nav-header {
     width: calc(var(--navbar-width-min) - 16px); 
@@ -885,8 +894,30 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     }
 
     #popup-spazi-lavoro {
-        width: 100%;
-        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 30vw;
+        height: 30vh;
+
+        background-color: var(--color-primary);
+        border-radius: 16px;
+        padding: 10px;
+        cursor: default;
+    }
+
+    #popup-spazi-lavoro p.lista-text {
+        text-decoration: underline;
+    }
+
+    #popup-spazi-lavoro svg.svg-chiudi {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
     }
 
     div.bacheche-list-box {
@@ -1070,14 +1101,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         border-radius: 10px;
         background-color: var(--color-primary);
         padding: 10px;
-        height: 30px;
+        /* height: 30px; */
         text-align: center;
         min-width: 200px;
 
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
+    }
+
+    div.membro div.membro-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-left: 20px;
+        width: fit-content;
     }
 
     p.link-invito > svg {
@@ -1087,7 +1128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     div.membro p.select-visual-format {
         background-color: transparent;
-        width: 100%;
+        max-width: 100px;
     }
 
     div.membro p {
@@ -1101,6 +1142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         border-radius: 5px;
         background-color: var(--navbar-dark-secondary);
         color: white;
+        margin-left: 10px;
     }
 
     div.membro button.btn-membro-elimina > p.select-visual-format {
@@ -1114,6 +1156,144 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     span.link-support {
         color: green;
+    }
+
+    p.text-format {
+        background-color: rgb(224, 171, 35, 0);
+        border-width: 0px;
+        font-family: "Concert One", sans-serif;
+        color: black;
+        margin: 0;
+    }
+
+    #chat {
+        width: 20vw;
+        height: 30vh;
+
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+
+        /* border: 1px solid black; */
+        border-top-left-radius: 16px;
+        padding: 20px;
+
+        position: fixed;
+        bottom: 0;
+        right: 0;
+
+        background-color: var(--color-primary);
+    }
+
+    #chat.mini {
+        height: fit-content;
+    }
+
+    #chat > div:not(#chat-manager) {
+        width: 100%;
+    }
+
+    #chat-manager {
+        width: 50%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    #chat-content {
+        height: 90%;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        border: 2px solid var(--color-tertiary);
+        border-radius: 10px;
+        background-color: var(--background);
+    }
+
+    #chat-new-msg {
+        height: 10%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #chat-new-msg input {
+        width: 90%;
+        height: 20px;
+        border-radius: 10px;
+        border-color: transparent;
+    } 
+
+    div.messaggio-chat {
+        margin-top: 10%;
+    }
+
+    div.messaggio-chat {
+        width: 75%;
+        padding: 5px;
+    }
+
+    div.msg-proprio {
+        margin-right: 0;
+        margin-left: auto;
+    }
+
+    div.msg-other {
+        margin-left: 0;
+        margin-right: auto;
+    }
+
+    #svg-send-msg {
+        width: 30px;
+        height: 30px;
+
+        fill: var(--color-primary);
+    }
+
+    #svg-send-msg path {
+        stroke: var(--color-tertiary);
+    }
+
+    #chat-manager svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    div.messaggio-chat p.mittente{
+        font-family: "Concert One", sans-serif;
+        height: 30px;
+        text-align: center;
+        color: white;
+        margin-left: 10px;
+    }
+    
+    div.messaggio-chat p.testo{
+        font-family: "Outfit", sans-serif;
+        background-color: #80808087;
+        border-radius: 10px;
+        margin: 5px;
+        padding: 2%;
+    }
+    
+    div.messaggio-chat p.orario{
+        font-family: "Outfit", sans-serif;
+        text-align: right;
+        font-size: x-small;
+    }
+
+    div.messaggio-chat div.user-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    div.messaggio-chat div.mittente-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     </style>
@@ -1136,6 +1316,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     <p>Spazi di Lavoro</p>
 
                     <div id="popup-spazi-lavoro" style="display: none">
+                        <svg class="svg-chiudi" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g fill="#0F0F0F"><path d="M8.002 9.416a1 1 0 1 1 1.414-1.414l2.59 2.59 2.584-2.584a1 1 0 1 1 1.414 1.414l-2.584 2.584 2.584 2.584a1 1 0 0 1-1.414 1.414l-2.584-2.584-2.584 2.584a1 1 0 0 1-1.414-1.414l2.584-2.584z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23 4a3 3 0 0 0-3-3H4a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3zm-2 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1z"/></g></svg>
                         <p class="lista-text">Le tue bacheche</p>
                         <div class="bacheche-list-box">
                         </div>
@@ -1144,7 +1325,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
               </div>
    
                <div class="navbar-left">
-                 <div class="pfp" > E T</div>
+                 <div class="user-icon"></div>
                      <div class="popup-2" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
 
                        <div class="popuptext-2" id="myPopup_2"> prova </div>
@@ -1255,6 +1436,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <div class="membri-box">
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="chat">
+        <div id="chat-manager">
+            <svg class="svg-down-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 330" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M325.607 79.393c-5.857-5.857-15.355-5.858-21.213.001l-139.39 139.393L25.607 79.393c-5.857-5.857-15.355-5.858-21.213.001-5.858 5.858-5.858 15.355 0 21.213l150.004 150a15 15 0 0 0 21.212-.001l149.996-150c5.859-5.857 5.859-15.355.001-21.213"/></svg>
+            <svg class="svg-up-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.01 512.01" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M505.755 358.256 271.088 123.589c-8.341-8.341-21.824-8.341-30.165 0L6.256 358.256c-8.341 8.341-8.341 21.824 0 30.165s21.824 8.341 30.165 0l219.584-219.584 219.584 219.584a21.28 21.28 0 0 0 15.083 6.251 21.28 21.28 0 0 0 15.083-6.251c8.341-8.341 8.341-21.824 0-30.165"/></svg>
+
+            <p class="text-format">Chat</p>
+        </div>
+
+        <div id="chat-content">
+
+        </div>
+
+        <div id="chat-new-msg">
+            <input type="text" name="msg" id="inp-chat-msg">
+            <svg id="svg-send-msg" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path clip-rule="evenodd" d="M18.455 9.883 7.063 4.143a1.048 1.048 0 0 0-1.563.733.8.8 0 0 0 .08.326l2.169 5.24c.109.348.168.71.176 1.074a4 4 0 0 1-.176 1.074L5.58 17.83a.8.8 0 0 0-.08.326 1.048 1.048 0 0 0 1.562.732l11.393-5.74a1.8 1.8 0 0 0 0-3.265" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
     </div>
 
@@ -1444,13 +1643,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </div>
 
     <div id="membro-prototipo" class="membro" style="display: none">
-        <p class="membro-proprietario select-visual-format"></p>
-        <p class="membro-other select-visual-format"></p>
-        <button class="btn-membro-elimina" style="display: none"><p class="select-visual-format">Elimina</p></button>
+        <div class="user-icon">
+
+        </div>
+        <div class="membro-box">
+            <p class="membro-proprietario select-visual-format"></p>
+            <p class="membro-other select-visual-format"></p>
+            <button class="btn-membro-elimina" style="display: none"><p class="select-visual-format">Elimina</p></button>
+        </div>
     </div>
 
     <div id="bacheche-list-prototipo" class="bacheche-elem" style="display: none">
-        <p class="lista-text nome"></p>
+        <p class="text-format nome"></p>
+    </div>
+
+    <div id="messaggio-prototipo" class="messaggio-chat" style="display: none">
+        <div class="mittente-box">
+            <div class="user-icon"></div>
+            <p class="text-format mittente"></p>
+        </div>
+        <p class="text-format testo"></p>
+        <p class="text-format orario"></p>
     </div>
     
     <script>
@@ -1461,6 +1674,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 this.data = data;
                 this.tipo = "membri";
+
+                this.codLastMsg = null;
+                this.chat_status = false;  // true: open
+                this.chat_img_profile = {};  // cod_utente => img
 
                 this.cod_idx = {     // associa ad ogni codice l'indice (di dati)
                     "attivita": {},
@@ -1568,8 +1785,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             // method
-            show_user_name() {
-                $("div.header div.pfp").text(this.data["nome_utente"].split(" ").map(p=>p.charAt(0).toUpperCase()).join(" "));
+            show_user_name(target = $("div.header div.user-icon")) {
+                if (this.data["img_profilo"]["tipo"] == "default")
+                    target.text(this.data["nome_utente"].split(" ").map(p=>p.charAt(0).toUpperCase()).join(" "));
+                else
+                    target.css("background-image", `url('data:${this.data.img_profilo.tipo};base64,${this.data.img_profilo.dati}')`)
+            }
+
+            show_user_chat_img(target, codice_utente) {
+                if (this.chat_img_profile.hasOwnProperty(codice_utente)) {
+                    let img = this.chat_img_profile[codice_utente];
+
+                    if (img.tipo == "default")
+                        target.text(img.dati.split(" ").map(p => p.charAt(0).toUpperCase()).join(" "));
+                    else
+                        target.css("background-image", img.dati);
+                } else {
+                    this.get_chat_user_img(codice_utente, target);
+                }
+
             }
 
             add_idx_elem(tipo, codice, codice_superiore, idx=null) {
@@ -1727,7 +1961,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 giorni.forEach(giorno => {
                     elem.append(this.crea_giorno(giorno.numero, giorno.is_valid, giorno.is_active, giorno.scadenza));
-                    // console.log(giorno) 
                 });
                     
 
@@ -1798,13 +2031,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 if (tipo == "proprietario") {
                     let elem = $("#membro-prototipo").clone(true);
-                    elem.attr("id", "");
+                    elem.attr("id", "");                    
 
                     elem.find("p.membro-other").remove();
                     elem.find("button.btn-membro-elimina").remove();
 
                     if (this.data.membri.proprietario == true) elem.find("p.membro-proprietario").text("TU");
                     else elem.find("p.membro-proprietario").text(this.data.membri.proprietario_nome.toUpperCase());
+
+                    // Icona
+                    if (this.data.membri.proprietario) this.show_user_name(elem.find("div.user-icon"));
+                    else this.show_user_chat_img(elem.find("div.user-icon"), this.data.membri.proprietario_codice);
 
                     elem.find("p.membro-proprietario").text(elem.find("p.membro-proprietario").text() + " (proprietario)");
 
@@ -1815,10 +2052,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 if (tipo == "other") {
                     for (let i = 0; i < this.data.membri.length; i++) {
                         let dati = this.data.membri.list[i];
+
                         let elem = $("#membro-prototipo").clone(true);
                         elem.attr("id", dati.codice);
-
                         elem.find("p.membro-proprietario").remove();
+
+                        // icona
+                        if (dati.current) this.show_user_name(elem.find("div.user-icon"));
+                        else this.show_user_chat_img(elem.find("div.user-icon"), dati.codice_utente);
 
                         if (dati.current) elem.find("button.btn-membro-elimina").hide();
                         else elem.find("button.btn-membro-elimina").show();
@@ -1832,8 +2073,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 }
             }
 
-            crea_spazi_lavoro(dati_bacheche) {
-                console.log(dati_bacheche)
+            crea_spazi_lavoro(dati_bacheche, pos_x, pos_y) {
                 let elem = $("#popup-spazi-lavoro");
                 elem.find("div.bacheche-list-box").empty();
 
@@ -1848,7 +2088,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     elem.find("div.bacheche-list-box").append(elem_bacheca);
                 }
 
-                visual.popup.add(elem, "spazi-lavoro-popup");
+                // visual.popup.add(elem, "spazi-lavoro-popup");
+                elem.css("left", pos_x);
+                elem.css("top", pos_y);
             }
 
             skip_month(avanti=true) {
@@ -2001,6 +2243,34 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.popup.add(elem, "attivita-nuova-popupbox");
             }
 
+            show_msg(dati) {
+                for (let i = 0; i < dati.length; i++) {
+                    let msg = dati.list[i];
+                    let elem = $("#messaggio-prototipo").clone(true);
+                    let target = $("#chat-content");
+                    elem.attr("id", msg.codice);
+
+                    // cerco immagine profilo
+                    if (msg.current)
+                        this.show_user_name(elem.find("div.user-icon"));
+                    else
+                        this.show_user_chat_img(elem.find("div.user-icon"), msg.codice_utente);
+
+                    elem.find("p.mittente").text(msg.nome_utente);
+                    elem.find("p.testo").text(msg.testo);
+                    elem.find("p.orario").text(msg.orario);
+
+                    if (msg.current) elem.addClass("msg-proprio");
+                    else elem.addClass("msg-other");
+                    
+                    elem.show();
+                    target.append(elem);
+
+                    this.codLastMsg = msg.codice;
+                    target.scrollTop(target.prop("scrollHeight"));
+                }
+            }
+
             cancella_lista(codice_lista, cancella=true) {
                 let idx_lista = this.get_idx("lista", codice_lista)[0];
                 let idx_att = this.get_idx("attivita", this.get_idx("lista", codice_lista)[1])[0];
@@ -2062,6 +2332,81 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 let [idx, idx_lista, idx_attivita] = this.get_elem_location(tipo, codice_elemento);
                 this.data.attivita.list[idx_attivita].lista.list[idx_lista][tipo].list[idx][key] = valore;
             }
+
+            loop_chat() {
+                this.aggiornamento_messaggi = setInterval(() => this.get_new_msg(), 1000);
+            }
+
+            mostra_chat() {
+                $("#chat > *:not(#chat-manager)").show();
+
+                $("#chat").removeClass("mini");
+                $("#chat-manager > svg.svg-up-arrow").hide();
+                $("#chat-manager > svg.svg-down-arrow").show();
+                
+                this.loop_chat();
+            }
+
+            chiudi_chat() {
+                $("#chat > *:not(#chat-manager)").hide();
+                
+                $("#chat").addClass("mini");
+                $("#chat-manager > svg.svg-up-arrow").show();
+                $("#chat-manager > svg.svg-down-arrow").hide();
+
+                clearInterval(this.aggiornamento_messaggi);
+            }
+
+            get_chat_user_img(codice_utente, target) {
+                const self = this;
+
+                $.ajax({
+                    url: "attivita.php",
+                    type: "POST",
+                    data: {
+                        "action": "img-user-profile",
+                        "codice_bacheca": this.codice_bacheca,
+                        "codice_utente": codice_utente
+                    },
+                    crossDomain: true,
+
+                    success: function (result) {
+                        result = JSON.parse(result);
+                        if (result.esito == true) {
+                            let dati = result.data;
+                            if (dati.tipo != "default")
+                                dati.dati = `url('data:${dati.tipo};base64,${dati.dati}')`;
+
+                            self.chat_img_profile[codice_utente] = dati;
+                            self.show_user_chat_img(target, codice_utente);
+                        }
+                    },
+
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+            get_new_msg() {
+                $.ajax({
+                    url: "attivita.php",
+                    type: "POST",
+                    data: {
+                        "action": "get-new-msg",
+                        "codice_ultimo_messaggio": this.codLastMsg,
+                        "codice_bacheca": this.codice_bacheca
+                    },
+                    success: function (result) {
+                        result = JSON.parse(result);
+                        if (result.esito)
+                            visual.show_msg(result.data);
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+            }
         }
 
         // Passaggio dati
@@ -2075,6 +2420,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         let visual = new Visualizator(dati);
         visual.show_user_name();
         visual.show_dati();
+        visual.chiudi_chat();
 
         $("body").on("submit", "#form-nuova-attivita", (function (e) {
             e.preventDefault();
@@ -2511,6 +2857,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         // mostro spazi di lavoro
         $("div.spazi-lavoro").click(function (e) {
             let target = $(e.currentTarget);
+
             $.ajax({
                 url: "attivita.php",
                 type: "POST",
@@ -2524,7 +2871,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     result = JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
-                        visual.crea_spazi_lavoro(result.list);
+                        let offset = target.offset();
+                        target.find("#popup-spazi-lavoro").show();
+                        visual.crea_spazi_lavoro(result.list, offset.left, offset.top + target.outerHeight());
                     }
                 },
 
@@ -2532,6 +2881,55 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     console.log(err);
                 }
             });
+        });
+
+        // chiudo spazi di lavoro
+        $("#popup-spazi-lavoro svg.svg-chiudi").click(function(e) {
+            $("#popup-spazi-lavoro").hide();
+            e.stopPropagation();
+        });
+
+        // Invio messaggi in chat
+        $("#svg-send-msg").click(function (e) {
+            let target = $(e.currentTarget);
+            let testo = target.siblings("input[name='msg']");
+
+            if (!testo.val()) return;
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "create-new-msg",
+                    "codice_bacheca": CODICE_BACHECA,
+                    "testo": testo.val()
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    console.log(result);
+                    result =JSON.parse(result);
+                    console.log(result);
+                    if (result.esito == true) {
+                        visual.get_new_msg();
+                    }
+
+                    testo.val("");
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        // Mostro chat
+        $("#chat-manager svg.svg-up-arrow").click(function (e) {
+            visual.mostra_chat(); 
+        });
+
+        $("#chat-manager svg.svg-down-arrow").click(function (e) {
+            visual.chiudi_chat(); 
         });
 
     </script>

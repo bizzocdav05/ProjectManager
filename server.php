@@ -45,14 +45,14 @@ function registrazione($conn, $campi)
     if ($result->num_rows >= 0) {
         $sql = "SELECT ID From Console Where utente='" . $id_utente . "';";
         $result = $conn->query($sql);
+
         if ($result->num_rows == 1) {
-        while($row = $result->fetch_assoc()) {
-            $id_console = $row["ID"];
-        }
+            $id_console = $result->fetch_assoc()["id"];
         }
 
+        $codice_utente = hash("sha256", $id_utente);
         // Aggiungo ad utente
-        $sql = "UPDATE Utenti SET console='" . $id_console . "'Where ID='" . $id_utente . "';";
+        $sql = "UPDATE Utenti SET console=$id_console, codice='$codice_utente'  Where ID='" . $id_utente . "';";
         $result = $conn->query($sql);
     }
 }
@@ -150,7 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
             $img_x = imagesx($immagine);
             $img_y = imagesy($immagine);
 
-            $size = 300;
+            $size = 100;
             $new_img = imagecreatetruecolor($size, $size);
             imagecopyresampled($new_img, $immagine, 0, 0, 0, 0, $size, $size, $img_x, $img_y);
 

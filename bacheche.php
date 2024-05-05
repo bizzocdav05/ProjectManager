@@ -6,8 +6,6 @@
     set_console();
 
     $data = get_bacheche_list();
-
-    $conn->close();
     ?>
 
 <!DOCTYPE html>
@@ -17,12 +15,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--font dei titoli-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
 
+    <!--font del testo, possibilmente da cambiare-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <title>Le tue Bacheche</title>
 
     <style>
         body {
             background-color:  #f3e0ad;
+            margin: 0;
         }
         #popup {
             display: none;
@@ -53,10 +60,8 @@
             left: 20%;
 
             background-color: white;
-            z-index: 101;
-            padding: 20px;
         }
-
+        
         #login {
             position: sticky;
             top: 10%;
@@ -84,7 +89,7 @@
             flex-direction: row;
             justify-content: space-evenly;
             align-items: center;
-            height: 100px;
+            height: 115px;
             background-color: #e0ab23;
             margin: 0;
         }
@@ -97,7 +102,7 @@
         /* tutta la pagina sotto la barra*/
         .header {
             background-color: #f3e0ad;
-            height: 100vh;
+            height: 115vh;
             width: 100%;
         }
 
@@ -107,413 +112,320 @@
             height: 170px;
         }
 
-        /* stile "bottoni" */
-        .button {
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
-            background-color:#8f411a;
-            border: solid transparent;
-            border-radius: 16px;
-            border-width: 0 0 4px;
-            box-sizing: border-box;
-            color: #000000;
-            cursor: pointer;
-            display: inline-block;
-            font-size:large;
-            font-weight: 700;
-            letter-spacing: .8px;
-            line-height: 20px;
-            margin: 0px 5px 0px 5px;
-            overflow: visible;
-            padding: 13px 16px;
-            text-align: center;
-            text-transform: uppercase;
-            touch-action: manipulation;
-            transform: translateZ(0);
-            transition: filter .2s;
-            vertical-align: middle;
-            white-space: nowrap;
-            width: 100%;
-            text-decoration: none;
-        }
-
-        .button:after {
-            background-clip: padding-box;
-            background-color: #d05e26;
-            border: solid transparent;
-            border-radius: 16px;
-            border-width: 0 0 4px;
-            bottom: -4px;
-            content: "";
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: -1;
-        }
-
-        .button:hover {
-            filter: brightness(1.1);
-    
-        }
-
-        .button:active {
-            border-width: 4px 0 0;
-            background: none;
-        }
-
-        /*"Chi siamo"/"Funzioni" */
-        .writing{
-            text-decoration: none;
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
-            font-style: normal;
-            font-size: larger;
-            color: #000000;
-        }
-
-        .writing:hover{
-        color: #f3e0ad;  
-        text-decoration: underline;
-        }
-
-            /* stile "slogan" */
-        .title{
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
-            padding-top: 120px;
-            margin-right: 80px;
-            margin-left: 90px;
-        }
-
-            /*immagini laterali superiori */
-        .top_img{
-            height: 300px;
-            width: 300px;
-            margin-right: 40px;
-            margin-top: 70px;
-
-        }
-            /*immagini laterali superiori */
-        .top_img{
-            height: 300px;
-            width: 300px;
-            margin-right: 40px;
-            margin-top: 70px;
-
-        }
-
-            /*immagini laterali superiori */
-        .top_img{
-            height: 300px;
-            width: 300px;
-            margin-right: 40px;
-            margin-top: 70px;
-
-        }
-
-            /* parte superiore dell'header*/
-        .top_bar{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            
-        }
-
-        /* parte intermedia dell'header*/
-        .middle_bar{
-            display: flex;
-            flex-direction:column;
-            background-color: #f3e0ad;
-        }
-
-        /* titolo istruzioni*/
-        .subtitle{
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
-            margin-left: 90px;
-            padding-top: 200px;
-        }
-
-        /* introduzione istruzioni*/
-        .text{
-            font-family: "Outfit", sans-serif;
-            font-weight:900px;
-            font-optical-sizing: auto;
-            font-weight: 100px;
-            font-style: normal;
-            font-size: 25px;
-            margin-left: 90px;
-        }
-
-        /* titoli liste*/
-        .paragraph_title{
-            font-family: "Concert One", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 100px;
-        font-style: normal;
-        margin-left: 130px;
-        }
-
-        /* body liste*/
-        .lista{
-            font-family: "Outfit", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 900px;
-            font-size: larger;
-            font-style: normal;
-            margin-left: 130px; 
-        }
-
-
-        /* dropdown di "Funzioni"*/
-        .dropdown {
-        position: relative;
-        display: inline-block;
-        }
-
-        /* contenuto del dropdown*/
-        .dropdown-content {
-            font-family: "Concert One", sans-serif;
-            font-weight: bold;
-            justify-content: flex-start;
-            align-items: center;
-            width: 130vh;
-            text-align: center;
-            height: 30vh;
-        }
-
-        .dropdown-content > div {
-            justify-content: center;
-            align-items: center;
-        }
-
-        .dropdown-content > .dropwdown-elem {
-            justify-content: flex-start;
-            align-items: center;
-            width: 50%;
-        }
-
-
-        .dropdown-content > div {
-            justify-content: center;
-            align-items: center;
-        }
-
-        .dropdown-content > .dropwdown-elem {
-            justify-content: flex-start;
-            align-items: center;
-            width: 50%;
-        }
-
-        .dropdown-content {
-        visibility: hidden;
-        position: absolute;
-        z-index: 1;
-        }
-
-        .dropdown:hover .dropdown-content {
-        visibility: visible;
-        background-color: #f7eccd;
+    /* stile "bottoni" */
+    .button {
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        background-color:#8f411a;
+        border: solid transparent;
         border-radius: 16px;
-        }
-
-        .dropdown:hover .dropdown-content {
-        visibility: visible;
-        background-color: #f7eccd;
-        border-radius: 16px;
-        }
-
-        /* barra superiore del dropdown*/
-        .top-row-dropdwn {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: center;
-            flex-wrap: nowrap;
-            padding-top: 10px;
-            padding-left: 10px;
-            padding-bottom: 10px;
-            padding-right: 10px;
-        }
-
-        /* parte inferiore del dropdown*/
-        .bottom-row-dropdwn {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: baseline;
-            flex-wrap: nowrap;
-            padding-top: 10px;
-            padding-left: 10px;
-            padding-bottom: 10px;
-            padding-right: 10px;
-        }
-
-        /* icone all'interno di "Funzioni" */
-        .icons{
-            width: 50px;
-            height: 50px;
-        }
-
-        /* stile link all'interno di "Funzioni" */
-        .Funzioni_link{
-        text-decoration: none;
+        border-width: 0 0 4px;
+        box-sizing: border-box;
         color: #000000;
-        }
+        cursor: pointer;
+        display: inline-block;
+        font-size:large;
+        font-weight: 700;
+        letter-spacing: .8px;
+        line-height: 20px;
+        margin: 0px 5px 0px 5px;
+        overflow: visible;
+        padding: 13px 16px;
+        text-align: center;
+        text-transform: uppercase;
+        touch-action: manipulation;
+        transform: translateZ(0);
+        transition: filter .2s;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 320px;
+        text-decoration: none;
+        text-transform: none;
+        
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+    }
 
-        .Funzioni_link:hover{
-            text-decoration: underline;
-        }
+    .button:after {
+        background-clip: padding-box;
+        background-color: #d05e26;
+        border: solid transparent;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        bottom: -4px;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+    }
 
-        /* barra per il bottone e l'ultima frase*/
-        .testo{
-            margin-left: 30px;
-            margin-top: 20px;
-            font-family: "Concert One", sans-serif;
-        }
+    .button:hover {
+        filter: brightness(1.1);
+ 
+    }
 
-        /* ultima frase della pagina*/
-        .slogan{
-            font-family: "Concert One", sans-serif;
-            font-weight: bolder;
-            padding-bottom: 20px;
-        }
+    .button:active {
+        border-width: 4px 0 0;
+        background: none;
+    }
 
-        /* barra per il bottone e l'ultima frase*/
-        .bottom_bar{
-            display: flex;
-            flex-direction: column;
-            background-color: #f3e0ad;
-            align-items: center;
-            padding-top: 15vh;
-            padding-bottom: 100px;
-        }
+    /* spazi di lavoro*/
+    .writing{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+        padding
+        cursor: pointer;
+    }
 
-        #container {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-evenly;
-                align-items: flex-start;
-                flex-wrap: nowrap;
-        }
+    .writing:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+    cursor: pointer;
+    }
 
-        /* barra per il bottone e l'ultima frase*/
-        .bottom_bar{
-            display: flex;
-            flex-direction: column;
-            background-color: #f3e0ad;
-            align-items: center;
-            padding-top: 15vh;
-            padding-bottom: 100px;
-        }
 
-        #container {
+ 
+    #container {
             display: flex;
             flex-direction: row;
-            justify-content: space-evenly;
-            align-items: flex-start;
+            justify-content: flex-start;
+            align-items: center;
             flex-wrap: nowrap;
+
             overflow-x: auto;
 
             margin: 10px;
+            
         }
+	.bacheca {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-width: 250px;
+            width: fit-content;
+            height: auto;
+            min-height: 50px;
+            font-family: "Concert One", sans-serif;
+                    
+            background-color: #e0ab23;
+            color: black;
+            border-radius: 10px;
+
+            margin-top: 10px;
+            padding: 30px;
+            padding-right: 0px;
+            padding-left:0px;
+            margin-left:20px;
+            margin-right: 20px;
+            cursor: pointer;
+        } 
+        
+        /* popup */
+.popup .popuptext {
+  visibility: hidden;
+  background-color: #e0ab23;
+  color: #fff;
+  font-size: 18px;
+  text-align: left;
+  padding-left: 8px;
+
+  text-transform: none;
+
+  border-radius: 6px;
+  border-style: solid;
+  border-color: #eee;
+  border-width: 1px;
+
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  
+  width: 400px;
+  height: 300px;
+}
+
+.popup .show {
+  visibility: visible;
+
+  top: 65%;
+  left: 227px;
+}
+
+    /*Spazi di lavoro*/
+  .popup{
+    text-decoration: none;
+    font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    font-style: normal;
+    font-size: larger;
+    color: #000000;
     
+}
+
+.popup:hover{
+   color: #f3e0ad;  
+   text-decoration: underline;
+}
+
+hr{
+  border-color: #fff;
+  border-width: 1px;
+  border-style: solid;
+  opacity: 0.7;
+}
+
+.icon{
+    margin-right:10px;
+    height: 20px;
+    width: 20px;
+    padding-left:10px;
+}
+
+.crea{
+    font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        background-color:#d05e26;
+        border: solid #8f411a;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+        display: inline-block;
+        font-size:large;
+        font-weight: 700;
+        letter-spacing: .8px;
+        line-height: 20px;
+        margin: 0px 5px 0px 5px;
+        overflow: visible;
+        padding: 13px 16px;
+        text-align: center;
+        text-transform: none;
+        touch-action: manipulation;
+        transform: translateZ(0);
+        transition: filter .2s;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 300px;
+        text-decoration: none;
+
+        margin-top: 30px;
+        padding-right: 20px;
+}
+
+.crea:after{
+    background-clip: padding-box;
+        background-color: #d05e26;
+        border: solid #8f411a;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        bottom: -4px;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+        width: 300px;
+}
+
+.crea:hover{
+    filter: brightness(1.1);
+}
+
+.crea:active{
+    border-width: 4px 0 0;
+}
+
+.title{
+    font-family: "Concert One", sans-serif;
+    font-size: 25px;
+    padding-right: 15px;
+    color: white;
+}
+
+.input{
+    background-color: #eee;
+    font-family: "Concert One", sans-serif;
+    font-size: large;
+
+    border-width: 0px;
+    border-radius: 10px;
+
+    height: 30px;
+}
+
+.input:after{
+    border-width: 0px;
+}
+
+.paragrafo{
+	font-family: 'Concert One', sans-serif;
+    margin-top: 35vh;
+    font-size: 28px;
+    padding-left: 30px;
+    text-decoration:underline;
+}
+
+.recenti{
+	font-family: 'Concert One', sans-serif;
+    margin-top: 40px;
+    font-size: 28px;
+    padding-left: 30px;
+    text-decoration:underline;
+}
+
+
+.pfp{
+  border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    color: #eee;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    font-family: "Concert One", sans-serif; 
+}
     </style>
 </head>
 <body>
     <div id="popup">
-
-    </div>
-
-    <!--parte della barra a sinistra-->
-    <div class="navbar">
-        <div class="navbar-left" > 
-
-            <!--immagine del logo-->
-            <a href="../index.html">
-            <img  src="img/logo_scritta_completo.png"  class="logo">
-            </a>
-        
-            <!--"Chi Siamo"-->
-            <div class="dropdown">
-            <a href="../chi_siamo.html" style="text-decoration: none;">
-            <span class="writing">Chi siamo</span>
-            </a>
-            </div>
-
-            <!--"Funzioni"-->
-            <div class="dropdown">
-            <a href="../Funzioni.html" style="text-decoration: none;">
-            <span class="writing">Funzioni</span>
-            </a>
-            <div class="dropdown-content">
-                <div>
-
-                    <!-- dropdown di "Funzioni"-->
-
-    <!-- barra superiore di "Funzioni"-->
-    <div class="top-row-dropdwn">
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="img/easy_to_use.png" class="icons">
-                        <p class="dropdown-title">Semplicità d'Uso</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/data_centralization.png" class="icons">
-                        <p class="dropdown-title">Centralizzazione dei Dati</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">     
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="img/collaboration_icon.png" class="icons">
-                        <p class="dropdown-title">Collaborazione Fluida</p>
-                        </a>
-                    </div>
-
-    </div>
-
-    <!-- barra inferiore di "Funzioni"-->
-    <div class="bottom-row-dropdwn">
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/real_time.png" class="icons">
-                        <p class="dropdown-title">Monitoraggio in Tempo Reale</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/esigenze.png" class="icons">
-                        <p class="dropdown-title">Adattabilità alle Esigenze</p>
-                        </a>
-                    </div>
-
-                    <div class="drowdown-elem">
-                        <a href="../Funzioni.html" class="Funzioni_link">
-                        <img src="/img/data_security.png" class="icons">
-                        <p class="dropdown-title">Sicurezza dei Dati</p>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- barra destra-->
-        <div class="navbar-right" style="margin-right: 10%;"> 
-            <a class="button" href="../login.html"> Log In </a>
-            <a class="button" href="../singup.html"> Sing Up</a>
+        <div id="popup-box">
         </div>
     </div>
 
+         <!--parte della barra a sinistra-->
+         <div class="navbar">
+            <div class="navbar-left" > 
+    
+                <!--immagine del logo-->
+                <a href="../index.html">
+                <img  src="img/logo_scritta_completo.png"  class="logo">
+                </a>
+
+              
+               </div>
+    
+                <div class="navbar-left">
+					<div class="pfp" > E T</div>
+                      <span class="writing" style="margin-left: 0px;">Account</span>
+              </div>
+
+       
+    </div>
+    
+ <div class="recenti"> Visualizzate di Recente </div>
 
     <!-- content hidden -->
     <div id="bacheca-prototipo" class="bacheca bacheca-elem" style="display: none">
@@ -521,16 +433,17 @@
     </div>
 
     <form id="form-nuova-bacheca" class="form-nuova-bacheca" method="post" style="display: none">
-        <label for="">Nome: </label>
-        <input type="text" name="nome" id="">
+ <label for="" class="title">Nome: </label>
+      <input class="input" type="text" name="nome" id=""> 
 
-        <input type="submit" value="Crea">
+ <div>       <input class="crea" type="submit" value="Crea Bacheca"> </div>
     </form>
-
+ <div class="paragrafo"> Le tue Bacheche </div>
     <!-- lista bacheche -->
     <div class="bacheca-list" id="container">
-        <div id="nuova-bacheca" class="bacheca">Crea nuova bacheca</div>
+        
     </div>
+    <div id="nuova-bacheca" class="button"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova bacheca</div>
 
 
     <script>
@@ -590,6 +503,7 @@
         });
 
         let popup = $("#popup");
+        popup.box = $("#popup-box");
 
         $("#nuova-bacheca").click(function (e) {
             e.stopPropagation();
@@ -619,12 +533,12 @@
         }
 
         popup.add = function (elem) {
-            popup.box.empty();
+            popup.empty();
             let new_ = elem.clone(true);
             console.log(new_)
             new_.attr("id", "nuova-bacheca-popup");
             new_.show();
-            new_.appendTo(popup)
+            popup.box.append(new_);
 
             popup.mostra();
         }

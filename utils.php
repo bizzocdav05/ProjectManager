@@ -380,7 +380,8 @@ function get_membri_bacheca($id_bacheca, $id_utente) {
                 "codice" => $row["codice"],
                 "current" => ($row["other"] == $id_utente),
                 "privilegi" => $row["privilegi"],
-                "nome" => get_nome_utente($id_utente)
+                "nome" => get_nome_utente($id_utente),
+                "codice_utente" => hash("sha256", $row["other"])
             ));
         }
     }
@@ -462,14 +463,18 @@ function logout() {
     }
 }
 
-function get_user_img_profilo() {
-    $id_utente = login_required();
+function get_user_img_profilo($id_utente = null) {
+    if ($id_utente == null) {
+        $id_utente = login_required();
+    }
+
     $conn = connection();
 
     $result = $conn->query("SELECT img_profilo FROM Utenti WHERE ID=$id_utente AND img_profilo IS NOT NULL;");
     if ($result->num_rows == 0) {
         $conn->close();
-        return false;
+
+        return array("tipo" => "default", "dati" => get_nome_utente($id_utente));
     }
     
     $id_img = $result->fetch_assoc()["img_profilo"];
@@ -485,6 +490,7 @@ function get_msg_from_query($result, $id_utente) {
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+            $row["codice_utente"] = hash("sha256", $row["utente"]);
             $row["current"] = ($row["utente"] == $id_utente) ? true : false;
             $row["nome_utente"] = get_nome_utente($id_utente);
             unset($row["utente"]); // Rimuovi l'id dal messaggio
@@ -495,19 +501,43 @@ function get_msg_from_query($result, $id_utente) {
     return $data;
 }
 
-function get_bacheche_list() {
-    $id_console = set_console();
-    $data = array();
+function get_bacheche_list($id_utente=null) {
+    if ($id_utente === null) {
+        $id_utente = login_required();
+    }
+
+    $data = array("length" => 0, "list" => array());
     $conn = connection();
+
+
+    // id console
+    $result = $conn->query("SELECT ID FROM Console WHERE utente=$id_utente;");
+    $id_console = $result->fetch_assoc()["ID"];
     
     // Bacheche
     $sql = "SELECT ID, nome, codice FROM Bacheca WHERE console=$id_console;";
     $result_bacheca = $conn->query($sql);
     
-       $data = array("length" => $result_bacheca->num_rows, "list" => array());
+    $data["length"] = $result_bacheca->num_rows;
     if ($result_bacheca->num_rows > 0) {
         while($row_bacheca = $result_bacheca->fetch_assoc()) {
             array_push($data["list"], array( "nome" => $row_bacheca["nome"], "codice" => $row_bacheca["codice"]));
+        }
+    }
+
+    // Bacheche assoc
+    $result = $conn->query("SELECT bacheca FROM Bacheca_assoc WHERE other=$id_utente;");
+    if ($result->num_rows > 0) {
+        $id_bacheca = $result->fetch_assoc()["bacheca"];
+
+        $sql = "SELECT ID, nome, codice FROM Bacheca WHERE ID=$id_bacheca;";
+        $result_assoc = $conn->query($sql);
+        
+        $data["length"] =+ $result_assoc->num_rows;
+        if ($result_assoc->num_rows > 0) {
+            while($row_assoc = $result_assoc->fetch_assoc()) {
+                array_push($data["list"], array( "nome" => $row_assoc["nome"], "codice" => $row_assoc["codice"]));
+            }
         }
     }
 
