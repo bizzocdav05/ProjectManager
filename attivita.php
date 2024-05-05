@@ -70,6 +70,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $id_utente = get_utente();
 
     $dati = array("esito" => false);
+
+    if ($action == "bacheche-list") {
+        $dati["esito"] = true;
+        $dati["list"] = get_bacheche_list();
+    }
     
     if ($action == "new-attivita") {
         $dati["attivita"] = array();

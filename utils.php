@@ -23,7 +23,7 @@ function set_console() {
         return $_SESSION["id_console"];
     }
 
-    $id_utente = $_SESSION["id_utente"];
+    $id_utente = login_required();
     $conn = connection();
 
     $sql = "SELECT ID FROM Console WHERE utente=$id_utente";
@@ -492,6 +492,26 @@ function get_msg_from_query($result, $id_utente) {
         }
     }
 
+    return $data;
+}
+
+function get_bacheche_list() {
+    $id_console = set_console();
+    $data = array();
+    $conn = connection();
+    
+    // Bacheche
+    $sql = "SELECT ID, nome, codice FROM Bacheca WHERE console=$id_console;";
+    $result_bacheca = $conn->query($sql);
+    
+       $data = array("length" => $result_bacheca->num_rows, "list" => array());
+    if ($result_bacheca->num_rows > 0) {
+        while($row_bacheca = $result_bacheca->fetch_assoc()) {
+            array_push($data["list"], array( "nome" => $row_bacheca["nome"], "codice" => $row_bacheca["codice"]));
+        }
+    }
+
+    $conn->close();
     return $data;
 }
 ?>

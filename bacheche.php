@@ -5,24 +5,7 @@
     login_required();
     set_console();
 
-    if (isset($_SESSION["id_utente"])) {
-        $data = array();
-        $conn = connection();
-
-        $id_utente = $_SESSION["id_utente"];
-        $id_console = $_SESSION["id_console"];
-        
-        // Bacheche
-        $sql = "SELECT ID, nome, codice FROM Bacheca WHERE console=$id_console;";
-        $result_bacheca = $conn->query($sql);
-        
-       	$data = array("length" => $result_bacheca->num_rows, "list" => array());
-        if ($result_bacheca->num_rows > 0) {
-            while($row_bacheca = $result_bacheca->fetch_assoc()) {
-                array_push($data["list"], array( "nome" => $row_bacheca["nome"], "codice" => $row_bacheca["codice"]));
-            }
-        }
-    }
+    $data = get_bacheche_list();
 
     $conn->close();
     ?>

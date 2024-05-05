@@ -145,6 +145,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
             $tipo_file = $_FILES["file_immagine"]["type"];
             $dati_file = file_get_contents($_FILES["file_immagine"]["tmp_name"]);
         
+            // Comprimo l'immagine            
+            $immagine = imagecreatefromstring($dati_file);
+            $img_x = imagesx($immagine);
+            $img_y = imagesy($immagine);
+
+            $size = 300;
+            $new_img = imagecreatetruecolor($size, $size);
+            imagecopyresampled($new_img, $immagine, 0, 0, 0, 0, $size, $size, $img_x, $img_y);
+
+            ob_start();
+            imagejpeg($new_img, NULL, 75);
+            $dati_file = ob_get_clean();
+
+            imagedestroy($immagine);
+            imagedestroy($new_img);
+
             // Prepara la query per l'inserimento dei dati nel database
             $stmt = $conn->prepare("INSERT INTO Immagine (nome, tipo, dati) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $nome_file, $tipo_file, $dati_file);

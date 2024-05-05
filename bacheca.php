@@ -130,6 +130,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         height: 600px;
     }
 
+    #popup-box.spazi-lavoro-popupbox {
+
+    }
+
     #container-isola {
         display: flex;
         flex-direction: row;
@@ -650,7 +654,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     #nav-bar {
     background: var(--navbar-dark-primary);
-    border-radius: 16px;
+    /* border-radius: 16px; */
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
     display: flex;
     flex-direction: column;
     color: var(--navbar-light-primary);
@@ -867,114 +873,54 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     text-align: center; 
     }
 
-
-    /* popup uno */
-    .popup .popuptext {
-    visibility: hidden;
-    background-color: #e0ab23;
-    color: #fff;
-    font-size: 18px;
-    text-align: left;
-    padding-left: 8px;
-
-    text-transform: none;
-
-    border-radius: 6px;
-    border-style: solid;
-    border-color: #eee;
-    border-width: 1px;
-
-    position: absolute;
-    z-index: 1;
-    top: 125%;
-    left: 79.5%;
-    
-    width: 400px;
-    height: 300px;
-    }
-
-    .popup .show {
-    visibility: visible;
-
-    top: 65%;
-    left: 73vh;
-    }
-
-        /*Spazi di lavoro*/
-    .popup{
-        text-decoration: none;
+    div.spazi-lavoro {
+        color: var(--navbar-light-primary);
         font-family: "Concert One", sans-serif;
         font-weight: bolder;
         font-style: normal;
         font-size: larger;
         color: #000000;
         cursor: pointer;
-        
-    }
-
-    .popup:hover{
-    color: #f3e0ad;  
-    text-decoration: underline;
-    }
-
-    hr{
-    border-color: #fff;
-    border-width: 1px;
-    margin-inline-end: auto;
-    border-style: solid;
-    opacity: 0.7;
-    width: 399px;
-    }
-
-
-    /* popup */
-    .popup-2 .popuptext-2 {
-    visibility: hidden;
-    background-color: #e0ab23;
-    color: #fff;
-    font-size: 18px;
-    text-align: left;
-    padding-left: 8px;
-
-    text-transform: none;
-
-    border-radius: 6px;
-    border-style: solid;
-    border-color: #eee;
-    border-width: 1px;
-
-    position: absolute;
-    z-index: 1;
-    top: 125%;
-    
-    width: 300px;
-    height: 500px;
-    }
-
-    .popup-2 .show {
-    visibility: visible;
-
-    top: 75%;
-    right: 10px;
-    }
-
-        /*Spazi di lavoro*/
-    .popup-2{
         text-decoration: none;
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        font-style: normal;
-        font-size: larger;
-        color: #000000;
+    }
+
+    #popup-spazi-lavoro {
+        width: 100%;
+        height: 100%;
+    }
+
+    div.bacheche-list-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 90%;
+        border: 1px solid white;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    div.bacheche-elem {
+        background-color: var(--background);
+        text-align: center;
+        padding: 10px;
+        margin: 0;
+        border-radius: 7px;
         cursor: pointer;
-        
+        font-size: 20px;
+        margin-right: 30px;
     }
 
-    .popup-2:hover{
-    color: #f3e0ad;  
-    text-decoration: underline;
+    div.bacheche-elem:hover {
+        background-color: var(--navbar-light-primary);
     }
 
+    div.bacheche-elem p {
+        margin: 0;
+    }
 
     .icon{
         margin-right:10px;
@@ -1186,18 +1132,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                <div class="button" >Crea una nuova bacheca </div>
 
                 <!--tutte le bacheche di un account-->
-                  <div class="popup" onclick="popup_function()"> Spazi di Lavoro
+                <div class="spazi-lavoro">
+                    <p>Spazi di Lavoro</p>
 
-                  <div class="popuptext" id="myPopup"> <p style="margin: 10px;"> La tua Bacheca attuale </p>
-                  <hr/>
-                  <!-- spazio per la bacheca attuale-->
-
-
-                  <p style="margin: 10px; padding-top: 100px;"> Le tue Bacheche </p>
-                  <hr/>
-                  <!-- spazio per le bacheche-->
-                 
-                 </div>
+                    <div id="popup-spazi-lavoro" style="display: none">
+                        <p class="lista-text">Le tue bacheche</p>
+                        <div class="bacheche-list-box">
+                        </div>
+                    </div>
                 </div>
               </div>
    
@@ -1506,6 +1448,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <p class="membro-other select-visual-format"></p>
         <button class="btn-membro-elimina" style="display: none"><p class="select-visual-format">Elimina</p></button>
     </div>
+
+    <div id="bacheche-list-prototipo" class="bacheche-elem" style="display: none">
+        <p class="lista-text nome"></p>
+    </div>
     
     <script>
         class Visualizator {
@@ -1572,10 +1518,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     $(window).off("click");
                 }
 
-                this.popup.add = function (elem) {
+                this.popup.add = function (elem, class_name="") {
                     self.popup.box.empty();
+                    self.popup.box.addClass(class_name);
+
                     let new_ = elem.clone(true);
-                    // new_.attr("id", "");
                     new_.show();
                     self.popup.box.append(new_);
 
@@ -1885,6 +1832,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 }
             }
 
+            crea_spazi_lavoro(dati_bacheche) {
+                console.log(dati_bacheche)
+                let elem = $("#popup-spazi-lavoro");
+                elem.find("div.bacheche-list-box").empty();
+
+                for (let i = 0; i < dati_bacheche.length; i++) {
+                    let info = dati_bacheche.list[i];
+                    let elem_bacheca = $("#bacheche-list-prototipo").clone(true);
+                    elem_bacheca.attr("id", info.codice);
+                    
+                    elem_bacheca.find("p.nome").text(info.nome);
+
+                    elem_bacheca.show();
+                    elem.find("div.bacheche-list-box").append(elem_bacheca);
+                }
+
+                visual.popup.add(elem, "spazi-lavoro-popup");
+            }
+
             skip_month(avanti=true) {
                 let date = new Date(this.actual_date);
                 if (avanti) date.setMonth(date.getMonth() + 1);
@@ -2014,8 +1980,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 // Mostro
                 elem.show();
-                this.popup.add(elem);
-                this.popup.box.addClass("lista-info-popupbox");
+                this.popup.add(elem, "lista-info-popupbox");
             }
 
             show_lista_nuova(codice_attivita) {
@@ -2026,16 +1991,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     name: 'codice_attivita',
                     value: codice_attivita
                 }));
-                this.popup.add(elem);
-                this.popup.box.addClass("lista-nuova-popupbox");
+                this.popup.add(elem, "lista-nuova-popupbox");
             }
 
             show_attivita_nuova() {
                 let elem = $("#attivita-nuova-prototipo").clone(true);
                 elem.attr("id");
 
-                this.popup.add(elem);
-                this.popup.box.addClass("attivita-nuova-popupbox");
+                this.popup.add(elem, "attivita-nuova-popupbox");
             }
 
             cancella_lista(codice_lista, cancella=true) {
@@ -2483,6 +2446,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             });
         });
 
+        $("body").on("click", "div.bacheche-list-box div.bacheche-elem", function(e) {
+            let target = $(e.currentTarget);
+            let cod_bacheca = target.attr("id");
+            location.href = location.href = "bacheca.php?codice=" +encodeURIComponent(cod_bacheca);
+        });
+
         // Informazioni lista
         $("body").on("click", "div.attivita-box div.lista", function (e) {
             let target = $(e.currentTarget);
@@ -2537,6 +2506,32 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 svg.show();
                 p.hide();
             }, 2000);
+        });
+
+        // mostro spazi di lavoro
+        $("div.spazi-lavoro").click(function (e) {
+            let target = $(e.currentTarget);
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "bacheche-list",
+                    "codice_bacheca": CODICE_BACHECA
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    result = JSON.parse(result);
+                    console.log(result);
+                    if (result.esito == true) {
+                        visual.crea_spazi_lavoro(result.list);
+                    }
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
         });
 
     </script>
