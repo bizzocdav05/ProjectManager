@@ -115,6 +115,21 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         border-radius: 16px;
     }
 
+    #popup-box.attivita-nuova-popupbox {
+        width: 100px;
+        height: 100px;
+    }
+
+    #popup-box.lista-nuova-popupbox {
+        width: 400px;
+        height: 400px;
+    }
+
+    #popup-box.lista-info-popupbox {
+        width: 600px;
+        height: 600px;
+    }
+
     #container-isola {
         display: flex;
         flex-direction: row;
@@ -1404,6 +1419,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <div class="lista-commento-box">
             </div>
 
+            <p class="lista-text">Sposta</p>
+            <div class="lista-scadenza-box">
+            </div>
+
             <p class="lista-text">Scadenza</p>
             <div class="lista-scadenza-box"></div>
 
@@ -1438,6 +1457,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
             </svg>
         </div>
+    </div>
+
+    <div id="sposta-attivita-prototipo" class="sposta-attivita" style="display: none">
+        <p class="lista-text"><span></span></p>
     </div>
 
     <div id="scadenza-prototipo" class="scadenza" style="display: none">
@@ -1545,6 +1568,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.popup.close = function () {
                     self.popup.hide();
                     self.popup.box.empty();
+                    self.popup.box.removeClass();
                     $(window).off("click");
                 }
 
@@ -1991,6 +2015,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 // Mostro
                 elem.show();
                 this.popup.add(elem);
+                this.popup.box.addClass("lista-info-popupbox");
             }
 
             show_lista_nuova(codice_attivita) {
@@ -2002,6 +2027,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     value: codice_attivita
                 }));
                 this.popup.add(elem);
+                this.popup.box.addClass("lista-nuova-popupbox");
             }
 
             show_attivita_nuova() {
@@ -2009,9 +2035,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.attr("id");
 
                 this.popup.add(elem);
+                this.popup.box.addClass("attivita-nuova-popupbox");
             }
 
-            cancella_lista(codice_lista) {
+            cancella_lista(codice_lista, cancella=true) {
                 let idx_lista = this.get_idx("lista", codice_lista)[0];
                 let idx_att = this.get_idx("attivita", this.get_idx("lista", codice_lista)[1])[0];
                 
@@ -2020,7 +2047,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 delete this.data.attivita.list[idx_att].lista.list[idx_lista];
                 this.data.attivita.list[idx_att].lista.length -= 1;
 
+                if (cancella)
                 $.ajax({url:"attivita.php",type:"POST",data:{"action":"delete-lista","codice_lista":codice_lista, "codice_bacheca":this.codice_bacheca},crossDomain:true,success:function(result){console.log(result)},error:function(err){console.log(err)}});
+                
                 $("#" + codice_lista).remove();
             }
 
@@ -2413,6 +2442,39 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     delete visual.data.membri.list[idx_membro];
                     visual.data.membri.length -= 1;
                     delete visual.cod_idx["membri"][codice];
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        $("body").on("click", "div.lista-sposta-box div.sposta-attivita", function(e) {
+            let target = $(e.currentTarget);
+            let cod_lista = target.attr("cod_lista");
+            let cod_attivita_from = target.attr("cod_attivita");
+            let cod_attivita_to = target.find("p.lista-text").text();
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "sposta-lista",
+                    "codice_bacheca": CODICE_BACHECA,
+                    "from": cod_attivita_from,
+                    "to": cod_attivita_to,
+                    "codice_lista": cod_lista
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    result = JSON.parse(result);
+                    console.log(result);
+                    if (result.esito == true) {
+                        visual.cancella_lista(cod_lista, false);
+                        visual.create_new_lista(result.lista, cod_attivita_to);
+                    }
                 },
 
                 error: function (err) {
