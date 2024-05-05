@@ -123,6 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 "commento" => array("length" => 0, "list" => array()),
                 "etichetta" => array("length" => 0, "list" => array()),
                 "checkbox" => array("length" => 0, "list" => array()),
+                "scadenza" => array("length" => 0, "list" => array()),
             );
         }
     }
@@ -356,6 +357,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
             $conn->close();
             exit();
+        }
+    }
+
+    if ($action == "sposta-lista") {
+        if (isset($_POST["from_codice"]) && isset($_POST["to_codice"]) && isset($_POST["codice_lista"])) {
+            $codice_attivita_from = $_POST["from_codice"];
+            $codice_attivita_to = $_POST["to_codice"];
+            $codice_lista = $_POST["codice_lista"];
+
+            $idx_attivita_from = get_elem_by_code("Attivita", array("bacheca" => $codice_bacheca, "codice" => $codice_attivita_from));
+            $idx_attivita_to = get_elem_by_code("Attivita", array("bacheca" => $codice_bacheca, "codice" => $codice_attivita_to));
+            $idx_lista = get_elem_by_code("Lista", array("bacheca" => $codice_bacheca, "codice" => $codice_lista));
+
+            // sposto in lista default per ottenere i dati della singola lista
+            $conn->query("UPDATE Lista SET attivita=0 WHERE ID=$idx_lista");
+            $dati_lista = get_dati_liste(0)["list"][0];
+
+            // sposto in posizione corretta
+            $conn->query("UPDATE Lista SET attivita=$idx_attivita_to WHERE ID=$idx_lista");
+
+            $dati["esito"] = true;
+            $dati["lista"] = $dati_lista;
         }
     }
 
