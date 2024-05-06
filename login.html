@@ -459,15 +459,21 @@ color: #000000;
       <div class="subtitle">Accedi subito al tuo account!</div>
 
       <div class="input-container ic1">
-        <input contenteditable="true" id="id_mail" name="mail" class="input" type="email" placeholder="" />
+        <input id="id_mail" name="mail" class="input" type="email" placeholder=" " />
         <div class="cut" placeholder=""  style="width: 50px;"></div>
-        <label for="id_mail" class="placeholder" >Email</label>
+        <label for="id_mail" class="placeholder">Email</label>
       </div>
 
       <div class="input-container ic2">
         <input id="id_pass" name="password" class="input" type="password" placeholder=" " />
         <div class="cut"></div>
         <label for="id_pass" class="placeholder">Password</label>
+      </div>
+
+      <div id="container-auth" class="input-container ic2" style="display: none;">
+        <input id="id_auth_code" name="auth_code" class="input" type="text" placeholder=" " />
+        <div class="cut"></div>
+        <label for="id_auth_code" class="placeholder">Codice</label>
       </div>
 
       <div class="submit">
@@ -512,7 +518,17 @@ color: #000000;
 
             success: function (result) {
                 console.log(result);
-                location.href = "bacheche.php";
+                result = JSON.parse(result);
+                if (result == true)
+                    location.href = "bacheche.php";
+
+                if (result == false) {
+                    $(e.currentTarget).get(0).reset();
+                    $("#container-auth").hide();
+                }
+                if (result == -1) {
+                    $("#container-auth").show();
+                }
             },
 
             error: function (err) {

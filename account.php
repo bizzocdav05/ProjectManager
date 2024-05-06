@@ -1,13 +1,13 @@
 <?php
 include "utils.php";
 
-login_required();
-$id_utente = get_utente();
+
+$id_utente = login_required();
 
 $data = array();
 $conn = connection();
 $result = $conn->query("SELECT nome, cognome, mail FROM Utenti WHERE ID = $id_utente;")->fetch_assoc();
-
+echo "SELECT nome, cognome, mail FROM Utenti WHERE ID = $id_utente;";
 $data["email_utente"] = $result["mail"];
 $data["nome_utente"] = $result["nome"];
 $data["cognome_utente"] = $result["cognome"];
@@ -591,7 +591,7 @@ if ($img_profilo == false) {
                 },
                 success: function (result) {
                     console.log(result);
-                    // location.href = "login.html";
+                    location.href = "login.html";
                 },
                 error: function (err) {
                     console.log(err);
@@ -607,7 +607,7 @@ if ($img_profilo == false) {
                     "action": "delete-account"
                 },
                 success: function () {
-                    // location.href = "login.html";
+                    location.href = "login.html";
                 },
                 error: function (err) {
                     console.log(err);

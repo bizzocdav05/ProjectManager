@@ -91,11 +91,22 @@ function get_utente() {
 }
 
 function login_required() {
-    if (!get_utente()) {
+    $id_utente = get_utente();
+
+    $conn = connection();
+    $result = $conn->query("SELECT active FROM Utenti WHERE ID=$id_utente;");
+
+    if (!$id_utente || $result->num_rows == 0) {
         header("Location: login.html");
         exit();
     }
-    return get_utente();
+
+    if (!$result->fetch_assoc()["active"]) {
+        header("Location: login.html");
+        exit();
+    }
+
+    return $id_utente;
 }
 
 function set_bacheca($codice_bacheca, $silent=false) {

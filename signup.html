@@ -539,13 +539,13 @@ input[type=submit]:after {
       </div>
 
       <div class="input-container ic2">
-        <input id="ps" name="c_password" class="input" type="password" placeholder=" " required />
+        <input id="ps" name="password" class="input" type="password" placeholder=" " required />
         <div class="cut"></div>
         <label for="ps" class="placeholder">Password</label>
       </div>
 
       <div class="input-container ic2">
-        <input id="cps" name="c_password" class="input" type="password" placeholder=" " />
+        <input id="cps" name="c_password" class="input" type="password" placeholder=" " required/>
         <div class="cut" style="width: 150px"></div>
         <label for="cps" class="placeholder">Conferma password</label>
       </div>
@@ -584,7 +584,6 @@ input[type=submit]:after {
         }
         else {
             array = $(this).serializeArray();
-            array.splice(5, 1);
             
             let data = {};
             array.forEach((elem) => {
@@ -603,7 +602,7 @@ input[type=submit]:after {
 
                 success: function (result) {
                     console.log(result);
-                    location.href = "bacheche.php";
+                    // location.href = "bacheche.php";
                 },
 
                 error: function (err) {
