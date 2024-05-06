@@ -597,12 +597,13 @@ input[type=submit]:after {
                 type: "POST",
                 data: {
                     "campi": data,
-                    "action": "newuser"
+                    "action": "new-user"
                 },
                 crossDomain: true,
 
                 success: function (result) {
                     console.log(result);
+                    location.href = "bacheche.php";
                 },
 
                 error: function (err) {
