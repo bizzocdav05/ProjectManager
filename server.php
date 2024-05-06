@@ -126,16 +126,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
         $id_utente = login_required();
         $password = genera_codice(16, 0);
         
-        echo $password;
         $conn->query("UPDATE Utenti SET password='$password' WHERE ID=$id_utente;");
         $conn->query("DELETE FROM Codici WHERE codice='$password';");
 
-        echo "UPDATE Utenti SET password='$password' WHERE ID=$id_utente;";
-        echo "DELETE FROM Codici WHERE codice='$password';";
-        
-        send_email($id_utente, "Reset Password", "<html lang='it'><head><title>Resetta Password</title></head><body><p>Nuova password: $password</p></body></html>");
+        $mail_html = file_get_contents("mail_resetta_password.html");
+        $mail_html = str_replace("{password}", $password, $mail_html);
 
-        logout();
+        echo $mail_html;
+
+        send_email($id_utente, "Reset Password", $mail_html);
+
+        // logout();
     }
 
     if ($action == "new-profile-image") {

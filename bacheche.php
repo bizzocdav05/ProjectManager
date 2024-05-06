@@ -192,7 +192,7 @@
 
 
  
-    #container {
+    .bacheca-list {
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
@@ -425,7 +425,22 @@ hr{
        
     </div>
     
- <div class="recenti"> Visualizzate di Recente </div>
+    <!-- Lista bacheche recenti -->
+    <div class="recenti"> Visualizzate di Recente </div>
+    <div class="bacheca-list" id="container_recenti">
+    </div>
+
+    <!-- Lista bacheche preferite -->
+    <div class="recenti"> Preferiti </div>
+    <div class="bacheca-list" id="container_preferiti">
+    </div>
+    
+    <!-- lista bacheche utente -->
+    <div class="paragrafo"> Le tue Bacheche </div>
+    <div class="bacheca-list" id="container">
+    </div>
+
+    <div id="nuova-bacheca" class="button"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova bacheca</div>
 
     <!-- content hidden -->
     <div id="bacheca-prototipo" class="bacheca bacheca-elem" style="display: none">
@@ -433,35 +448,83 @@ hr{
     </div>
 
     <form id="form-nuova-bacheca" class="form-nuova-bacheca" method="post" style="display: none">
- <label for="" class="title">Nome: </label>
-      <input class="input" type="text" name="nome" id=""> 
+        <label for="" class="title">Nome: </label>
+        <input class="input" type="text" name="nome" id=""> 
 
- <div>       <input class="crea" type="submit" value="Crea Bacheca"> </div>
+        <div>
+            <input class="crea" type="submit" value="Crea Bacheca">
+        </div>
     </form>
- <div class="paragrafo"> Le tue Bacheche </div>
-    <!-- lista bacheche -->
-    <div class="bacheca-list" id="container">
-        
-    </div>
-    <div id="nuova-bacheca" class="button"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova bacheca</div>
 
 
     <script>
-        // Passaggio dati
-        let dati = <?php echo json_encode($data); ?>;
+        class FilterBacheche {
+            constructor (dati) {
+                this.data = dati;
+            }
 
-        function show_bacheca(dati) {
+            by_ultimo_accesso() {
+                let dati = this.data.list;
+                let bacheche = []
+
+                let indici = Object.keys(dati);
+                indici.sort(function(a, b) {
+                    return new Date(dati[b].ultimo_accesso) - new Date(dati[a].ultimo_accesso);
+                });
+
+                for (let i = 0; i < indici.length; i++) {
+                    console.log(dati[indici[i]]);
+                    bacheche.push(dati[indici[i]]);
+                }
+
+                return bacheche;
+            }
+
+            by_preferiti(value=true) {
+                let dati = this.data.list;
+                let bacheche = [];
+
+                for (let idx in dati)
+                    if (dati[idx].preferita == value)
+                        bacheche.push(dati[idx]);
+
+                return bacheche;
+            }
+        }
+
+        function show_bacheca(dati, target=$("#container")) {
             let elem = $("#bacheca-prototipo").clone(true);
             elem.attr("id", dati.codice);
 
             elem.find("p.bacheca-nome > span").text(dati.nome.toUpperCase());
             elem.show();
-            return elem;
+            target.append(elem);
         }
 
-        for (let i = 0; i < dati.length; i++)
-            show_bacheca(dati.list[i]).appendTo("#container");
+        // Passaggio dati
+        let dati = <?php echo json_encode($data); ?>;
 
+        let filter = new FilterBacheche(dati);
+
+        // Mostro bacheche utente
+        for (let i = 0; i < dati.length; i++)
+            show_bacheca(dati.list[i])
+
+
+        // Mostro bacheche recenti
+        filter.by_ultimo_accesso().forEach(dati_bacheca => {
+            console.log(dati_bacheca);
+            show_bacheca(dati_bacheca, $("#container_recenti"))
+        });
+
+        // Mostro bacheche preferite
+        filter.by_preferiti().forEach(dati_bacheca => {
+            console.log(dati_bacheca);
+            show_bacheca(dati_bacheca, $("#container_preferiti"))
+        });
+
+
+        // Event Listener globali
         $("body").on("submit", "#nuova-bacheca-popup", (function (e) {
             e.preventDefault();
 
@@ -498,7 +561,7 @@ hr{
             });
         }));
 
-        $("body").on("click", "#container > div.bacheca-elem", function (e) {
+        $("body").on("click", ".bacheca-list > div.bacheca-elem", function (e) {
             location.href = "bacheca.php?codice=" +encodeURIComponent($(this).attr("id"));
         });
 

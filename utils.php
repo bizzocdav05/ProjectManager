@@ -405,57 +405,54 @@ function get_codice_invito($id_bacheca) {
 function send_email($id_utente, $oggetto, $corpo) {
     $conn = connection();
     $destinatario = $conn->query("SELECT mail FROM Utenti WHERE ID=$id_utente")->fetch_assoc()["mail"];
-    $mittente = "no-reply@torg.com";
 
     // Aggiungi intestazioni per specificare il mittente e altri dettagli
-    $headers = "From: no-reply@torg.com\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+    $headers[] = 'MIME-Version: 1.0';
+    $headers[] = 'Content-type: text/html; charset=UTF-8';
 
-    // Invia l'email
-    echo $destinatario;
-    mail($destinatario, $oggetto, $corpo, $headers);
+    $headers[] = 'From: Torg <noreply@torg.altervista.org>';
+    // inizia email
+    mail($destinatario, $oggetto, $corpo, implode("\r\n", $headers));
+
+    // $to = 'bizzocdav05@zanelli.edu.it'; // note the comma
+
+    // // Subject
+    // $subject = 'Birthday Reminders for August';
+
+    // // Message
+    $message = '
+    <html>
+    <head>
+    <title>Birthday Reminders for August</title>
+    </head>
+    <body>
+    <p>Here are the birthdays upcoming in August!</p>
+    <table>
+        <tr>
+        <th>Person</th><th>Day</th><th>Month</th><th>Year</th>
+        </tr>
+        <tr>
+        <td>Johny</td><td>10th</td><td>August</td><td>1970</td>
+        </tr>
+        <tr>
+        <td>Sally</td><td>17th</td><td>August</td><td>1973</td>
+        </tr>
+    </table>
+    </body>
+    </html>
+    ';
+
+    // // To send HTML mail, the Content-type header must be set
+    $headers2[] = 'MIME-Version: 1.0';
+    $headers2[] = 'Content-type: text/html; charset=UTF-8';
+
+    // Additional headers
+    $headers2[] = 'From: Birthday Reminder <birthday@example.com>';
+
+    // // Mail it
+    // mail($to, $subject, $message, implode("\r\n", $headers2));
 }
-$to = 'bizzocdav05@zanelli.edu.it'; // note the comma
 
-// Subject
-$subject = 'Birthday Reminders for August';
-
-// Message
-$message = '
-<html>
-<head>
-  <title>Birthday Reminders for August</title>
-</head>
-<body>
-  <p>Here are the birthdays upcoming in August!</p>
-  <table>
-    <tr>
-      <th>Person</th><th>Day</th><th>Month</th><th>Year</th>
-    </tr>
-    <tr>
-      <td>Johny</td><td>10th</td><td>August</td><td>1970</td>
-    </tr>
-    <tr>
-      <td>Sally</td><td>17th</td><td>August</td><td>1973</td>
-    </tr>
-  </table>
-</body>
-</html>
-';
-
-// To send HTML mail, the Content-type header must be set
-$headers[] = 'MIME-Version: 1.0';
-$headers[] = 'Content-type: text/html; charset=iso-8859-1';
-
-// Additional headers
-$headers[] = 'To: Mary <mary@example.com>, Kelly <kelly@example.com>';
-$headers[] = 'From: Birthday Reminder <birthday@example.com>';
-$headers[] = 'Cc: birthdayarchive@example.com';
-$headers[] = 'Bcc: birthdaycheck@example.com';
-
-// Mail it
-// mail($to, $subject, $message, implode("\r\n", $headers));
 
 function logout() {
     if(isset($_COOKIE[session_name()])) {
@@ -515,20 +512,26 @@ function get_bacheche_list($id_utente=null) {
     $id_console = $result->fetch_assoc()["ID"];
     
     // Bacheche
-    $sql = "SELECT ID, nome, codice FROM Bacheca WHERE console=$id_console;";
+    $sql = "SELECT ID, nome, codice, preferita, ultimo_accesso FROM Bacheca WHERE console=$id_console;";
     $result_bacheca = $conn->query($sql);
     
     $data["length"] = $result_bacheca->num_rows;
     if ($result_bacheca->num_rows > 0) {
         while($row_bacheca = $result_bacheca->fetch_assoc()) {
-            array_push($data["list"], array( "nome" => $row_bacheca["nome"], "codice" => $row_bacheca["codice"]));
+            array_push($data["list"], array(
+                "nome" => $row_bacheca["nome"],
+                "codice" => $row_bacheca["codice"],
+                "preferita" => $row_bacheca["preferita"],
+                "ultimo_accesso" => $row_bacheca["ultimo_accesso"]
+            ));
         }
     }
 
     // Bacheche assoc
-    $result = $conn->query("SELECT bacheca FROM Bacheca_assoc WHERE other=$id_utente;");
+    $result = $conn->query("SELECT bacheca, preferita, ultimo_accesso FROM Bacheca_assoc WHERE other=$id_utente;");
     if ($result->num_rows > 0) {
-        $id_bacheca = $result->fetch_assoc()["bacheca"];
+        $row_bacheca = $result->fetch_assoc();
+        $id_bacheca = $row_bacheca["bacheca"];
 
         $sql = "SELECT ID, nome, codice FROM Bacheca WHERE ID=$id_bacheca;";
         $result_assoc = $conn->query($sql);
@@ -536,7 +539,12 @@ function get_bacheche_list($id_utente=null) {
         $data["length"] =+ $result_assoc->num_rows;
         if ($result_assoc->num_rows > 0) {
             while($row_assoc = $result_assoc->fetch_assoc()) {
-                array_push($data["list"], array( "nome" => $row_assoc["nome"], "codice" => $row_assoc["codice"]));
+                array_push($data["list"], array(
+                    "nome" => $row_assoc["nome"],
+                    "codice" => $row_assoc["codice"],
+                    "preferita" => $row_bacheca["preferita"],
+                    "ultimo_accesso" => $row_bacheca["ultimo_accesso"]
+                ));
             }
         }
     }

@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     $id_utente = $_SESSION["id_utente"];
 
     // controllo tu abbia l'autorizzazione per tale bacheca
-    $temp = set_bacheca($codice_bacheca);
+    $temp = set_bacheca($codice_bacheca, true);
     $id_bacheca = $temp[0];
     $privilegi = $temp[1];
     $id_console_bacheca = $conn->query("SELECT console FROM Bacheca WHERE ID=$id_bacheca;")->fetch_assoc()["console"];
@@ -39,6 +39,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     $data["nome_utente"] = get_nome_utente($id_utente);
     $data["img_profilo"] = get_user_img_profilo();
+
+    // imposto data di ultima apertura
+    if ($data["membri"]["proprietario"]) {
+        $conn->query("UPDATE Bacheca SET ultimo_accesso=CURRENT_TIMESTAMP WHERE ID=$id_bacheca;");
+    } else {
+        $conn->query("UPDATE Bacheca_assoc SET ultimo_accesso=CURRENT_TIMESTAMP WHERE bacheca=$id_bacheca;");
+    }
 
     $conn->close();
 
