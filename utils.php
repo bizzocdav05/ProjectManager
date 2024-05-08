@@ -424,44 +424,6 @@ function send_email($id_utente, $oggetto, $corpo) {
     $headers[] = 'From: Torg <noreply@torg.altervista.org>';
     // inizia email
     mail($destinatario, $oggetto, $corpo, implode("\r\n", $headers));
-
-    // $to = 'bizzocdav05@zanelli.edu.it'; // note the comma
-
-    // // Subject
-    // $subject = 'Birthday Reminders for August';
-
-    // // Message
-    $message = '
-    <html>
-    <head>
-    <title>Birthday Reminders for August</title>
-    </head>
-    <body>
-    <p>Here are the birthdays upcoming in August!</p>
-    <table>
-        <tr>
-        <th>Person</th><th>Day</th><th>Month</th><th>Year</th>
-        </tr>
-        <tr>
-        <td>Johny</td><td>10th</td><td>August</td><td>1970</td>
-        </tr>
-        <tr>
-        <td>Sally</td><td>17th</td><td>August</td><td>1973</td>
-        </tr>
-    </table>
-    </body>
-    </html>
-    ';
-
-    // // To send HTML mail, the Content-type header must be set
-    $headers2[] = 'MIME-Version: 1.0';
-    $headers2[] = 'Content-type: text/html; charset=UTF-8';
-
-    // Additional headers
-    $headers2[] = 'From: Birthday Reminder <birthday@example.com>';
-
-    // // Mail it
-    // mail($to, $subject, $message, implode("\r\n", $headers2));
 }
 
 
@@ -562,5 +524,15 @@ function get_bacheche_list($id_utente=null) {
 
     $conn->close();
     return $data;
+}
+
+function get_theme_colors ($tema) {
+    if ($tema == "blu") return array(
+            "#0e8ae3", "#0e8ae3", "#0e8ae3"
+        );
+
+    else return array(
+        "#e0ab23", "#d05e26", "#8f411a"
+    );
 }
 ?>

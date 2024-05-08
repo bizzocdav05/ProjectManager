@@ -100,7 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
             else { echo registrazione($conn, $campi); }
         }
         elseif ($action == "login") {
-            $esito = login($conn, $campi, true);
+            // $esito = login($conn, $campi, true);
+            $esito = login($conn, $campi);
             
             if ($esito > 0) {
                 $_SESSION["id_utente"] = $esito;
@@ -121,7 +122,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
             $email = $_POST["email"];
 
             $sql = "UPDATE Utenti SET nome='$nome', cognome='$cognome', mail='$email' WHERE ID=$id_utente;";
-            echo $sql;
             $conn->query($sql);
         }
     }
@@ -207,6 +207,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
             $conn->query("UPDATE Utenti SET img_profilo=$id_immagine WHERE ID=$id_utente;");
 
             echo json_encode(get_user_img_profilo());
+        }
+    }
+
+    if ($action == "get-theme-color") {
+        $id_utente = login_required();
+        $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
+        echo json_encode(array("colori" => get_theme_colors($result->fetch_assoc()["tema"])));
+    }
+
+    if ($action == "new-theme-color") {
+        $id_utente = login_required();
+
+        if (isset($_POST["new_color"])) {
+            $nuovo = $_POST["new_color"];
+
+            $conn->query("UPDATE Utenti SET tema='$nuovo' WHERE ID=$id_utente;");
+            echo json_encode(array("colori" => get_theme_colors($nuovo)));
         }
     }
 

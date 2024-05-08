@@ -7,7 +7,7 @@ $id_utente = login_required();
 $data = array();
 $conn = connection();
 $result = $conn->query("SELECT nome, cognome, mail FROM Utenti WHERE ID = $id_utente;")->fetch_assoc();
-echo "SELECT nome, cognome, mail FROM Utenti WHERE ID = $id_utente;";
+
 $data["email_utente"] = $result["mail"];
 $data["nome_utente"] = $result["nome"];
 $data["cognome_utente"] = $result["cognome"];
@@ -18,6 +18,10 @@ if ($img_profilo == false) {
 } else {
     $data["img_profilo"] = $img_profilo;
 }
+
+// colori del tema
+$result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
+$data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
 ?>
 
 <!DOCTYPE html>
@@ -37,280 +41,317 @@ if ($img_profilo == false) {
     <title>Il tuo profilo</title>
 
     <style>
-        :root {
-            --background: #f3e0ad;
-            --color-light: #eee;
-            
-            --color-primary: #e0ab23;
-            --color-secondary: #d05e26;
-            --color-tertiary: #8f411a;
-        }
-
-        body{
-            margin: 0px;
-            background-color: var(--background);
-            overflow-x: hidden;
-            padding-bottom: 30px;
-        }
-
-        #popup {
-            display: none;
-            width: 100vw;
-            height: 100vh;
-
-            overflow: hidden;
-
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            background: rgba(145, 152, 163, 0.8);
-            box-sizing: border-box;
-            z-index: 200;
-        }
-
-        #popup-box {
-            padding: 10px;
-
-            width: 60vh;
-            height: 40vh;
-
-            overflow-y: auto;
-
-            position: absolute;
-            top: 20%;
-            left: 35%;
-
-            background-color: var(--color-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-
-            border-radius: 16px;
-        }
-
-        /* Barra superiore della pagina*/
-        .navbar {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-            
-            background-color: var(--color-primary);
-
-            font-family: "Concert One", sans-serif;
-            overflow: hidden;
-        }
-
-        #img-logo {
-            width: 170px;
-            height: auto;
-            cursor: pointer;
-        }
-
-        .pfp{
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-
-            background-color: black;
-            color: var(--color-light);
-
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-around;
-
-            text-align: center;
-            font-weight: bold;
-            font-family: "Concert One", sans-serif; 
-            text-transform: uppercase;
-        }
-
-        div.navbar-right {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: center;
-            width: 20%;
-        }
-
-        p.text-format {
-            background-color: rgb(224, 171, 35, 0);
-            border-width: 0px;
-            font-family: "Concert One", sans-serif;
-            color: black;
-        }
-
-        h1.text-format {
-            font-weight: bold;
-            font-size: 50px;
-            cursor: pointer;
-        }
-
-        #container {
-            margin-right: 25px;
-            margin-top: 0px;
-            margin-left: auto;
-            
-            width: 80%;
-            display: flex;
-            flex-direction: row;
-            justify-content: stretch;
-            align-items: start;
-        }
-
-        div.content-left {
-            width: 60%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: start;
-        }
-
-        div.content-right {
-            margin-top: 5%;
-    		width: 40%;
-   			display: flex;
-    		flex-direction: column;
-    		align-items: center;
-        }
-
-        div.content-right > * {
-            margin-top: 15px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: start;
-        }
-
-        div.form-content, div.form-content-button {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-        }
-
-        div.form-content-button {
-            width: 100%;
-            justify-content: space-evenly;
-            margin-top: 20px;
-        }
-
-        form p.text-format {
-            min-width: 150px;
-            margin: 0;
-            font-size: 20px;
-        }
-
-        div.form-content input {
-            border-radius: 5px;
-            background-color: var(--color-light);
-
-            font-size: large;
-            border: 1px solid black;
-            padding: 5px;
-            font-family: "Concert One", sans-serif;
-            min-width: 250px;
-        }
-
-        .btn {
-            font-family: "Concert One", sans-serif;
-            background-color: #e0ab23;
-            border: solid #c9991f;
-            border-radius: 16px;
-            border-width: 0 0 4px;
-            box-sizing: border-box;
-            color: #000000;
-            cursor: pointer;
-            display: inline-block;
-            font-weight: 700;
-            letter-spacing: .8px;
-            line-height: 20px;
-            margin: 0px 5px 0px 5px;
-            overflow: visible;
-            padding: 13px 16px;
-            text-align: center;
-            text-transform: uppercase;
-            touch-action: manipulation;
-            transform: translateZ(0);
-            transition: filter .2s;
-            vertical-align: middle;
-            white-space: nowrap;
-            text-decoration: none;
-            font-size: 20px;
-            text-transform: none;
-        }
-
-        .btn-primary {
-            font-family: "Concert One", sans-serif;
-            background-color: #d05e26;
-            border-color: #8f411a;
-        }
-
-        .btn-red {
-            background-color: var(--color-tertiary);
-            font-size: 25px;
-        }
-
-        div.content-right button {
-            font-size: 18px;
-        }
-
-        form p.save-success {
-            color: green;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        form p.save-success {
-            color: red;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        div.separator {
-            height: 1px;
-            background-color: black;
-            width: 90%;
-            margin: 20px 0px 40px 10px;
-        }
-
-        input[type="text"]:read-only {
-            text-align: center;
-            background-color: unset;
-        }
-
-        #form-password-utente p.text-format {
-            min-width: 200px;
-        }
-
-        .btn-lat {
-            font-family: "Concert One", sans-serif;
-            background-color: #d05e26;
-            border-color: #8f411a;
-        }
+    :root {
+        --background: #f3e0ad;
+        --color-light: #eee;
         
-        #preview-img-profilo > img {
-            width: 200px;
-            height: auto;
-            border-radius: 50%;
-        }
+        --color-primary: #e0ab23;
+        --color-secondary: #d05e26;
+        --color-tertiary: #8f411a;
 
-        div.pfp-image {
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-        }
+        --color-primary: transparent;
+    }
 
-        .btn > p.text-format {
-            margin: 0;
-        }
+    body{
+        margin: 0px;
+        background-color: var(--background);
+        overflow-x: hidden;
+        padding-bottom: 30px;
+    }
+
+    #popup {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+
+        overflow: hidden;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        background: rgba(145, 152, 163, 0.8);
+        box-sizing: border-box;
+        z-index: 200;
+    }
+
+    #popup-box {
+        padding: 10px;
+
+        width: 60vh;
+        height: 40vh;
+
+        overflow-y: auto;
+
+        position: absolute;
+        top: 20%;
+        left: 35%;
+
+        background-color: var(--color-primary);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        border-radius: 16px;
+    }
+
+    /* Barra superiore della pagina*/
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        
+        background-color: var(--color-primary);
+
+        font-family: "Concert One", sans-serif;
+        overflow: hidden;
+    }
+
+    #img-logo {
+        width: 170px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    .pfp{
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+
+        background-color: black;
+        color: var(--color-light);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+
+        text-align: center;
+        font-weight: bold;
+        font-family: "Concert One", sans-serif; 
+        text-transform: uppercase;
+    }
+
+    div.navbar-right {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 20%;
+    }
+
+    p.text-format {
+        background-color: rgb(224, 171, 35, 0);
+        border-width: 0px;
+        font-family: "Concert One", sans-serif;
+        color: black;
+    }
+
+    h1.text-format {
+        font-weight: bold;
+        font-size: 50px;
+        cursor: pointer;
+    }
+
+    #container {
+        margin-right: 25px;
+        margin-top: 0px;
+        margin-left: auto;
+        
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        align-items: start;
+    }
+
+    div.content-left {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+    }
+
+    div.content-right {
+        margin-top: 5%;
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    div.content-right > * {
+        margin-top: 15px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+    }
+
+    div.form-content, div.form-content-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+    }
+
+    div.form-content-button {
+        width: 100%;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+
+    form p.text-format {
+        min-width: 150px;
+        margin: 0;
+        font-size: 20px;
+    }
+
+    div.form-content input {
+        border-radius: 5px;
+        background-color: var(--color-light);
+
+        font-size: large;
+        border: 1px solid black;
+        padding: 5px;
+        font-family: "Concert One", sans-serif;
+        min-width: 250px;
+    }
+
+    .btn {
+        font-family: "Concert One", sans-serif;
+        background-color: #e0ab23;
+        border: solid #c9991f;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 700;
+        letter-spacing: .8px;
+        line-height: 20px;
+        margin: 0px 5px 0px 5px;
+        overflow: visible;
+        padding: 13px 16px;
+        text-align: center;
+        text-transform: uppercase;
+        touch-action: manipulation;
+        transform: translateZ(0);
+        transition: filter .2s;
+        vertical-align: middle;
+        white-space: nowrap;
+        text-decoration: none;
+        font-size: 20px;
+        text-transform: none;
+    }
+
+    .btn-primary {
+        font-family: "Concert One", sans-serif;
+        background-color: #d05e26;
+        border-color: #8f411a;
+    }
+
+    .btn-red {
+        background-color: var(--color-tertiary);
+        font-size: 25px;
+    }
+
+    div.content-right button {
+        font-size: 18px;
+    }
+
+    form p.save-success {
+        color: green;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    form p.save-success {
+        color: red;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    div.separator {
+        height: 1px;
+        background-color: black;
+        width: 90%;
+        margin: 20px 0px 40px 10px;
+    }
+
+    input[type="text"]:read-only {
+        text-align: center;
+        background-color: unset;
+    }
+
+    #form-password-utente p.text-format {
+        min-width: 200px;
+    }
+
+    .btn-lat {
+        font-family: "Concert One", sans-serif;
+        background-color: #d05e26;
+        border-color: #8f411a;
+    }
+    
+    #preview-img-profilo > img {
+        width: 200px;
+        height: auto;
+        border-radius: 50%;
+    }
+
+    div.pfp-image {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .btn > p.text-format {
+        margin: 0;
+    }
+
+    div.color-theme-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+
+        width: 50%;
+    }
+
+    div.color-theme-elem {
+        padding: 10px;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+
+    div.color-theme-elem p {
+        margin: 0;
+        font-size: 25px;
+        font-weight: bolder;
+        user-select: none;
+    }
+
+    div.color-theme-elem[colore="giallo"] {
+        background-color: #e0ab23;
+    }
+
+    div.color-theme-elem[colore="blu"] {
+        background-color: #0e8ae3;
+    }
+
+    div.color-theme-elem.active p {
+        color: red;
+    }
+
     </style>
 </head>
 <body>
@@ -336,6 +377,13 @@ if ($img_profilo == false) {
 
     <div id="container">
         <div class="content-left">
+            <div class="separator"></div>
+
+            <div class="color-theme-box">
+                <div class="color-theme-elem active" colore="giallo"><p class="text-format">GIALLO</p></div>
+                <div class="color-theme-elem" colore="blu"><p class="text-format">AZZURRO</p></div>
+            </div>
+
             <div class="separator"></div>
 
             <form id="form-immagine-profilo" method="post">
@@ -413,6 +461,12 @@ if ($img_profilo == false) {
     </div>
 
     <script>
+        function set_theme_color(colors) {
+            $("html").css("--color-primary", colors[0]);
+            $("html").css("--color-secondary", colors[1]);
+            $("html").css("--color-tertiary", colors[2]);
+        }
+
         function init_popup() {
             popup = $("#popup");
             popup.box = $("#popup-box");
@@ -465,6 +519,8 @@ if ($img_profilo == false) {
 
         let popup;
         let dati = <?php echo json_encode($data); ?>;
+
+        set_theme_color(dati.tema);
 
         init_dati_utente();
 
@@ -661,6 +717,30 @@ if ($img_profilo == false) {
         $("#form-immagine-profilo").on("reset", () =>
             $("#preview-img-profilo").empty()
         );
+
+        $(".color-theme-elem").click(function (e) {
+            let target = $(e.currentTarget);
+
+            if (target.hasClass("active")) return;
+
+            $(".color-theme-elem").removeClass("active");
+            target.addClass("active");
+
+            $.ajax({
+                url: "server.php",
+                type: "POST",
+                data: {
+                    "action": "new-theme-color",
+                    "new_color": target.attr("colore")
+                },
+                success: function (result) {
+                    console.log(result);
+                    result = JSON.parse(result);
+                    set_theme_color(result.colori);
+                },
+                error: function (result) {}
+            });
+        });
     </script>
 </body>
 </html>

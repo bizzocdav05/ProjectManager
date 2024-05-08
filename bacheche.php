@@ -6,6 +6,10 @@
     set_console();
 
     $data = get_bacheche_list();
+
+    // colori del tema
+    $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
+    $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
     ?>
 
 <!DOCTYPE html>
@@ -27,90 +31,102 @@
     <title>Le tue Bacheche</title>
 
     <style>
-        body {
-            background-color:  #f3e0ad;
-            margin: 0;
-        }
-        #popup {
-            display: none;
-            width: 100vw;
-            height: 100vh;
-
-            overflow: hidden;
-
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            background: rgba(145, 152, 163, 0.8);
-            box-sizing: border-box;
-            z-index: 200;
-        }
-
-        #popup-box {
-            padding: 10px;
-
-            width: 60vw;
-            height: 60vh;
-
-            overflow-y: auto;
-
-            position: absolute;
-            top: 20%;
-            left: 20%;
-
-            background-color: white;
-        }
+    :root {
+        --background: #f3e0ad;
+        --color-light: #eee;
         
-        #login {
-            position: sticky;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-        }
-         /* barra superiore della pagina*/
-         .navbar {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            background-color: #e0ab23;
-            width: 100%;
-        }
+        --color-primary: #e0ab23;
+        --color-secondary: #d05e26;
+        --color-tertiary: #8f411a;
 
-        /* */
-        .navbar > * {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: center;
-            height: 115px;
-            background-color: #e0ab23;
-            margin: 0;
-        }
+        --color-primary: transparent;
+    }
 
-        /* */
-        .navbar-left > *, .navbar-right > * {
-            margin: 20px;
-        }
+    body {
+        background-color:  #f3e0ad;
+        margin: 0;
+    }
+    
+    #popup {
+        display: none;
+        width: 100vw;
+        height: 100vh;
 
-        /* tutta la pagina sotto la barra*/
-        .header {
-            background-color: #f3e0ad;
-            height: 115vh;
-            width: 100%;
-        }
+        overflow: hidden;
 
-        /* immagine del logo nella barra superiore*/
-        .logo {
-            width: 170px;
-            height: 170px;
-        }
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        background: rgba(145, 152, 163, 0.8);
+        box-sizing: border-box;
+        z-index: 200;
+    }
+
+    #popup-box {
+        padding: 10px;
+
+        width: 60vw;
+        height: 60vh;
+
+        overflow-y: auto;
+
+        position: absolute;
+        top: 20%;
+        left: 20%;
+
+        background-color: white;
+    }
+    
+    #login {
+        position: sticky;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+    }
+        /* barra superiore della pagina*/
+        .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background-color: #e0ab23;
+        width: 100%;
+    }
+
+    /* */
+    .navbar > * {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 115px;
+        background-color: #e0ab23;
+        margin: 0;
+    }
+
+    /* */
+    .navbar-left > *, .navbar-right > * {
+        margin: 20px;
+    }
+
+    /* tutta la pagina sotto la barra*/
+    .header {
+        background-color: #f3e0ad;
+        height: 115vh;
+        width: 100%;
+    }
+
+    /* immagine del logo nella barra superiore*/
+    .logo {
+        width: 170px;
+        height: 170px;
+    }
 
     /* stile "bottoni" */
     .button {
@@ -501,8 +517,16 @@ hr{
             target.append(elem);
         }
 
+        function set_theme_color(colors) {
+            $("html").css("--color-primary", colors[0]);
+            $("html").css("--color-secondary", colors[1]);
+            $("html").css("--color-tertiary", colors[2]);
+        }
+
         // Passaggio dati
         let dati = <?php echo json_encode($data); ?>;
+        
+        set_theme_color(dati.tema);
 
         let filter = new FilterBacheche(dati);
 

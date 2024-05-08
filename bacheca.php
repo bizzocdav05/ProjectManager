@@ -47,6 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         $conn->query("UPDATE Bacheca_assoc SET ultimo_accesso=CURRENT_TIMESTAMP WHERE bacheca=$id_bacheca;");
     }
 
+    // colori del tema
+    $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
+    $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
+
     $conn->close();
 
 } else {
@@ -613,6 +617,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         --color-primary: #e0ab23;
         --color-secondary: #d05e26;
         --color-tertiary: #8f411a;
+
+        --color-primary: transparent;
     }
 
     #nav-toggle:checked ~ #nav-header {
@@ -2416,10 +2422,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
         }
 
+        function set_theme_color(colors) {
+            $("html").css("--color-primary", colors[0]);
+            $("html").css("--color-secondary", colors[1]);
+            $("html").css("--color-tertiary", colors[2]);
+        }
+
         // Passaggio dati
         let dati = <?php echo json_encode($data); ?>;
 
         console.log(dati);
+
+        set_theme_color(dati.tema);
 
         let searchParams = new URLSearchParams(window.location.search);
         const CODICE_BACHECA = searchParams.get('codice');
