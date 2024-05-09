@@ -2,10 +2,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resetta Password</title>
+                <!--font dei titoli-->
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+            
+                <!--font del testo, possibilmente da cambiare-->
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    
+        <title>Abilitazione Account Torg</title>
+    </head>
+    
+    <style>
+        body{
+            margin:0px;
+            overflow-x: hidden;
+            background-color: #f3e0ad;
+        }
+        
+        .title{
+            font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            text-align: center;
+        
+            width: 100vh;
+            height: 50px;
+        
+            border-top: 2px solid black;
+            border-left: 2px solid black;
+            box-shadow: 3px 3px 0px 0px black;
+            border-radius: 10px;
+        
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        
+            margin-top: 100px;
+            position: absolute;
+            left: 25vw;
+        
+        }
+        
+        .page{
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .paragraph{
+            margin-top: 190px;
+        
+            line-height: 40px;
+            font-family: "Outfit", sans-serif;
+            font-size: larger;
+        
+            position: absolute;
+            left: 20vw;
+        }
+
+        a{
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover{
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
+        </style>
 </head>
 <body>
-    <h1>Torg</h1>
-    <a href="torg.altervista.org/activate_account.php?email_code={codice}">Conferma account</a>
+    <div class="page">
+    <h1 class="title">Il tuo account Torg è stato abilitato</h1>
+    <p class="paragraph">
+        Ciao {Nome},<br>
+
+            Grazie per esserti registrato su Torg! Siamo felici di darti il benvenuto nella nostra community <br>
+            
+            dedicata alla gestione del lavoro e alla produttività.<br>
+
+            Per completare la registrazione e attivare il tuo account, clicca sul seguente link: <a href="http://torg.altervista.org/activate_account.php?email_code={codice}">Conferma account</a>.<br>
+
+            Se non hai effettuato questa registrazione, ti preghiamo di ignorare questa email o <br>
+            
+            contattarci immediatamente per segnalare attività non autorizzata.<br>
+
+            Grazie per aver scelto Torg. Siamo entusiasti di averti con noi e non vediamo l'ora di iniziare a collaborare insieme!<br><br><br>
+
+            Cordiali saluti,<br>
+            Il Team di Torg
+
+        
+
+    </p>
+  
+</div>
 </body>
 </html>

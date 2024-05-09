@@ -2,10 +2,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resetta Password</title>
+    
+        <!--font dei titoli-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+
+    <!--font del testo, possibilmente da cambiare-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    
+    <title>Benvenuto in Torg</title>
 </head>
+<style>
+body{
+	margin:0px;
+    overflow-x: hidden;
+    background-color: #f3e0ad;
+}
+
+.title{
+	font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    text-align: center;
+
+    width: 450px;
+    height: 50px;
+
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 100px;
+    position: absolute;
+    left: 35vw;
+
+}
+
+.page{
+    display: flex;
+    flex-direction: column;
+}
+
+.paragraph{
+    margin-top: 190px;
+
+    line-height: 40px;
+    font-family: "Outfit", sans-serif;
+    font-size: larger;
+
+    position: absolute;
+    left: 20vw;
+}
+
+</style>
 <body>
-    <h1>Torg</h1>
-    <h1>Benvenuto su Trello</h1>
+    <div class="page">
+    <h1 class="title">Benvenuto su Torg!</h1>
+
+    <p class="paragraph">Ciao {nome}, <br>
+
+        Siamo entusiasti di darti il benvenuto a bordo di Torg, la piattaforma che rivoluzionerà il modo in cui organizzi <br>
+        
+        il tuo lavoro e collabori con il tuo team, con Torg, potrai gestire progetti, assegnare compiti e monitorare i progressi <br>
+        
+        in modo intuitivo ed efficiente, tutto in un'unica piattaforma centralizzata.<br>
+        
+        Da oggi in poi, sarai in grado di concentrarti sulle cose che contano davvero, lasciando a Torg il compito di <br>
+        
+        semplificare la gestione dei dettagli, siamo qui per aiutarti a massimizzare la tua produttività e raggiungere <br>
+        
+        i tuoi obiettivi lavorativi con facilità.<br>
+        
+        Non vediamo l'ora di vedere cosa realizzerai con Torg al tuo fianco!<br><br><br>
+        
+        Cordiali saluti,<br>
+        Il Team di Torg</p>
+
+    </div>
 </body>
 </html>

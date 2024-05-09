@@ -2,15 +2,19 @@
     include "utils.php";
 
     session_start();
-    $id_utente = login_required();
+    $id_utente = $id_utente = login_required();
     set_console();
 
     $data = get_bacheche_list();
 
     // colori del tema
     $conn = connection();
+    $conn = connection();
     $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
     $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
+
+    $data["nome_utente"] = get_nome_utente($id_utente);
+    $data["img_profilo"] = get_user_img_profilo();
 
     $data["nome_utente"] = get_nome_utente($id_utente);
     $data["img_profilo"] = get_user_img_profilo();
@@ -279,15 +283,16 @@
     left: 227px;
     }
 
-        /*Spazi di lavoro*/
-    .popup{
-        text-decoration: none;
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        font-style: normal;
-        font-size: larger;
-        color: #000000;
-    }
+    /*Spazi di lavoro*/
+  .popup{
+    text-decoration: none;
+    font-family: "Concert One", sans-serif;
+    font-weight: bolder;
+    font-style: normal;
+    font-size: larger;
+    color: #000000;
+    
+}
 
     .popup:hover{
     color: #f3e0ad;  
@@ -403,59 +408,19 @@
     }
 
 
-    .pfp{
-    border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        background-color: black;
-        color: #eee;
-        text-align: center;
-        align-items: center;
-        display: flex;
-        justify-content: space-around;
-        font-weight: 600;
-        font-family: "Concert One", sans-serif; 
-    }
-
-    div.user-icon {
-        border-radius: 50%;
-        width: 70px;
-        height: 70px;
-
-        background-color: black;
-        color: var(--color-light);
-
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-
-        text-align: center;
-        font-weight: bold;
-        font-family: "Concert One", sans-serif; 
-        text-transform: uppercase;
-
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-    }
-
-    .account{
-        font-family: "Concert One", sans-serif;
-        font-size: larger;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .account:hover{
-        text-decoration: underline;
-        color: #f3e0ad;
-    }
-
-    #nuova-bacheca-popup {
-        
-        color: var(--color-primary);
-    }
+.pfp{
+  border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    color: #eee;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    font-family: "Concert One", sans-serif; 
+}
     </style>
 </head>
 <body>

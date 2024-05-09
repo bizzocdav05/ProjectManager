@@ -50,6 +50,7 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         --color-secondary: #d05e26;
         --color-tertiary: #8f411a;
         --color-quaternary:#c9991f;
+        --color-quaternary: #c9991f
 
         --color-primary: transparent;
     }
@@ -228,8 +229,8 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
 
     .btn {
         font-family: "Concert One", sans-serif;
-        background-color: #e0ab23;
-        border: solid #c9991f;
+        background-color: var(--color-primary);
+        border: solid var(--color-quaternary);
         border-radius: 16px;
         border-width: 0 0 4px;
         box-sizing: border-box;
@@ -253,12 +254,7 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         font-size: 20px;
         text-transform: none;
     }
-
-    .btn-primary {
-        font-family: "Concert One", sans-serif;
-        background-color: #d05e26;
-        border-color: #8f411a;
-    }
+   
 
     .btn-red {
         background-color: var(--color-tertiary);
@@ -299,9 +295,11 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
 
     .btn-lat {
         font-family: "Concert One", sans-serif;
-        background-color: #d05e26;
-        border-color: #8f411a;
+        background-color: var(--color-secondary);
+        border-color: var(--color-tertiary);
     }
+    
+    
     
     #preview-img-profilo > img {
         width: 200px;
@@ -342,11 +340,11 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
     }
 
     div.color-theme-elem[colore="giallo"] {
-        background-color: #e0ab23;
         border: solid #c9991f;
     	border-radius: 16px;
     	border-width: 0 0 4px;
     	box-sizing: border-box;
+        background-color: var(--color-primary);
     }
 
     div.color-theme-elem[colore="blu"] {
@@ -363,7 +361,20 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         font-family: "Concert One", sans-serif;
         padding-right: 20px;
     }
-
+    
+    .theme{
+    min-width: 150px;
+    margin: 0;
+    font-size: 20px;
+    font-family: "Concert One", sans-serif;
+    }
+    
+        .btn-primary {
+        font-family: "Concert One", sans-serif;
+        background-color: var(--color-secondary);
+        border-color: var(--color-tertiary);
+    }
+    
     </style>
 </head>
 <body>
