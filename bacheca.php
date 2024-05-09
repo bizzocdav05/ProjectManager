@@ -130,18 +130,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     }
 
     #popup-box.attivita-nuova-popupbox {
-        width: 100px;
-        height: 100px;
+        width: 60vh;
+        height: 40vh;
     }
 
     #popup-box.lista-nuova-popupbox {
-        width: 400px;
-        height: 400px;
+        width: 60vh;
+        height: 60vh;
+
+        position: absolute;
+        top: 15%;
     }
 
     #popup-box.lista-info-popupbox {
-        width: 600px;
-        height: 600px;
+        position: absolute;
+        top: 5%;
+        left: 25%;
+
+        width: 50vw;
+        height: 85vh;
     }
 
     #popup-box.spazi-lavoro-popupbox {
@@ -273,7 +280,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     div.etichetta-nuova {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: flex-start;
         align-items: center;
     }
@@ -318,10 +325,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
         width: 100%;
+        font-family: "Concert One", sans-serif;
 
         border-bottom: 1px solid black;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+
+        margin-left: 30px;
+        margin-right: 30px;
     }
 
     div.attivita-tabella:first-child {
@@ -332,6 +345,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     div.attivita-tabella > div.prima-cella {
         width: 30%;
         /* margin-top: 20px; */
+        display: flex;
+    justify-content: space-around;
     }
 
     div.attivita-tabella > div.seconda-cella {
@@ -379,15 +394,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         width: 90%;
         margin-left: auto;
         margin-right: auto;
+        padding-bottom: 30px;
     }
 
     div.calendario-header {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        width: 50%;
-        margin-left: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
     }
 
     div.calendario-header svg {
@@ -604,8 +618,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
 
 
-    /*stile menu laterale*/
-    :root {
+   /*stile menu laterale*/
+   :root {
         --background: #f3e0ad;
         --navbar-width: 256px;
         --navbar-width-min: 80px;
@@ -614,12 +628,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         --navbar-light-primary: #eee; /*colore titolo avatar*/
         --navbar-light-secondary: #eee; /*colore descrizione avatar*/
 
-        --color-primary: #e0ab23;
-        --color-secondary: #d05e26;
-        --color-tertiary: #8f411a;
-
-        --color-primary: transparent;
+        --color-primary: #e0ab23;  /* uguale colore menu */
     }
+
 
     #nav-toggle:checked ~ #nav-header {
     width: calc(var(--navbar-width-min) - 16px); 
@@ -652,6 +663,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     }
 
     /*animazione per far sparire i contenuti del menu*/
+    #nav-toggle:checked ~ #nav-content .nav-button p {
+    opacity: 0;
+    transition: opacity .1s; 
+    }
+
+    /*animazione per far sparire il titolo del menu*/
     #nav-toggle:checked ~ #nav-content .nav-button span {
     opacity: 0;
     transition: opacity .1s; 
@@ -676,15 +693,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     #nav-bar {
     background: var(--navbar-dark-primary);
-    /* border-radius: 16px; */
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     color: var(--navbar-light-primary);
     font-family: "Concert One", sans-serif;
     overflow: hidden;
     user-select: none;
+    margin-top: 30px;
+    margin-left: 30px;
     }
 
     #nav-bar hr {
@@ -777,6 +794,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     box-shadow: 0 0 0 16px var(--navbar-dark-primary);
     overflow-x: hidden;
     transition: width .2s; 
+    direction: rtl;
     }
 
     #nav-content::-webkit-scrollbar {
@@ -911,14 +929,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         top: 0;
         left: 0;
 
-        width: 30vw;
+        width: fit-content;
         height: 30vh;
 
         background-color: var(--color-primary);
         border-radius: 16px;
         padding: 10px;
         cursor: default;
+    
+        border: black;
+    border-width: 2px;
+    border-style: solid
     }
+    
 
     #popup-spazi-lavoro p.lista-text {
         text-decoration: underline;
@@ -931,6 +954,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         width: 20px;
         height: 20px;
         cursor: pointer;
+        padding-top: 10px;
+        padding-right: 10px;
     }
 
     div.bacheche-list-box {
@@ -1085,6 +1110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     #content-right {
         width: 100%;
+        margin-top: 22px;
     }
 
     div.lista h2 {
@@ -1092,7 +1118,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     }
 
     #container-membri {
-        margin-left: 10%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        margin-top: 30px;
     }
 
     div.membri-box {
@@ -1108,6 +1139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         border-radius: 16px;
         padding: 20px;
         min-height: 30%;
+
+        margin-top: 30px;
     }
 
     div.membro {
@@ -1168,7 +1201,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     }
 
     span.link-support {
-        color: green;
+        color: #5ebd4d;
+        font-size: 20px;
+        font-weight: bold;
     }
 
     p.text-format {
@@ -1309,10 +1344,324 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         justify-content: flex-start;
     }
 
+    .column{
+        border-top: 2px solid black;
+        border-left: 2px solid black;
+        box-shadow: 3px 3px 0px 0px black;
+        color: #000000;
+
+
+        border-radius: 10px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100px;
+    }
+
+    .text-area{
+        width: 240px;
+        height: 120px;
+        margin-top: 30px;
+    }
+
+
+    .lista-crea{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .crea-lista{
+        font-family: "Concert One", sans-serif;
+            font-weight: bolder;
+            background-color:#d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-size:large;
+            font-weight: 700;
+            letter-spacing: .8px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: none;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 100px;
+            height: 50px;
+            text-decoration: none;
+    }
+
+    .crea-lista:after{
+        background-clip: padding-box;
+            background-color: #d05e26;
+            border: solid #8f411a;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+    }
+
+    .crea-lista:hover{
+        filter: brightness(1.1);
+    }
+
+    .crea-lista:active{
+        border-width: 4px 0 0;
+    }
+
+    .btn-reset {
+            font-family: "Concert One", sans-serif;
+            background-color: #f3e0ad;
+            border: solid #dac99b;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            margin: 0px 5px 0px 5px;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-decoration: none;
+            font-size: 20px;
+            text-transform: none;
+        }
+        
+            .btn-reset:after {
+        background-clip: padding-box;
+        background-color: #f3e0ad;
+        border: solid transparent;
+        border-radius: 16px;
+        border-width: 0 0 4px;
+        bottom: -4px;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+    }
+
+    .btn-reset:active {
+        border-width: 4px 0 0;
+        background: none;
+    } 
+
+    .btn-reset:hover {
+        filter: brightness(1.1);
+    }
+
+    .input-lista{
+        background-color: #eee;
+        font-family: "Concert One", sans-serif;
+        font-size: large;
+
+        border-width: 0px;
+        border-radius: 10px;
+
+    }
+
+    .text-mod{
+        font-family: "Concert One", sans-serif;
+        font-size: 20px;
+    }
+
+    .description{
+        font-family: "Concert One", sans-serif;
+        font-size: 20px;
+
+        color: #eee;
+
+        border-top: 2px solid #eee;
+        border-left: 2px solid #eee;
+        box-shadow: 3px 3px 0px 0px #eee;
+
+        border-radius: 10px;
+
+        height: 50px;
+        width: 130px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .membri{
+        font-family: "Concert One", sans-serif;
+        font-size: 40px;
+        margin: 0px;
+
+        border-top: 2px solid black;
+        border-left: 2px solid black;
+        box-shadow: 3px 3px 0px 0px black;
+        color: #000000;
+        border-radius: 10px;
+        width: 150px;
+        text-align: center;
+    }
+
+    .link-invito{
+        font-family: "Concert One", sans-serif; 
+    }
+
+    .link-text{
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .link-title{
+        font-size: 20px;
+    }
+
+    .display{
+        display: flex;
+        align-items: baseline;
+    }
+
+    .buttons{
+        margin-top: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .commento-nuovo{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .title-lista{
+        font-family: "Concert One", sans-serif;
+        font-size: 25px;
+        padding-left: 30px;
+        padding-right: 15px;
+        color: #eee;
+
+        width: 190px;
+        height: 50px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .title-lista:focus{
+        outline: none;
+        border: none;
+    }
+
+    .display-2{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .organize{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .etichetta-text > span{
+        font-family: "Concert One", sans-serif;
+    }
+
+    .display-checkbox{
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    img.calendario-arrow {
+        width: 30px;
+        height: 30px;
+    }
+
+    div.calendario-header img {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+    .checkbox-nuovo{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .scadenza{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cancel{
+        display: flex;
+        justify-content: center;
+    }
+
+    .account{
+        font-family: "Concert One", sans-serif;
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .account:hover{
+        text-decoration: underline;
+        color: #f3e0ad;
+    }
+
+    .pfp{
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+
+        background-color: black;
+        color: #eee;
+
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+
+        font-weight: 600;
+        font-family: "Concert One", sans-serif; 
+        text-transform: uppercase;
+    }
     </style>
 </head>
 <body>
-    <div class="header">
+<div class="header">
         <!--parte della barra a sinistra-->
         <div class="navbar">
            <div class="navbar-left" > 
@@ -1322,13 +1671,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                <img  src="img/logo_scritta_completo.png"  class="logo">
                </a>
 
-               <div class="button" >Crea una nuova bacheca </div>
-
                 <!--tutte le bacheche di un account-->
                 <div class="spazi-lavoro">
                     <p>Spazi di Lavoro</p>
 
-                    <div id="popup-spazi-lavoro" style="display: none">
+                    <div id="popup-spazi-lavoro" style="display: none ">
                         <svg class="svg-chiudi" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g fill="#0F0F0F"><path d="M8.002 9.416a1 1 0 1 1 1.414-1.414l2.59 2.59 2.584-2.584a1 1 0 1 1 1.414 1.414l-2.584 2.584 2.584 2.584a1 1 0 0 1-1.414 1.414l-2.584-2.584-2.584 2.584a1 1 0 0 1-1.414-1.414l2.584-2.584z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23 4a3 3 0 0 0-3-3H4a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3zm-2 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1z"/></g></svg>
                         <p class="lista-text">Le tue bacheche</p>
                         <div class="bacheche-list-box">
@@ -1336,16 +1683,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     </div>
                 </div>
               </div>
+              <div class="navbar-right">
+                <div class="pfp" ></div>
+                    <div class="account" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
+                    </div>                    
+            </div>
+              </div>
    
-               <div class="navbar-left">
-                 <div class="user-icon"></div>
-                     <div class="popup-2" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
 
-                       <div class="popuptext-2" id="myPopup_2"> prova </div>
-                     
-                     </div>
-                     
-             </div>
     </div>
     </div>
 
@@ -1407,20 +1752,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         
                 <div id="attivita-tabella-header" class="attivita-tabella tabella-header">
                 
-                    <div class="prima-cella">
-                        <h3 class="attivita-titolo">Attività</h3>
+                    <div class="prima-cella ">
+                        <h3 class="attivita-titolo column">Attività</h3>
                     </div>
 
-                    <div class="seconda-cella">
-                        <h3 class="attivita-titolo">Liste</h3>
+                    <div class="seconda-cella ">
+                        <h3 class="attivita-titolo column">Liste</h3>
                     </div>
 
-                    <div class="terza-cella">
-                        <h3 class="attivita-titolo">Etichette</h3>
+                    <div class="terza-cella ">
+                        <h3 class="attivita-titolo column">Etichette</h3>
                     </div>
 
-                    <div class="quarta-cella">
-                        <h3 class="attivita-titolo">Scadenza</h3>
+                    <div class="quarta-cella ">
+                        <h3 class="attivita-titolo column">Scadenza</h3>
                     </div>
 
                 </div>
@@ -1429,44 +1774,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             
             <div id="container-calendario" style="display: none">
                 <div class="calendario-header">
-                    <p class="calendario-anno"><span></span></p>
-                    <div>
-                        <svg class="calendario-arrow" direction="left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 493.468 493.468" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M246.736 0C110.688 0 .008 110.692.008 246.732c0 136.056 110.68 246.736 246.728 246.736S493.46 382.788 493.46 246.732C493.46 110.692 382.784 0 246.736 0m-49.144 249.536 94.764 94.776a5.28 5.28 0 0 1 1.568 3.776c0 1.448-.556 2.784-1.568 3.772l-8.96 8.98c-2.004 2.004-5.568 2.012-7.568 0l-110.14-110.136c-1.008-1.016-1.556-2.38-1.54-3.932a5.35 5.35 0 0 1 1.536-3.852l110.312-110.304a5.3 5.3 0 0 1 3.776-1.56c1.424 0 2.788.556 3.78 1.56l8.968 8.98c2.1 2.06 2.1 5.468.004 7.548l-94.932 94.944a3.846 3.846 0 0 0 0 5.448"/></svg>
-                        <svg class="calendario-arrow" direction="right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455 455" xml:space="preserve" stroke="#000" stroke-width=".005"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round" stroke="#CCC" stroke-width="2.73"/><path d="M227.5 0C101.855 0 0 101.855 0 227.5S101.855 455 227.5 455 455 353.145 455 227.5 353.145 0 227.5 0zm-28.024 355.589-21.248-21.178L284.791 227.5 178.228 120.589l21.248-21.178L327.148 227.5z"/></svg>
-                    </div>
+                        <img class="calendario-arrow" direction="left" src="img/freccia_sinistra.png">
+                        <p class="calendario-anno"><span></span></p>
+                        <img class="calendario-arrow" direction="right" src="img/freccia_destra.png">
                 </div>
                 <div class="calendario-body"></div>
             </div>
 
             <div id="container-membri" style="display: none">
-                <h1>Membri</h1>
-                <p class="link-invito">Link invito:
+                <h1 class="membri">Membri</h1>
+
+                <div class="membri-box">
+                </div>
+
+                <p class="link-invito"> <span class="link-title">Link invito:</span>
                     <span class="link-text">http://torg.altervista.org/bacheca_invito.php?sharing=<span class="link-value"></span>  </span>
                     <svg class="link-support" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M208 0h124.1C344.8 0 357 5.1 366 14.1L433.9 82c9 9 14.1 21.2 14.1 33.9V336c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V48c0-26.5 21.5-48 48-48M48 128h80v64H64v256h192v-32h64v48c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48"/></svg>
                     <span class="link-support">Copied!</span>
                 </p>    
 
-                <div class="membri-box">
-                </div>
+
             </div>
-        </div>
-    </div>
-
-    <div id="chat">
-        <div id="chat-manager">
-            <svg class="svg-down-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 330" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M325.607 79.393c-5.857-5.857-15.355-5.858-21.213.001l-139.39 139.393L25.607 79.393c-5.857-5.857-15.355-5.858-21.213.001-5.858 5.858-5.858 15.355 0 21.213l150.004 150a15 15 0 0 0 21.212-.001l149.996-150c5.859-5.857 5.859-15.355.001-21.213"/></svg>
-            <svg class="svg-up-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.01 512.01" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M505.755 358.256 271.088 123.589c-8.341-8.341-21.824-8.341-30.165 0L6.256 358.256c-8.341 8.341-8.341 21.824 0 30.165s21.824 8.341 30.165 0l219.584-219.584 219.584 219.584a21.28 21.28 0 0 0 15.083 6.251 21.28 21.28 0 0 0 15.083-6.251c8.341-8.341 8.341-21.824 0-30.165"/></svg>
-
-            <p class="text-format">Chat</p>
-        </div>
-
-        <div id="chat-content">
-
-        </div>
-
-        <div id="chat-new-msg">
-            <input type="text" name="msg" id="inp-chat-msg">
-            <svg id="svg-send-msg" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path clip-rule="evenodd" d="M18.455 9.883 7.063 4.143a1.048 1.048 0 0 0-1.563.733.8.8 0 0 0 .08.326l2.169 5.24c.109.348.168.71.176 1.074a4 4 0 0 1-.176 1.074L5.58 17.83a.8.8 0 0 0-.08.326 1.048 1.048 0 0 0 1.562.732l11.393-5.74a1.8 1.8 0 0 0 0-3.265" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
     </div>
 
@@ -1476,9 +1804,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </svg>
     </div>
 
-    <div id="popup">
+    <div id="popup" >
         <div id="popup-box">
-        </div>
     </div>
 
     <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
@@ -1540,47 +1867,77 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     <div id="lista-info-prototipo" class="lista-info-box" style="display: none">
         <div class="lista-info">
             <p class="lista-codice">Codice: <span></span></p>
-            <p class="lista-nome text-mod"><span></span></p>
+            <div class="display-2"><p class="lista-nome text-mod title-lista" style="font-size:30px;"><span></span></p></div>
 
-            <p class="lista-text">Descrizione</p>
+            <p class="lista-text description">Descrizione</p>
             <p class="lista-descrizione text-mod"><span></span></p>
 
-            <p class="lista-text">Etichetta</p>
-            <div class="lista-etichetta-box">
-            </div>
-            <div class="etichetta-nuova">
-                <input type="text" name="testo" id="" placeholder="Nome">
-                <input type="color" name="colore" id="">
-                <button class="btn-etichetta-nuova">Crea</button>
-                <button class="btn-etichetta-reset">Annulla</button>
-            </div>
+            <div class="organize">
 
-            <p class="lista-text">Checkbox</p>
+                <div>
+                    <p class="description" style="width: 160px;">Le Tue Etichette</p>
+                    <div class="lista-etichetta-box"> </div>
+                    </div>
+
+            <div style="display: flex; align-items: flex-end; flex-direction: column;">
+            <p class="lista-text description">Etichetta</p>
+
+            <div class="etichetta-nuova">
+       <div><input type="text" name="testo" id="" placeholder="Nome" class="input-lista" style="height: 30px;">
+                <input type="color" name="colore" id="" class="input-lista"></div>
+
+       <div class="buttons"><button class="btn-etichetta-nuova crea-lista">Crea</button>
+                <button class="btn-etichetta-reset btn-reset">Annulla</button></div> 
+            </div>
+        </div>
+    </div>
+
+        <div class="organize">
+
+            <div>
+            <p class="description" style="width: 200px; margin-right: 30px; margin-bottom: 0px;">Le Tue Checkbox</p>
             <div class="lista-checkbox-box">
             </div>
-            <div class="checkbox-nuovo">
-                <textarea name="testo" id="" cols="40" rows="2" placeholder="Nome"></textarea>
-                <button class="btn-checkbox-nuovo">Crea</button>
-                <button class="btn-checkbox-reset">Annulla</button>
-            </div>
+        </div>
 
-            <p class="lista-text">Commento</p>
-            <div class="commento-nuovo">
-                <textarea name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento"></textarea>
-                <button class="btn-commento-nuovo">Invia</button>
-                <button class="btn-commento-reset">Annulla</button>
+        <div class="display-checkbox">
+            <p class="lista-text description">Checkbox</p>
+            <div class="checkbox-nuovo">
+                <textarea name="testo" id="" cols="40" rows="2" placeholder="Checkbox" class="input-lista"></textarea>
+                <div class="buttons">
+                <button class="btn-checkbox-nuovo crea-lista">Crea</button>
+                <button class="btn-checkbox-reset btn-reset">Annulla</button>
+                </div>
             </div>
+        </div>
+    </div>
+
+            <div class="organize">
+
+            <div>
+            <p class="description">Commenti</p>
             <div class="lista-commento-box">
             </div>
+        </div>
 
-            <p class="lista-text">Sposta</p>
-            <div class="lista-scadenza-box">
-            </div>
+        <div class="display-checkbox">
+            <p class="lista-text description">Commento</p>
 
-            <p class="lista-text">Scadenza</p>
+            <div class="commento-nuovo">
+                <textarea name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento" class="input-lista"></textarea>
+             <div class="buttons">  
+                <button class="btn-commento-nuovo crea-lista">Invia</button>
+                <button class="btn-commento-reset btn-reset">Annulla</button>
+            </div> 
+        </div>
+    </div>
+</div>
+
+            <p class="lista-text description">Scadenza</p>
             <div class="lista-scadenza-box"></div>
-
-            <button class="lista-delete">Cancella lista</button>
+            <div class="cancel">
+            <button class="lista-delete btn-reset" style="width: 200px; margin-top: 50px;  display: flex; justify-content: center;">Cancella lista</button>
+        </div>
         </div>
     </div>
 
@@ -1613,14 +1970,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         </div>
     </div>
 
-    <div id="sposta-attivita-prototipo" class="sposta-attivita" style="display: none">
-        <p class="lista-text"><span></span></p>
-    </div>
-
     <div id="scadenza-prototipo" class="scadenza" style="display: none">
-        <input class="scadenza-text" type="date" name="scadenza">
-        <button class="btn-scadenza-nuovo">Aggiungi scadenza</button>
-        <button class="btn-scadenza-elimina">Elimina</button>
+        <input class="scadenza-text input-lista" type="date" name="scadenza" style="width: 200px; margin-bottom: 30px; height: 50px;">
+        <button class="btn-scadenza-nuovo crea-lista" style="width: 200px;margin: 0px;">Aggiungi scadenza</button>
+        <button class="btn-scadenza-elimina btn-reset">Elimina</button>
     </div>
 
     <div id="settimana-prototipo" class="settimana" style="display: none">
@@ -1643,18 +1996,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     <div id="lista-nuova-prototipo" style="display: none">
         <div class="lista-info">
-            <form class="form-nuova-lista" method="post">
-                <label for="">Nome</label>
-                <input type="text" name="nome" id="">
+            <form class="form-nuova-lista lista-crea" method="post">
+                <div>
+                <label for="" class="title">Nome</label>
+                <input type="text" name="nome" id="" class="input"></div>
 
-                <label for="">Descrizione</label>
-                <textarea name="descrizione" id="" cols="30" rows="10"></textarea>
+                <div class="display">
+                <label for="" class="title">Descrizione</label>
+                <textarea name="descrizione" id="" cols="30" rows="10" class="input text-area"></textarea></div>
 
-                <input type="submit" value="Aggiungi Lista">
+                <input type="submit" value="Aggiungi Lista" class="crea">
             </form>
         </div>
     </div>
-
     <div id="membro-prototipo" class="membro" style="display: none">
         <div class="user-icon">
 
@@ -1798,7 +2152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             // method
-            show_user_name(target = $("div.header div.user-icon")) {
+            show_user_name(target = $("div.header div.pfp")) {
                 if (this.data["img_profilo"]["tipo"] == "default")
                     target.text(this.data["nome_utente"].split(" ").map(p=>p.charAt(0).toUpperCase()).join(" "));
                 else
