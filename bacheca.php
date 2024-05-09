@@ -49,7 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     // colori del tema
     $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
-    $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
+    $data["nome_tema"] = $result->fetch_assoc()["tema"];
+    $data["tema"] = get_theme_colors( $data["nome_tema"]);
 
     $conn->close();
 
@@ -120,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         top: 20%;
         left: 35%;
 
-        background-color: #e0ab23;
+        background-color: var(--color-primary);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -198,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         height: auto;
         min-height: 50px;
 
-        background-color: #e0ab23;
+        background-color: var(--color-primary);
         color: #000000;
 
         border-radius: 10px;
@@ -467,6 +468,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     div.scadenza-giorno.active {
         background-color: gray;
         border-radius: 10px;
+        font-family: "Concert One", sans-serif;
     }
 
     svg.calendario-arrow {
@@ -493,7 +495,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         top: 0;
         left: 0;
         z-index: 100;
-        background-color: #e0ab23;
+        background-color: var(--color-primary);
         width: 100%;
     }
 
@@ -504,7 +506,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         justify-content: space-evenly;
         align-items: center;
         height: 115px;
-        background-color: #e0ab23;
+        background-color: var(--color-primary);
         margin: 0;
     }
 
@@ -529,7 +531,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     .button {
         font-family: "Concert One", sans-serif;
         font-weight: bolder;
-        background-color:#8f411a;
+        background-color:var(--color-tertiary);
         border: solid transparent;
         border-radius: 16px;
         border-width: 0 0 4px;
@@ -561,7 +563,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     .button:after {
         background-clip: padding-box;
-        background-color: #d05e26;
+        background-color: var(--color-secondary);
         border: solid transparent;
         border-radius: 16px;
         border-width: 0 0 4px;
@@ -623,12 +625,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         --background: #f3e0ad;
         --navbar-width: 256px;
         --navbar-width-min: 80px;
-        --navbar-dark-primary: #e0ab23; /*colore menu*/
-        --navbar-dark-secondary: #d05e26; /*colore righe*/
+        --navbar-dark-primary: var(--color-primary); /*colore menu*/
+        --navbar-dark-secondary: var(--color-secondary); /*colore righe*/
         --navbar-light-primary: #eee; /*colore titolo avatar*/
         --navbar-light-secondary: #eee; /*colore descrizione avatar*/
 
-        --color-primary: #e0ab23;  /* uguale colore menu */
+        --color-primary: var(--color-primary);  /* uguale colore menu */
     }
 
 
@@ -1013,8 +1015,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     .crea{
         font-family: "Concert One", sans-serif;
             font-weight: bolder;
-            background-color:#d05e26;
-            border: solid #8f411a;
+            background-color:var(--color-secondary);
+            border: solid var(--color-tertiary);
             border-radius: 16px;
             border-width: 0 0 4px;
             box-sizing: border-box;
@@ -1044,8 +1046,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     .crea:after{
         background-clip: padding-box;
-            background-color: #d05e26;
-            border: solid #8f411a;
+            background-color: var(--color-secondary);
+            border: solid var(--color-tertiary);
             border-radius: 16px;
             border-width: 0 0 4px;
             bottom: -4px;
@@ -1376,8 +1378,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     .crea-lista{
         font-family: "Concert One", sans-serif;
             font-weight: bolder;
-            background-color:#d05e26;
-            border: solid #8f411a;
+            background-color:var(--color-secondary);
+            border: solid var(--color-tertiary);
             border-radius: 16px;
             border-width: 0 0 4px;
             box-sizing: border-box;
@@ -1404,8 +1406,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     .crea-lista:after{
         background-clip: padding-box;
-            background-color: #d05e26;
-            border: solid #8f411a;
+            background-color: var(--color-secondary);
+            border: solid var(--color-tertiary);
             border-radius: 16px;
             border-width: 0 0 4px;
             bottom: -4px;
@@ -1634,6 +1636,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         font-family: "Concert One", sans-serif;
         font-size: larger;
         font-weight: bold;
+        cursor: pointer;
     }
 
     .account:hover{
@@ -1661,15 +1664,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </style>
 </head>
 <body>
-<div class="header">
+    <div class="header">
         <!--parte della barra a sinistra-->
         <div class="navbar">
-           <div class="navbar-left" > 
-   
-               <!--immagine del logo-->
-               <a href="../index.html">
-               <img  src="img/logo_scritta_completo.png"  class="logo">
-               </a>
+        <div class="navbar-left" > 
+
+            <!--immagine del logo-->
+            <a href="../index.html">
+            <img  src="img/logo_scritta_completo.png"  class="logo">
+            </a>
 
                 <!--tutte le bacheche di un account-->
                 <div class="spazi-lavoro">
@@ -1682,16 +1685,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         </div>
                     </div>
                 </div>
-              </div>
-              <div class="navbar-right">
-                <div class="pfp" ></div>
-                    <div class="account" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
-                    </div>                    
             </div>
-              </div>
-   
-
-    </div>
+            <div class="navbar-right">
+                <div class="user-icon" ></div>
+                    <div class="account" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
+                    </div>            
+            </div>
+        </div>
     </div>
 
     <div id="content">
@@ -2032,8 +2032,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <p class="text-format testo"></p>
         <p class="text-format orario"></p>
     </div>
-    
+
+    <script></script>
     <script>
+        document.getElementById("id_codice").style.display="block";
         class Visualizator {
             constructor (data) {
                 let searchParams = new URLSearchParams(window.location.search);
@@ -2152,7 +2154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             }
 
             // method
-            show_user_name(target = $("div.header div.pfp")) {
+            show_user_name(target = $("div.header div.user-icon")) {
                 if (this.data["img_profilo"]["tipo"] == "default")
                     target.text(this.data["nome_utente"].split(" ").map(p=>p.charAt(0).toUpperCase()).join(" "));
                 else

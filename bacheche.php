@@ -2,14 +2,18 @@
     include "utils.php";
 
     session_start();
-    login_required();
+    $id_utente = login_required();
     set_console();
 
     $data = get_bacheche_list();
 
     // colori del tema
+    $conn = connection();
     $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
     $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
+
+    $data["nome_utente"] = get_nome_utente($id_utente);
+    $data["img_profilo"] = get_user_img_profilo();
     ?>
 
 <!DOCTYPE html>
@@ -35,9 +39,9 @@
         --background: #f3e0ad;
         --color-light: #eee;
         
-        --color-primary: #e0ab23;
-        --color-secondary: #d05e26;
-        --color-tertiary: #8f411a;
+        --color-primary: var(--color-primary);
+        --color-secondary: var(--color-secondary);
+        --color-tertiary: var(--color-tertiary);
 
         --color-primary: transparent;
     }
@@ -74,8 +78,7 @@
         position: absolute;
         top: 20%;
         left: 20%;
-
-        background-color: white;
+        background-color: var(--background);
     }
     
     #login {
@@ -95,7 +98,7 @@
         top: 0;
         left: 0;
         z-index: 100;
-        background-color: #e0ab23;
+        background-color: var(--color-primary);
         width: 100%;
     }
 
@@ -106,7 +109,7 @@
         justify-content: space-evenly;
         align-items: center;
         height: 115px;
-        background-color: #e0ab23;
+        background-color: var(--color-primary);
         margin: 0;
     }
 
@@ -132,7 +135,7 @@
     .button {
         font-family: "Concert One", sans-serif;
         font-weight: bolder;
-        background-color:#8f411a;
+        background-color:var(--color-tertiary);
         border: solid transparent;
         border-radius: 16px;
         border-width: 0 0 4px;
@@ -154,7 +157,8 @@
         transition: filter .2s;
         vertical-align: middle;
         white-space: nowrap;
-        width: 320px;
+        min-width: 320px;
+        width: fit-content;
         text-decoration: none;
         text-transform: none;
         
@@ -165,7 +169,7 @@
 
     .button:after {
         background-clip: padding-box;
-        background-color: #d05e26;
+        background-color: var(--color-secondary);
         border: solid transparent;
         border-radius: 16px;
         border-width: 0 0 4px;
@@ -231,7 +235,7 @@
             min-height: 50px;
             font-family: "Concert One", sans-serif;
                     
-            background-color: #e0ab23;
+            background-color: var(--color-primary);
             color: black;
             border-radius: 10px;
 
@@ -245,71 +249,70 @@
         } 
         
         /* popup */
-.popup .popuptext {
-  visibility: hidden;
-  background-color: #e0ab23;
-  color: #fff;
-  font-size: 18px;
-  text-align: left;
-  padding-left: 8px;
+    .popup .popuptext {
+    visibility: hidden;
+    background-color: var(--color-primary);
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    padding-left: 8px;
 
-  text-transform: none;
+    text-transform: none;
 
-  border-radius: 6px;
-  border-style: solid;
-  border-color: #eee;
-  border-width: 1px;
+    border-radius: 6px;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 1px;
 
-  position: absolute;
-  z-index: 1;
-  top: 125%;
-  
-  width: 400px;
-  height: 300px;
-}
-
-.popup .show {
-  visibility: visible;
-
-  top: 65%;
-  left: 227px;
-}
-
-    /*Spazi di lavoro*/
-  .popup{
-    text-decoration: none;
-    font-family: "Concert One", sans-serif;
-    font-weight: bolder;
-    font-style: normal;
-    font-size: larger;
-    color: #000000;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
     
-}
+    width: 400px;
+    height: 300px;
+    }
 
-.popup:hover{
-   color: #f3e0ad;  
-   text-decoration: underline;
-}
+    .popup .show {
+    visibility: visible;
 
-hr{
-  border-color: #fff;
-  border-width: 1px;
-  border-style: solid;
-  opacity: 0.7;
-}
+    top: 65%;
+    left: 227px;
+    }
 
-.icon{
-    margin-right:10px;
-    height: 20px;
-    width: 20px;
-    padding-left:10px;
-}
-
-.crea{
-    font-family: "Concert One", sans-serif;
+        /*Spazi di lavoro*/
+    .popup{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
         font-weight: bolder;
-        background-color:#d05e26;
-        border: solid #8f411a;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+    }
+
+    .popup:hover{
+    color: #f3e0ad;  
+    text-decoration: underline;
+    }
+
+    hr{
+    border-color: #fff;
+    border-width: 1px;
+    border-style: solid;
+    opacity: 0.7;
+    }
+
+    .icon{
+        margin-right:10px;
+        height: 20px;
+        width: 20px;
+        padding-left:10px;
+    }
+
+    .crea{
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        background-color:var(--color-secondary);
+        border: solid var(--color-tertiary);
         border-radius: 16px;
         border-width: 0 0 4px;
         box-sizing: border-box;
@@ -335,12 +338,12 @@ hr{
 
         margin-top: 30px;
         padding-right: 20px;
-}
+    }
 
-.crea:after{
-    background-clip: padding-box;
-        background-color: #d05e26;
-        border: solid #8f411a;
+    .crea:after{
+        background-clip: padding-box;
+        background-color: var(--color-secondary);
+        border: solid var(--color-tertiary);
         border-radius: 16px;
         border-width: 0 0 4px;
         bottom: -4px;
@@ -351,68 +354,108 @@ hr{
         top: 0;
         z-index: -1;
         width: 300px;
-}
+    }
 
-.crea:hover{
-    filter: brightness(1.1);
-}
+    .crea:hover{
+        filter: brightness(1.1);
+    }
 
-.crea:active{
-    border-width: 4px 0 0;
-}
+    .crea:active{
+        border-width: 4px 0 0;
+    }
 
-.title{
-    font-family: "Concert One", sans-serif;
-    font-size: 25px;
-    padding-right: 15px;
-    color: white;
-}
+    .title{
+        font-family: "Concert One", sans-serif;
+        font-size: 25px;
+        padding-right: 15px;
+        color: white;
+    }
 
-.input{
-    background-color: #eee;
-    font-family: "Concert One", sans-serif;
-    font-size: large;
+    .input{
+        background-color: #eee;
+        font-family: "Concert One", sans-serif;
+        font-size: large;
 
-    border-width: 0px;
-    border-radius: 10px;
+        border-width: 0px;
+        border-radius: 10px;
 
-    height: 30px;
-}
+        height: 30px;
+    }
 
-.input:after{
-    border-width: 0px;
-}
+    .input:after{
+        border-width: 0px;
+    }
 
-.paragrafo{
-	font-family: 'Concert One', sans-serif;
-    margin-top: 35vh;
-    font-size: 28px;
-    padding-left: 30px;
-    text-decoration:underline;
-}
+    .paragrafo{
+        font-family: 'Concert One', sans-serif;
+        margin-top: 35vh;
+        font-size: 28px;
+        padding-left: 30px;
+        text-decoration:underline;
+    }
 
-.recenti{
-	font-family: 'Concert One', sans-serif;
-    margin-top: 40px;
-    font-size: 28px;
-    padding-left: 30px;
-    text-decoration:underline;
-}
+    .recenti{
+        font-family: 'Concert One', sans-serif;
+        margin-top: 40px;
+        font-size: 28px;
+        padding-left: 30px;
+        text-decoration:underline;
+    }
 
 
-.pfp{
-  border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    background-color: black;
-    color: #eee;
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-    font-weight: 600;
-    font-family: "Concert One", sans-serif; 
-}
+    .pfp{
+    border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        background-color: black;
+        color: #eee;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+        font-weight: 600;
+        font-family: "Concert One", sans-serif; 
+    }
+
+    div.user-icon {
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+
+        background-color: black;
+        color: var(--color-light);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+
+        text-align: center;
+        font-weight: bold;
+        font-family: "Concert One", sans-serif; 
+        text-transform: uppercase;
+
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .account{
+        font-family: "Concert One", sans-serif;
+        font-size: larger;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .account:hover{
+        text-decoration: underline;
+        color: #f3e0ad;
+    }
+
+    #nuova-bacheca-popup {
+        
+        color: var(--color-primary);
+    }
     </style>
 </head>
 <body>
@@ -434,8 +477,8 @@ hr{
                </div>
     
                 <div class="navbar-left">
-					<div class="pfp" > E T</div>
-                      <span class="writing" style="margin-left: 0px;">Account</span>
+					<div class="user-icon"></div>
+                    <div class="account" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account</div> 
               </div>
 
        
@@ -456,7 +499,7 @@ hr{
     <div class="bacheca-list" id="container">
     </div>
 
-    <div id="nuova-bacheca" class="button"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova bacheca</div>
+    <div id="nuova-bacheca" class="button" style="margin-bottom: 30px; margin-left: 30px;"> <img src="img/aggiungi.png" class="icon"> Aggiungi una nuova bacheca</div>
 
     <!-- content hidden -->
     <div id="bacheca-prototipo" class="bacheca bacheca-elem" style="display: none">
@@ -517,16 +560,25 @@ hr{
             target.append(elem);
         }
 
+        function show_user_name(target = $("div.user-icon")) {
+            if (dati["img_profilo"]["tipo"] == "default")
+                target.text(dati["nome_utente"].split(" ").map(p=>p.charAt(0).toUpperCase()).join(" "));
+            else
+                target.css("background-image", `url('data:${dati.img_profilo.tipo};base64,${dati.img_profilo.dati}')`)
+        }
+
         function set_theme_color(colors) {
             $("html").css("--color-primary", colors[0]);
             $("html").css("--color-secondary", colors[1]);
             $("html").css("--color-tertiary", colors[2]);
+            $("html").css("--color-quaternary", colors[3]);
         }
 
         // Passaggio dati
         let dati = <?php echo json_encode($data); ?>;
         
         set_theme_color(dati.tema);
+        show_user_name();
 
         let filter = new FilterBacheche(dati);
 
@@ -602,12 +654,8 @@ hr{
             console.log("show")
             $(window).on("click", function (e) {
                 let target = $(e.target);
-                if (!target.closest(popup).length) {
+                if (target.closest(popup).length > target.closest(popup.box).length) {
                     e.preventDefault();
-                    console.log("hide");
-                    popup.hide();
-                    popup.empty();
-
                     popup.close();
                 }
             });
@@ -615,12 +663,12 @@ hr{
 
         popup.close = function () {
             popup.hide();
-            popup.empty();
+            popup.box.empty();
             $(window).off("click");
         }
 
         popup.add = function (elem) {
-            popup.empty();
+            popup.box.empty();
             let new_ = elem.clone(true);
             console.log(new_)
             new_.attr("id", "nuova-bacheca-popup");
@@ -629,6 +677,7 @@ hr{
 
             popup.mostra();
         }
+
     </script>
 </body>
 </html>

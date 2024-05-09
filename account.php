@@ -21,7 +21,8 @@ if ($img_profilo == false) {
 
 // colori del tema
 $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
-$data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
+$data["nome_tema"] = $result->fetch_assoc()["tema"];
+$data["tema"] = get_theme_colors( $data["nome_tema"]);
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +49,7 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
         --color-primary: #e0ab23;
         --color-secondary: #d05e26;
         --color-tertiary: #8f411a;
+        --color-quaternary:#c9991f;
 
         --color-primary: transparent;
     }
@@ -176,11 +178,10 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
     }
 
     div.content-right {
-        margin-top: 5%;
         width: 40%;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-end;
     }
 
     div.content-right > * {
@@ -342,14 +343,25 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
 
     div.color-theme-elem[colore="giallo"] {
         background-color: #e0ab23;
+        border: solid #c9991f;
+    	border-radius: 16px;
+    	border-width: 0 0 4px;
+    	box-sizing: border-box;
     }
 
     div.color-theme-elem[colore="blu"] {
-        background-color: #0e8ae3;
+        background-color: #1db1fd;
     }
 
     div.color-theme-elem.active p {
-        color: red;
+        color: var(--color-light);
+    }
+    
+    .theme{
+        margin: 0;
+        font-size: 20px;
+        font-family: "Concert One", sans-serif;
+        padding-right: 20px;
     }
 
     </style>
@@ -367,7 +379,7 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
         </div>
 
         <div class="navbar-center">
-            <h1 class="text-format">IL TUO PROFILO TORG</h1>
+            <h1 class="text-format">Il tuo profilo Torg</h1>
         </div>
 
         <div class="navbar-right">
@@ -378,15 +390,8 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
     <div id="container">
         <div class="content-left">
             <div class="separator"></div>
-
-            <div class="color-theme-box">
-                <div class="color-theme-elem active" colore="giallo"><p class="text-format">GIALLO</p></div>
-                <div class="color-theme-elem" colore="blu"><p class="text-format">AZZURRO</p></div>
-            </div>
-
-            <div class="separator"></div>
-
-            <form id="form-immagine-profilo" method="post">
+            
+                        <form id="form-immagine-profilo" method="post">
                 <div id="preview-img-profilo"></div>
 
                 <div class="form-content">
@@ -399,6 +404,14 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
                     <input type="reset" class="btn" value="Annulla">
                 </div>
             </form>
+
+            <div class="separator"></div>
+
+            <div class="color-theme-box">
+                <p class="theme">Tema</p>
+                <div class="color-theme-elem" colore="giallo"><p class="text-format">Giallo</p></div>
+                <div class="color-theme-elem" colore="blu"><p class="text-format">Azzurro</p></div>
+            </div>
 
             <div class="separator"></div>
 
@@ -465,6 +478,7 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
             $("html").css("--color-primary", colors[0]);
             $("html").css("--color-secondary", colors[1]);
             $("html").css("--color-tertiary", colors[2]);
+            $("html").css("--color-quaternary", colors[3]);
         }
 
         function init_popup() {
@@ -521,6 +535,7 @@ $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
         let dati = <?php echo json_encode($data); ?>;
 
         set_theme_color(dati.tema);
+        $("div.color-theme-elem[colore=" + dati.nome_tema + "]").addClass("active");
 
         init_dati_utente();
 

@@ -528,11 +528,10 @@ function get_bacheche_list($id_utente=null) {
 
 function get_theme_colors ($tema) {
     if ($tema == "blu") return array(
-            "#0e8ae3", "#0e8ae3", "#0e8ae3"
-        );
-
+        "#6fa8dc", "#028bd3", "#017dbd", "#6397c6"
+    );
     else return array(
-        "#e0ab23", "#d05e26", "#8f411a"
+        "#e0ab23", "#d05e26", "#8f411a", "#c9991f"
     );
 }
 ?>
