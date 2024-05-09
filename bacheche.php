@@ -2,19 +2,15 @@
     include "utils.php";
 
     session_start();
-    $id_utente = $id_utente = login_required();
+    $id_utente = login_required();
     set_console();
 
     $data = get_bacheche_list();
 
     // colori del tema
     $conn = connection();
-    $conn = connection();
     $result = $conn->query("SELECT tema FROM Utenti WHERE ID=$id_utente;");
     $data["tema"] = get_theme_colors($result->fetch_assoc()["tema"]);
-
-    $data["nome_utente"] = get_nome_utente($id_utente);
-    $data["img_profilo"] = get_user_img_profilo();
 
     $data["nome_utente"] = get_nome_utente($id_utente);
     $data["img_profilo"] = get_user_img_profilo();
@@ -250,6 +246,7 @@
             margin-left:20px;
             margin-right: 20px;
             cursor: pointer;
+            position: relative;
         } 
         
         /* popup */
@@ -283,16 +280,15 @@
     left: 227px;
     }
 
-    /*Spazi di lavoro*/
-  .popup{
-    text-decoration: none;
-    font-family: "Concert One", sans-serif;
-    font-weight: bolder;
-    font-style: normal;
-    font-size: larger;
-    color: #000000;
-    
-}
+        /*Spazi di lavoro*/
+    .popup{
+        text-decoration: none;
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+    }
 
     .popup:hover{
     color: #f3e0ad;  
@@ -408,19 +404,71 @@
     }
 
 
-.pfp{
-  border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    background-color: black;
-    color: #eee;
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-    font-weight: 600;
-    font-family: "Concert One", sans-serif; 
-}
+    .pfp{
+    border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        background-color: black;
+        color: #eee;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+        font-weight: 600;
+        font-family: "Concert One", sans-serif; 
+    }
+
+    div.user-icon {
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+
+        background-color: black;
+        color: var(--color-light);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+
+        text-align: center;
+        font-weight: bold;
+        font-family: "Concert One", sans-serif; 
+        text-transform: uppercase;
+
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .account{
+        font-family: "Concert One", sans-serif;
+        font-size: larger;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .account:hover{
+        text-decoration: underline;
+        color: #f3e0ad;
+    }
+
+    #nuova-bacheca-popup {
+        
+        color: var(--color-primary);
+    }
+
+    svg.star {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
+
+    svg.star.active {
+        fill: #d05e26;
+    }
     </style>
 </head>
 <body>
@@ -468,6 +516,7 @@
 
     <!-- content hidden -->
     <div id="bacheca-prototipo" class="bacheca bacheca-elem" style="display: none">
+        <svg class="star" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M9.153 5.408C10.42 3.136 11.053 2 12 2s1.58 1.136 2.847 3.408l.328.588c.36.646.54.969.82 1.182s.63.292 1.33.45l.636.144c2.46.557 3.689.835 3.982 1.776.292.94-.546 1.921-2.223 3.882l-.434.507c-.476.557-.715.836-.822 1.18-.107.345-.071.717.001 1.46l.066.677c.253 2.617.38 3.925-.386 4.506s-1.918.051-4.22-1.009l-.597-.274c-.654-.302-.981-.452-1.328-.452s-.674.15-1.328.452l-.596.274c-2.303 1.06-3.455 1.59-4.22 1.01-.767-.582-.64-1.89-.387-4.507l.066-.676c.072-.744.108-1.116 0-1.46-.106-.345-.345-.624-.821-1.18l-.434-.508c-1.677-1.96-2.515-2.941-2.223-3.882S3.58 8.328 6.04 7.772l.636-.144c.699-.158 1.048-.237 1.329-.45s.46-.536.82-1.182z" stroke="#1C274C" stroke-width="1.5"/></svg>
         <p class="bacheca-nome"><span></span></p>
     </div>
 
@@ -497,7 +546,6 @@
                 });
 
                 for (let i = 0; i < indici.length; i++) {
-                    console.log(dati[indici[i]]);
                     bacheche.push(dati[indici[i]]);
                 }
 
@@ -517,10 +565,17 @@
         }
 
         function show_bacheca(dati, target=$("#container")) {
+            console.log(dati);
             let elem = $("#bacheca-prototipo").clone(true);
-            elem.attr("id", dati.codice);
+            elem.attr("id", "");
+
+            elem.attr("codice", dati.codice);
+            elem.get(0).proprietario = dati.proprietario;
 
             elem.find("p.bacheca-nome > span").text(dati.nome.toUpperCase());
+
+            if (dati.preferita == true) elem.find("svg.star").addClass("active");
+
             elem.show();
             target.append(elem);
         }
@@ -566,6 +621,38 @@
 
 
         // Event Listener globali
+        $("body").on("click", "svg.star", function (e) {
+            let target = $(e.currentTarget);
+            let bacheca = target.closest("div.bacheca");
+
+            e.stopImmediatePropagation();
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "toggle-preferiti",
+                    "codice_bacheca": bacheca.attr("codice")
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    console.log(result);
+
+                    if (target.hasClass("active"))
+                        $("#container_preferiti div.bacheca[codice=" + bacheca.attr("codice") + "]").remove();
+                    else
+                        $("#container_preferiti").append(bacheca.clone(true));
+                    
+                    $("div.bacheca[codice=" + bacheca.attr("codice") + "] svg.star").toggleClass("active");
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
         $("body").on("submit", "#nuova-bacheca-popup", (function (e) {
             e.preventDefault();
 
@@ -603,7 +690,7 @@
         }));
 
         $("body").on("click", ".bacheca-list > div.bacheca-elem", function (e) {
-            location.href = "bacheca.php?codice=" +encodeURIComponent($(this).attr("id"));
+            location.href = "bacheca.php?codice=" +encodeURIComponent($(this).attr("codice"));
         });
 
         let popup = $("#popup");

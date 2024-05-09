@@ -50,7 +50,6 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         --color-secondary: #d05e26;
         --color-tertiary: #8f411a;
         --color-quaternary:#c9991f;
-        --color-quaternary: #c9991f
 
         --color-primary: transparent;
     }
@@ -340,15 +339,19 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
     }
 
     div.color-theme-elem[colore="giallo"] {
+        background-color: #e0ab23;
         border: solid #c9991f;
     	border-radius: 16px;
     	border-width: 0 0 4px;
     	box-sizing: border-box;
-        background-color: var(--color-primary);
     }
 
     div.color-theme-elem[colore="blu"] {
         background-color: #1db1fd;
+        border: solid #6397c6;
+    	border-radius: 16px;
+    	border-width: 0 0 4px;
+    	box-sizing: border-box;
     }
 
     div.color-theme-elem.active p {
@@ -362,14 +365,7 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         padding-right: 20px;
     }
     
-    .theme{
-    min-width: 150px;
-    margin: 0;
-    font-size: 20px;
-    font-family: "Concert One", sans-serif;
-    }
-    
-        .btn-primary {
+    .btn-primary {
         font-family: "Concert One", sans-serif;
         background-color: var(--color-secondary);
         border-color: var(--color-tertiary);

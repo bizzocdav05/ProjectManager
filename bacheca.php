@@ -1873,71 +1873,69 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             <p class="lista-descrizione text-mod"><span></span></p>
 
             <div class="organize">
-
                 <div>
                     <p class="description" style="width: 160px;">Le Tue Etichette</p>
-                    <div class="lista-etichetta-box"> </div>
+                    <div class="lista-etichetta-box"></div>
+                </div>
+
+                <div style="display: flex; align-items: flex-end; flex-direction: column;">
+                    <p class="lista-text description">Etichetta</p>
+
+                    <div class="etichetta-nuova">
+                        <div class="colore-etichetta">
+                            <input type="text" name="testo" id="" placeholder="Nome" class="input-lista" style="height: 30px;">
+                            <input type="color" name="colore" id="" class="input-lista">
+                        </div>
+
+                        <div class="buttons"><button class="btn-etichetta-nuova crea-lista">Crea</button>
+                            <button class="btn-etichetta-reset btn-reset">Annulla</button>
+                        </div> 
                     </div>
-
-            <div style="display: flex; align-items: flex-end; flex-direction: column;">
-            <p class="lista-text description">Etichetta</p>
-
-            <div class="etichetta-nuova">
-       <div><input type="text" name="testo" id="" placeholder="Nome" class="input-lista" style="height: 30px;">
-                <input type="color" name="colore" id="" class="input-lista"></div>
-
-       <div class="buttons"><button class="btn-etichetta-nuova crea-lista">Crea</button>
-                <button class="btn-etichetta-reset btn-reset">Annulla</button></div> 
-            </div>
-        </div>
-    </div>
-
-        <div class="organize">
-
-            <div>
-            <p class="description" style="width: 200px; margin-right: 30px; margin-bottom: 0px;">Le Tue Checkbox</p>
-            <div class="lista-checkbox-box">
-            </div>
-        </div>
-
-        <div class="display-checkbox">
-            <p class="lista-text description">Checkbox</p>
-            <div class="checkbox-nuovo">
-                <textarea name="testo" id="" cols="40" rows="2" placeholder="Checkbox" class="input-lista"></textarea>
-                <div class="buttons">
-                <button class="btn-checkbox-nuovo crea-lista">Crea</button>
-                <button class="btn-checkbox-reset btn-reset">Annulla</button>
                 </div>
             </div>
-        </div>
-    </div>
 
             <div class="organize">
+                <div>
+                    <p class="description" style="width: 200px; margin-right: 30px; margin-bottom: 0px;">Le Tue Checkbox</p>
+                    <div class="lista-checkbox-box"></div>
+                </div>
 
-            <div>
-            <p class="description">Commenti</p>
-            <div class="lista-commento-box">
+                <div class="display-checkbox">
+                    <p class="lista-text description">Checkbox</p>
+                    <div class="checkbox-nuovo">
+                        <textarea name="testo" id="" cols="40" rows="2" placeholder="Checkbox" class="input-lista"></textarea>
+                        <div class="buttons">
+                            <button class="btn-checkbox-nuovo crea-lista">Crea</button>
+                            <button class="btn-checkbox-reset btn-reset">Annulla</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="display-checkbox">
-            <p class="lista-text description">Commento</p>
+            <div class="organize">
+                <div>
+                    <p class="description">Commenti</p>
+                    <div class="lista-commento-box"></div>
+                </div>
 
-            <div class="commento-nuovo">
-                <textarea name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento" class="input-lista"></textarea>
-             <div class="buttons">  
-                <button class="btn-commento-nuovo crea-lista">Invia</button>
-                <button class="btn-commento-reset btn-reset">Annulla</button>
-            </div> 
-        </div>
-    </div>
-</div>
+                <div class="display-checkbox">
+                    <p class="lista-text description">Commento</p>
+
+                    <div class="commento-nuovo">
+                        <textarea name="commento" id="" cols="40" rows="5" placeholder="Inserisci il tuo commento" class="input-lista"></textarea>
+                        <div class="buttons">  
+                            <button class="btn-commento-nuovo crea-lista">Invia</button>
+                            <button class="btn-commento-reset btn-reset">Annulla</button>
+                        </div> 
+                    </div>
+                </div>
+            </div>
 
             <p class="lista-text description">Scadenza</p>
             <div class="lista-scadenza-box"></div>
             <div class="cancel">
-            <button class="lista-delete btn-reset" style="width: 200px; margin-top: 50px;  display: flex; justify-content: center;">Cancella lista</button>
-        </div>
+                <button class="lista-delete btn-reset" style="width: 200px; margin-top: 50px;  display: flex; justify-content: center;">Cancella lista</button>
+            </div>
         </div>
     </div>
 
@@ -2035,7 +2033,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     <script></script>
     <script>
-        document.getElementById("id_codice").style.display="block";
         class Visualizator {
             constructor (data) {
                 let searchParams = new URLSearchParams(window.location.search);
@@ -2123,26 +2120,26 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                     for (let j = 0; j < dati.lista.length; j++) {
                         let dati_lista = dati.lista.list[j];
-                        this.add_idx_elem("lista", dati_lista.codice, dati.info.codice);
+                        this.add_idx_elem("lista", dati_lista.codice, dati.info.codice, j);
 
                         for (let idx_checkbox = 0; idx_checkbox < dati_lista.checkbox.length; idx_checkbox++) {
                             let dati_checkbox = dati_lista.checkbox.list[idx_checkbox];
-                            this.add_idx_elem("checkbox", dati_checkbox.codice, dati_lista.codice);
+                            this.add_idx_elem("checkbox", dati_checkbox.codice, dati_lista.codice, idx_checkbox);
                         }
 
                         for (let idx_commento = 0; idx_commento < dati_lista.commento.length; idx_commento++) {
                             let dati_commento = dati_lista.commento.list[idx_commento];
-                            this.add_idx_elem("commento", dati_commento.codice, dati_lista.codice);
+                            this.add_idx_elem("commento", dati_commento.codice, dati_lista.codice, idx_commento);
                         }
 
                         for (let idx_etichetta = 0; idx_etichetta < dati_lista.etichetta.length; idx_etichetta++) {
                             let dati_etichetta = dati_lista.etichetta.list[idx_etichetta];
-                            this.add_idx_elem("etichetta", dati_etichetta.codice, dati_lista.codice);
+                            this.add_idx_elem("etichetta", dati_etichetta.codice, dati_lista.codice, idx_etichetta);
                         }
 
                         for (let idx_scadenza = 0; idx_scadenza < dati_lista.scadenza.length; idx_scadenza++) {
                             let dati_scadenza = dati_lista.scadenza.list[idx_scadenza];
-                            this.add_idx_elem("scadenza", dati_scadenza.codice, dati_lista.codice);
+                            this.add_idx_elem("scadenza", dati_scadenza.codice, dati_lista.codice, idx_scadenza);
                         }
                     }
                 }
@@ -2494,6 +2491,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     let idx_attivita = this.get_idx("attivita", this.get_idx("lista", codice)[1])[0];
                     let idx_lista = this.get_idx("lista", codice)[0];
 
+                    console.log(idx_lista)
                     if (this.data.attivita.list[idx_attivita].lista.list[idx_lista].scadenza.length > 0)
                         array.push([idx_attivita, idx_lista]);
                 }
@@ -2878,8 +2876,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("body").on("click", "button.btn-etichetta-nuova", function (e) {
             let target = $(e.currentTarget);
-            let colore = target.siblings("input[name='colore']");
-            let testo = target.siblings("input[name='testo']");
+            let colore = target.siblings("div.colore-etichetta > input[name='colore']");
+            let testo = target.siblings("div.colore-etichetta > input[name='testo']");
 
             if (colore.val() && testo.val()) {
                 let color_hex = colore.val().replace('#', '');

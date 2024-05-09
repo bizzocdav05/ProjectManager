@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
     $conn = connection();
 
+    // bacheche
     if ($action == "new-bacheca" && isset($_POST["nome"])) {
         $codice = genera_codice(16, -1);  // id temp per la creazione, poi da update
     
@@ -451,6 +452,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             $dati["esito"] = true;
             $dati["data"] = get_user_img_profilo($id_utente);
         }
+    }
+
+    // bacheche
+    if ($action == "toggle-preferiti") {
+        if (!$id_bacheca) exit();
+        
+        echo $id_bacheca;
+        if ($privilegi == 0)
+            $conn->query("UPDATE Bacheca SET preferita = CASE WHEN preferita = 0 THEN 1 ELSE 0 END WHERE ID=$id_bacheca;");
+        else
+            $conn->query("UPDATE Bacheca_assoc SET preferita = CASE WHEN preferita = 0 THEN 1 ELSE 0 END WHERE ID=$id_bacheca;");
+
+        $dati["esito"] = true;
     }
 
     echo json_encode($dati);

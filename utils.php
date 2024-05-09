@@ -495,7 +495,8 @@ function get_bacheche_list($id_utente=null) {
                 "nome" => $row_bacheca["nome"],
                 "codice" => $row_bacheca["codice"],
                 "preferita" => $row_bacheca["preferita"],
-                "ultimo_accesso" => $row_bacheca["ultimo_accesso"]
+                "ultimo_accesso" => $row_bacheca["ultimo_accesso"],
+                "proprietario" => true
             ));
         }
     }
@@ -516,7 +517,8 @@ function get_bacheche_list($id_utente=null) {
                     "nome" => $row_assoc["nome"],
                     "codice" => $row_assoc["codice"],
                     "preferita" => $row_bacheca["preferita"],
-                    "ultimo_accesso" => $row_bacheca["ultimo_accesso"]
+                    "ultimo_accesso" => $row_bacheca["ultimo_accesso"],
+                    "proprietario" => false
                 ));
             }
         }
