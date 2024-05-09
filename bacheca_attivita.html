@@ -210,7 +210,6 @@
         border: 1px solid black;
         padding: 2px;
         border-radius: 5px;
-        border-width: 0px;
     }
 
     div.etichetta-nuova {
@@ -340,7 +339,6 @@
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
-        width: 50%;
     }
 
     div.calendario-header img {
@@ -850,115 +848,6 @@
     text-align: center; 
     }
 
-
-    /* popup uno */
-    .popup .popuptext {
-    visibility: hidden;
-    background-color: #e0ab23;
-    color: #fff;
-    font-size: 18px;
-    text-align: left;
-    padding-left: 8px;
-
-    text-transform: none;
-
-    border-radius: 6px;
-    border-style: solid;
-    border-color: #eee;
-    border-width: 1px;
-
-    position: absolute;
-    z-index: 1;
-    top: 125%;
-    left: 79.5%;
-    
-    width: 400px;
-    height: 300px;
-    }
-
-    .popup .show {
-    visibility: visible;
-
-    top: 65%;
-    left: 73vh;
-    }
-
-        /*Spazi di lavoro*/
-    .popup{
-        text-decoration: none;
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        font-style: normal;
-        font-size: larger;
-        color: #000000;
-        cursor: pointer;
-        
-    }
-
-    .popup:hover{
-    color: #f3e0ad;  
-    text-decoration: underline;
-    }
-
-    hr{
-    border-color: #fff;
-    border-width: 1px;
-    margin-inline-end: auto;
-    border-style: solid;
-    opacity: 0.7;
-    width: 399px;
-    }
-
-
-    /* popup */
-    .popup-2 .popuptext-2 {
-    visibility: hidden;
-    background-color: #e0ab23;
-    color: #fff;
-    font-size: 18px;
-    text-align: left;
-    padding-left: 8px;
-
-    text-transform: none;
-
-    border-radius: 6px;
-    border-style: solid;
-    border-color: #eee;
-    border-width: 1px;
-
-    position: absolute;
-    z-index: 1;
-    top: 125%;
-    
-    width: 300px;
-    height: 500px;
-    }
-
-    .popup-2 .show {
-    visibility: visible;
-
-    top: 75%;
-    right: 10px;
-    }
-
-        /*Spazi di lavoro*/
-    .popup-2{
-        text-decoration: none;
-        font-family: "Concert One", sans-serif;
-        font-weight: bolder;
-        font-style: normal;
-        font-size: larger;
-        color: #000000;
-        cursor: pointer;
-        
-    }
-
-    .popup-2:hover{
-    color: #f3e0ad;  
-    text-decoration: underline;
-    }
-
-
     .icon{
         margin-right:10px;
         height: 20px;
@@ -1121,6 +1010,16 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+    }
+
+    div.membro div.membro-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-left: 20px;
+        width: fit-content;
     }
 
     p.link-invito > svg {
@@ -1437,11 +1336,16 @@
         justify-content: center;
     }
 
-
-    div.lista-info-box {
-        width: 90%;
+    .account{
+        font-family: "Concert One", sans-serif;
+        font-size: larger;
+        font-weight: bold;
     }
 
+    .account:hover{
+        text-decoration: underline;
+        color: #f3e0ad;
+    }
     </style>
 </head>
 <body>
@@ -1455,30 +1359,26 @@
                <img  src="img/logo_scritta_completo.png"  class="logo">
                </a>
 
-               <div class="button" >Crea una nuova bacheca </div>
-
                 <!--tutte le bacheche di un account-->
-                  <div class="popup"> Spazi di Lavoro
+                <div class="spazi-lavoro">
+                    <p>Spazi di Lavoro</p>
 
-                  <div class="popuptext" id="myPopup"> <p style="margin: 10px;"> La tua Bacheca attuale </p>
-                  <hr/>
-                  <!-- spazio per la bacheca attuale-->
-
-
-                  <p style="margin: 10px; padding-top: 100px;"> Le tue Bacheche </p>
-                  <hr/>
-                  <!-- spazio per le bacheche-->
-                 
-                 </div>
+                    <div id="popup-spazi-lavoro" style="display: none">
+                        <svg class="svg-chiudi" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g fill="#0F0F0F"><path d="M8.002 9.416a1 1 0 1 1 1.414-1.414l2.59 2.59 2.584-2.584a1 1 0 1 1 1.414 1.414l-2.584 2.584 2.584 2.584a1 1 0 0 1-1.414 1.414l-2.584-2.584-2.584 2.584a1 1 0 0 1-1.414-1.414l2.584-2.584z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23 4a3 3 0 0 0-3-3H4a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3zm-2 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1z"/></g></svg>
+                        <p class="lista-text">Le tue bacheche</p>
+                        <div class="bacheche-list-box">
+                        </div>
+                    </div>
                 </div>
               </div>
+              <div class="navbar-right">
+                <div class="pfp" ></div>
+                    <div class="account" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
+                    </div>                    
+            </div>
+              </div>
    
-               <div class="navbar-left">
-                 <div class="pfp" ></div>
-                     <div class="popup-2" onclick="location.href = 'account.php'" style="margin-left: 0px;">Account
-                     </div>
-                     
-             </div>
+
     </div>
     </div>
 
@@ -1799,11 +1699,28 @@
     </div>
 
     <div id="membro-prototipo" class="membro" style="display: none">
-        <p class="membro-proprietario select-visual-format"></p>
-        <p class="membro-other select-visual-format"></p>
-        <button class="btn-membro-elimina" style="display: none"><p class="select-visual-format">Elimina</p></button>
+        <div class="user-icon">
+
+        </div>
+        <div class="membro-box">
+            <p class="membro-proprietario select-visual-format"></p>
+            <p class="membro-other select-visual-format"></p>
+            <button class="btn-membro-elimina" style="display: none"><p class="select-visual-format">Elimina</p></button>
+        </div>
     </div>
-    
+
+    <div id="bacheche-list-prototipo" class="bacheche-elem" style="display: none">
+        <p class="text-format nome"></p>
+    </div>
+
+    <div id="messaggio-prototipo" class="messaggio-chat" style="display: none">
+        <div class="mittente-box">
+            <div class="user-icon"></div>
+            <p class="text-format mittente"></p>
+        </div>
+        <p class="text-format testo"></p>
+        <p class="text-format orario"></p>
+    </div>
     <script>
         class Visualizator {
             constructor (data) {
