@@ -52,6 +52,8 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         --color-quaternary:#c9991f;
 
         --color-primary: transparent;
+
+        --navbar-light-primary: #eee;
     }
 
     body{
@@ -383,8 +385,17 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         text-decoration: none;
         
         position: absolute;
-        top: 5px;
-        left: 5px;
+        top: 30%;
+        left: 10px;
+    }
+
+    div.spazi-lavoro > button {
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+
+    div.spazi-lavoro p {
+        margin: 0;
     }
 
     #popup-spazi-lavoro {
@@ -392,7 +403,7 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         top: 0;
         left: 0;
 
-        width: 30vw;
+        width: 200px;
         height: fit-content;
 
         background-color: var(--color-primary);
@@ -424,10 +435,33 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
     #popup-spazi-lavoro .lista-text {
         cursor: pointer;
     }
+
+    div.bacheche-elem {
+        background-color: var(--background);
+        text-align: center;
+        padding: 10px;
+        margin: 0;
+        border-radius: 7px;
+        cursor: pointer;
+        font-size: 20px;
+        margin-top: 30px;
+    }
+
+    div.bacheche-elem:hover {
+        background-color: var(--navbar-light-primary);
+    }
+
+    div.bacheche-elem p {
+        margin: 0;
+    }
     
     </style>
 </head>
 <body>
+    <div id="bacheche-list-prototipo" class="bacheche-elem" style="display: none">
+        <p class="text-format nome"></p>
+    </div>
+
     <div id="popup">
         <div id="popup-box">
         </div>
@@ -449,17 +483,18 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
     </nav>
 
     <div id="container">
-        <div class="content-left">
-            <div class="spazi-lavoro">
-                <p>Spazi di Lavoro</p>
 
-                <div id="popup-spazi-lavoro" style="display: none ">
-                    <svg class="svg-chiudi" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g fill="#0F0F0F"><path d="M8.002 9.416a1 1 0 1 1 1.414-1.414l2.59 2.59 2.584-2.584a1 1 0 1 1 1.414 1.414l-2.584 2.584 2.584 2.584a1 1 0 0 1-1.414 1.414l-2.584-2.584-2.584 2.584a1 1 0 0 1-1.414-1.414l2.584-2.584z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23 4a3 3 0 0 0-3-3H4a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3zm-2 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1z"/></g></svg>
-                    <p class="lista-text" onclick="location.href = 'bacheche.php'">Le tue bacheche</p>
-                    <div class="bacheche-list-box">
-                    </div>
+        <div class="spazi-lavoro">
+            <button class="btn btn-primary"><p>Spazi di Lavoro</p></button>
+            <div id="popup-spazi-lavoro" style="display: none ">
+                <svg class="svg-chiudi" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g fill="#0F0F0F"><path d="M8.002 9.416a1 1 0 1 1 1.414-1.414l2.59 2.59 2.584-2.584a1 1 0 1 1 1.414 1.414l-2.584 2.584 2.584 2.584a1 1 0 0 1-1.414 1.414l-2.584-2.584-2.584 2.584a1 1 0 0 1-1.414-1.414l2.584-2.584z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23 4a3 3 0 0 0-3-3H4a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3zm-2 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1z"/></g></svg>
+                <p class="lista-text" onclick="location.href = 'bacheche.php'">Le tue bacheche</p>
+                <div class="bacheche-list-box">
                 </div>
             </div>
+        </div>
+
+        <div class="content-left">
             
             <div class="separator"></div>
             
@@ -619,7 +654,7 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
             }
 
             // visual.popup.add(elem, "spazi-lavoro-popup");
-            elem.css("left", pos_x);
+            // elem.css("left", pos_x);
             elem.css("top", pos_y);
         }
 
@@ -858,7 +893,6 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
                 type: "POST",
                 data: {
                     "action": "bacheche-list",
-                    "codice_bacheca": CODICE_BACHECA
                 },
                 crossDomain: true,
 
@@ -868,7 +902,7 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
                     if (result.esito == true) {
                         let offset = target.offset();
                         target.find("#popup-spazi-lavoro").show();
-                        visual.crea_spazi_lavoro(result.list, offset.left, offset.top + target.outerHeight());
+                        crea_spazi_lavoro(result.list, 0, target.outerHeight() + 10);
                     }
                 },
 
@@ -882,6 +916,13 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         $("#popup-spazi-lavoro svg.svg-chiudi").click(function(e) {
             $("#popup-spazi-lavoro").hide();
             e.stopPropagation();
+        });
+
+        // redirect alla bacheca selezionata
+        $("body").on("click", "div.bacheche-list-box div.bacheche-elem", function(e) {
+            let target = $(e.currentTarget);
+            let cod_bacheca = target.attr("id");
+            location.href = location.href = "bacheca.php?codice=" +encodeURIComponent(cod_bacheca);
         });
     </script>
 </body>

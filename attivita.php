@@ -64,6 +64,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         exit();
     }
 
+    if ($action == "bacheche-list") {
+        $dati = array();
+        $dati["esito"] = true;
+        $dati["list"] = get_bacheche_list();
+
+        echo json_encode($dati);
+        exit();
+    }
+
     if (!isset($_POST["codice_bacheca"])) {
         exit();
     }
@@ -77,11 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $id_utente = get_utente();
 
     $dati = array("esito" => false);
-
-    if ($action == "bacheche-list") {
-        $dati["esito"] = true;
-        $dati["list"] = get_bacheche_list();
-    }
     
     if ($action == "new-attivita") {
         $dati["attivita"] = array();
