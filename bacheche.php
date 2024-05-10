@@ -482,7 +482,7 @@
             <div class="navbar-left" > 
     
                 <!--immagine del logo-->
-                <a href="../index.html">
+                <a href="index.php">
                 <img  src="img/logo_scritta_completo.png"  class="logo">
                 </a>
 
@@ -679,8 +679,7 @@
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
-                        dati[dati.length] = result.bacheca;
-                        console.log(dati);
+                        dati.list.push(result.bacheca);
                         dati.length += 1;
                         filter.data = dati;
                         mostra_tutte_bacheche();

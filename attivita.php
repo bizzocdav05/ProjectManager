@@ -496,6 +496,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 
+    if ($action == "change-attivita-titolo") {
+        if (isset($_POST["codice_attivita"]) && isset($_POST["titolo"])) {
+            $codice_attivita = $_POST["codice_attivita"];
+            $titolo = $_POST["titolo"];
+
+            $id_attivita = get_elem_by_code("Attivita", array("codice" => $codice_attivita, "bacheca" => $codice_bacheca));
+            $conn->query("UPDATE Attivita SET titolo='$titolo' WHERE ID=$id_attivita;");
+            $dati["esito"] = true;
+        }
+    }
+
+    if ($action == "change-bacheca-nome") {
+        if (isset($_POST["nome"])) {
+            $nome = $_POST["nome"];
+
+            $conn->query("UPDATE Bacheca SET nome='$nome' WHERE ID=$id_bacheca;");
+            $dati["esito"] = true;
+        }
+    }
+
+    if ($action == "delete-bacheca") {
+        $conn->query("DELETE FROM Bacheca WHERE ID=$id_bacheca;");
+        $dati["esito"] = true;
+    }
+
     echo json_encode($dati);
     $conn->close();
 }

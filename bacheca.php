@@ -16,7 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     $temp = set_bacheca($codice_bacheca, true);
     $id_bacheca = $temp[0];
     $privilegi = $temp[1];
-    $id_console_bacheca = $conn->query("SELECT console FROM Bacheca WHERE ID=$id_bacheca;")->fetch_assoc()["console"];
+
+    $result = $conn->query("SELECT console, nome FROM Bacheca WHERE ID=$id_bacheca;")->fetch_assoc();
+    $id_console_bacheca = $result["console"];
+    $data["nome_bacheca"] = $result["nome"];
 
     $data["codice_bacheca"] = $codice_bacheca;
     $data["privilegi"] = $privilegi;
@@ -860,46 +863,49 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         color: var(--navbar-dark-primary); 
     }
 
-
     .nav-button:nth-of-type(2):hover {
         color: var(--navbar-dark-primary); 
     }
 
-        .nav-button:nth-of-type(2):hover ~ #nav-content-highlight {
+    .nav-button:nth-of-type(2):hover ~ #nav-content-highlight {
         top: 70px; 
-        }
+    }
 
     .nav-button:nth-of-type(3):hover {
         color: var(--navbar-dark-primary); 
     }
 
-        .nav-button:nth-of-type(3):hover ~ #nav-content-highlight {
+    .nav-button:nth-of-type(3):hover ~ #nav-content-highlight {
         top: 124px; 
-        }
+    }
 
     .nav-button:nth-of-type(4):hover {
         color: var(--navbar-dark-primary); 
     }
 
-        .nav-button:nth-of-type(4):hover ~ #nav-content-highlight {
+    .nav-button:nth-of-type(4):hover ~ #nav-content-highlight {
         top: 178px; 
-        }
-
-    .nav-button:nth-of-type(5):hover {
-        color: var(--navbar-dark-primary); 
     }
 
-        .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
+    .nav-button:nth-of-type(5):hover {
+        /* color: var(--navbar-dark-primary);  */
+    }
+
+    .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
         top: 232px; 
-        }
+    }
 
     .nav-button:nth-of-type(6):hover {
         color: var(--navbar-dark-primary); 
     }
 
-        .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
+    .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
         top: 286px; 
-        }
+    }
+
+    .nav-button:nth-child(5):hover ~ #nav-content-highlight::after {
+        border-radius: 0px;
+    }
 
     
         /* margine sinistro delle scritte*/
@@ -1722,7 +1728,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <div class="navbar-left" > 
 
             <!--immagine del logo-->
-            <a href="../index.html">
+            <a href="index.php">
             <img  src="img/logo_scritta_completo.png"  class="logo">
             </a>
 
@@ -1737,6 +1743,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         </div>
                     </div>
                 </div>
+                
             </div>
             <div class="navbar-right">
                 <div class="user-icon" ></div>
@@ -1777,7 +1784,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 <div id="nav-content">
                     <div class="nav-button"><span>Viste della Bacheca</span></div>
 
-                    <div class="nav-button select-type-visual" value="isola">
+                    <div class="nav-button active select-type-visual" value="isola">
                         <i class="fas fa-heart"></i>
                         <p class="select-visual-format">Isola</p>
                     </div>
@@ -1794,9 +1801,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                     <hr/>
 
-                    <div class="nav-button active select-type-visual" value="membri">
+                    <div class="nav-button select-type-visual" value="membri">
                         <i class="fas fa-thumbtack"></i>
                         <p class="select-visual-format">Membri</p>
+                    </div>
+
+                    <div class="nav-button select-type-visual" value="impostazioni">
+                        <i class="fas fa-thumbtack"></i>
+                        <p class="select-visual-format">Impostazioni</p>
                     </div>
 
 
@@ -1864,6 +1876,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 </p>    
 
 
+            </div>
+
+            <div id="container-impostazioni" style="display: none">
+                <div class="organize" style="justify-content: start;">
+                    <label for="inp-nome-bacheca" class="title">Nome Bacheca: </label>
+                    <input type="text" class="input" name="nome" id="inp-nome-bacheca">
+                </div>
+
+                <button class="button crea btn-elimina-bacheca" style="background-color: #ff5252;">Elimina Bacheca</button>
             </div>
         </div>
     </div>
@@ -2622,6 +2643,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     this.crea_membro("other");
                     $("#container-membri").show();
                 }
+
+                if (this.tipo == "impostazioni") {
+                    $("#inp-nome-bacheca").val(dati.nome_bacheca);
+                    $("#container-impostazioni").show();
+                }
             }
 
             clear_html() {
@@ -2636,6 +2662,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 $("#container-membri > div.membri-box").empty();
                 $("#container-membri").hide();
+
+                $("#container-impostazioni").hide();
             }
 
             show_lista_info(dati) {
@@ -3425,6 +3453,48 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("#chat-manager svg.svg-down-arrow").click(function (e) {
             visual.chiudi_chat(); 
+        });
+
+        // cambio nome bacheca
+        $("#inp-nome-bacheca").change(function (e) {
+            let target = $(e.currentTarget);
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "change-bacheca-nome",
+                    "nome": target.val(),
+                    "codice_bacheca": CODICE_BACHECA
+                },
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+        // cancello bacheca
+        $("button.btn-elimina-bacheca").click(function (e) {
+            let target = $(e.currentTarget);
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "delete-bacheca",
+                    "codice_bacheca": CODICE_BACHECA
+                },
+                success: function (result) {
+                    location.href = "bacheche.php";
+                    console.log(result);
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
         });
 
     </script>

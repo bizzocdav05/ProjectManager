@@ -175,6 +175,7 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         flex-direction: column;
         justify-content: flex-start;
         align-items: start;
+        position: relative;
     }
 
     div.content-right {
@@ -370,6 +371,59 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
         background-color: var(--color-secondary);
         border-color: var(--color-tertiary);
     }
+
+    div.spazi-lavoro {
+        color: var(--navbar-light-primary);
+        font-family: "Concert One", sans-serif;
+        font-weight: bolder;
+        font-style: normal;
+        font-size: larger;
+        color: #000000;
+        cursor: pointer;
+        text-decoration: none;
+        
+        position: absolute;
+        top: 5px;
+        left: 5px;
+    }
+
+    #popup-spazi-lavoro {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 30vw;
+        height: fit-content;
+
+        background-color: var(--color-primary);
+        border-radius: 16px;
+        padding: 10px;
+        cursor: default;
+    
+        border: black;
+        border-width: 2px;
+        border-style: solid
+    }
+    
+
+    #popup-spazi-lavoro p.lista-text {
+        text-decoration: underline;
+    }
+
+    #popup-spazi-lavoro svg.svg-chiudi {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        padding-top: 10px;
+        padding-right: 10px;
+    }
+
+    #popup-spazi-lavoro .lista-text {
+        cursor: pointer;
+    }
     
     </style>
 </head>
@@ -396,6 +450,17 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
 
     <div id="container">
         <div class="content-left">
+            <div class="spazi-lavoro">
+                <p>Spazi di Lavoro</p>
+
+                <div id="popup-spazi-lavoro" style="display: none ">
+                    <svg class="svg-chiudi" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g fill="#0F0F0F"><path d="M8.002 9.416a1 1 0 1 1 1.414-1.414l2.59 2.59 2.584-2.584a1 1 0 1 1 1.414 1.414l-2.584 2.584 2.584 2.584a1 1 0 0 1-1.414 1.414l-2.584-2.584-2.584 2.584a1 1 0 0 1-1.414-1.414l2.584-2.584z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23 4a3 3 0 0 0-3-3H4a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3zm-2 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1z"/></g></svg>
+                    <p class="lista-text" onclick="location.href = 'bacheche.php'">Le tue bacheche</p>
+                    <div class="bacheche-list-box">
+                    </div>
+                </div>
+            </div>
+            
             <div class="separator"></div>
             
                         <form id="form-immagine-profilo" method="post">
@@ -536,6 +601,26 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
             $("#inp-email-utente").val(dati["email_utente"]);
             $("#inp-nome-utente").val(dati["nome_utente"]);
             $("#inp-cognome-utente").val(dati["cognome_utente"]);
+        }
+
+        function crea_spazi_lavoro(dati_bacheche, pos_x, pos_y) {
+            let elem = $("#popup-spazi-lavoro");
+            elem.find("div.bacheche-list-box").empty();
+
+            for (let i = 0; i < dati_bacheche.length; i++) {
+                let info = dati_bacheche.list[i];
+                let elem_bacheca = $("#bacheche-list-prototipo").clone(true);
+                elem_bacheca.attr("id", info.codice);
+                
+                elem_bacheca.find("p.nome").text(info.nome);
+
+                elem_bacheca.show();
+                elem.find("div.bacheche-list-box").append(elem_bacheca);
+            }
+
+            // visual.popup.add(elem, "spazi-lavoro-popup");
+            elem.css("left", pos_x);
+            elem.css("top", pos_y);
         }
 
         let popup;
@@ -762,6 +847,41 @@ $data["tema"] = get_theme_colors( $data["nome_tema"]);
                 },
                 error: function (result) {}
             });
+        });
+
+        // mostro spazi di lavoro
+        $("div.spazi-lavoro").click(function (e) {
+            let target = $(e.currentTarget);
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "bacheche-list",
+                    "codice_bacheca": CODICE_BACHECA
+                },
+                crossDomain: true,
+
+                success: function (result) {
+                    result = JSON.parse(result);
+                    console.log(result);
+                    if (result.esito == true) {
+                        let offset = target.offset();
+                        target.find("#popup-spazi-lavoro").show();
+                        visual.crea_spazi_lavoro(result.list, offset.left, offset.top + target.outerHeight());
+                    }
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        // chiudo spazi di lavoro
+        $("#popup-spazi-lavoro svg.svg-chiudi").click(function(e) {
+            $("#popup-spazi-lavoro").hide();
+            e.stopPropagation();
         });
     </script>
 </body>
