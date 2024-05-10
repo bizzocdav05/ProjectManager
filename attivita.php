@@ -216,7 +216,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                     "data_creazione" => date("Y-m-d"),
                     "actual_user" => true,
                     "nome_utente" => $row_utente["nome"] ." " . $row_utente["cognome"],
-                    "autore" => true
                 )));
         }
     }

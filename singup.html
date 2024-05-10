@@ -428,7 +428,7 @@ input[type=submit]:after {
             <div class="navbar-left" > 
     
                 <!--immagine del logo-->
-                <a href="../index.html">
+                <a href="index.php">
                 <img  src="img/logo_scritta_completo.png"  class="logo">
                 </a>
             
@@ -505,8 +505,8 @@ input[type=submit]:after {
     
     <!-- barra destra-->
             <div class="navbar-right" style="margin-right: 10%;"> 
-                <a class="button" href="../login.html"> Log In </a>
-                <a class="button" href="../singup.html"> Sing Up</a>
+                <a class="button" href="bacheche.php"> Log In </a>
+                <a class="button" href="singup.html"> Sing Up</a>
             </div>
         </div>
 
@@ -567,7 +567,6 @@ input[type=submit]:after {
 
   <script>
     let p_info_form = $(".info-form");
-    // location.href = "bacheche.php";
 
     let password1 = $("#ps");
     let password2 = $("#cps");
@@ -602,7 +601,7 @@ input[type=submit]:after {
 
                 success: function (result) {
                     console.log(result);
-                    // location.href = "bacheche.php";
+                    location.href = "bacheche.php";
                 },
 
                 error: function (err) {

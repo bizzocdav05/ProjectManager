@@ -230,8 +230,7 @@ function get_dati_liste($id_attivita) {
 
             // commenti
             $sql = "SELECT c.codice as codice, c.testo as testo, c.data_creazione as data_creazione,
-            c.user as id_user, u.nome as nome, u.cognome as cognome,
-            c.user as autore, u.codice as codice_autore 
+            c.user as id_user, u.nome as nome, u.cognome as cognome, u.codice as codice_autore 
             FROM Commento as c, Utenti as u
             WHERE c.lista=" . $row_lista["ID"] . " AND c.user = u.ID;";
 
@@ -252,7 +251,6 @@ function get_dati_liste($id_attivita) {
                         "data_creazione" => $row_commento["data_creazione"],
                         "actual_user" => ($row_commento["id_user"] == $id_utente),
                         "nome_utente" => $row_commento["nome"] . " " . $row_commento["cognome"],
-                        "autore" => ($row_commento["autore"] == $id_utente),
                         "codice_autore" => $row_commento["codice_autore"]
                     ));
                 }

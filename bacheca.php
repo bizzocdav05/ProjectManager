@@ -1666,7 +1666,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     .btn-inline {
         text-decoration: underline;
-        color: grey;
+        color: #262626;
+        cursor: pointer;
+        background: transparent;
     }
 
     div.lista-commento-box {
@@ -1719,6 +1721,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         text-align: left;
         border-bottom: 1px solid black;
     }
+
+    h3.attivita-titolo > input {
+        background: transparent;
+        text-align: center;
+        font-size: 20px;
+        width: 100%;
+    }
+
+    h3.attivita-titolo > input:focus {
+        border: 0;
+    }
     </style>
 </head>
 <body>
@@ -1743,7 +1756,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="navbar-right">
                 <div class="user-icon" ></div>
@@ -1901,7 +1914,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     <div id="attivita-prototipo-isola" class="attivita-box attivita-box-isola" style="display: none">
         <div class="attivita-header">
-            <h3 class="attivita-titolo"><span></span></h3>
+            <h3 class="attivita-titolo"><input class="input"></h3>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><circle cx="256" cy="256" r="48" fill="#fff"/><circle cx="256" cy="128" r="48" fill="#fff"/><circle cx="256" cy="384" r="48" fill="#fff"/></svg>
         </div>
 
@@ -2023,6 +2036,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 </div>
             </div>
 
+            <div class="organize">
+                <div>
+                    <p class="description" style="width: 200px; margin-right: 30px; margin-bottom: 0px;">Sposta Lista</p>
+                    <div class="lista-sposta-box">
+                        <p class="lista-text attuale"></p>
+                        <div class="menu-sposta" style="display: none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <p class="lista-text description">Scadenza</p>
             <div class="lista-scadenza-box"></div>
             <div class="cancel">
@@ -2123,6 +2147,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <p class="text-format testo"></p>
         <p class="text-format orario"></p>
     </div>
+
+    <p id="sposta-prototitpo" class="sposta-elem"></p>
 
     <script></script>
     <script>
@@ -2245,6 +2271,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
             // method
             show_user_name(target = $("div.header div.user-icon")) {
+                console.log(this.data["img_profilo"]);
                 if (this.data["img_profilo"]["tipo"] == "default")
                     target.text(this.data["nome_utente"].split(" ").map(p=>p.charAt(0).toUpperCase()).join(" "));
                 else
@@ -2301,7 +2328,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                 elem.attr("id", info.codice);
 
-                elem.find("h3.attivita-titolo > span").text(info.titolo);
+                elem.find("h3.attivita-titolo > input").val(info.titolo);
 
                 for (let i = 0; i < dati.lista.length; i++) 
                     this.create_lista(dati.lista.list[i]).insertBefore(elem.find("div.lista-nuova"));
@@ -2361,10 +2388,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 let elem = $("#commento-prototipo").clone(true);
                 let info = dati.list[idx];
                 elem.attr("id", info.codice);
-                console.log(dati);
 
-                if (dati.autore) this.show_user_name(elem.find("div.user-icon"));
-                else this.show_user_chat_img(elem.find("div.user-icon"), dati.autore_codice);
+                if (info.actual_user) this.show_user_name(elem.find("div.user-icon"));
+                else this.show_user_chat_img(elem.find("div.user-icon"), info.codice_autore);
 
                 elem.find("p.commento-utente > span").text(info.nome_utente);
                 elem.find("p.commento-text > span").text(info.testo);
@@ -2613,7 +2639,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         let elem = $("#attivita-prototipo-tabella").clone(true);
                         elem.attr("id", "attivita-" + info_attivita.codice);
 
-                        elem.find("div.prima-cella > h3.attivita-titolo > span").text(info_attivita.titolo);
+                        elem.find("div.prima-cella > h3.attivita-titolo > input").val(info_attivita.titolo);
                         elem.find("div.prima-cella").attr("id", info_attivita.codice);
 
                         elem.find("div.seconda-cella > p.lista-nome > span").text(info_lista.nome);
@@ -3453,6 +3479,31 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("#chat-manager svg.svg-down-arrow").click(function (e) {
             visual.chiudi_chat(); 
+        });
+
+        // cambio nome attivita
+        $("div.attivita-box-isola h3.attivita-titolo > input").change(function (e) {
+            let target = $(e.currentTarget);
+            let codice_attivita = target.closest("div.attivita-box-isola").attr("id");
+            console.log(codice_attivita);
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "change-attivita-titolo",
+                    "titolo": target.val(),
+                    "codice_bacheca": CODICE_BACHECA,
+                    "codice_attivita": codice_attivita
+                },
+                success: function (result) {
+                    visual.data.attivita.list[visual.get_idx("attivita", codice_attivita)[0]].info["titolo"] = target.val();
+                    console.log(result);
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
         });
 
         // cambio nome bacheca
