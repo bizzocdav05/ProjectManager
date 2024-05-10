@@ -1732,6 +1732,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     h3.attivita-titolo > input:focus {
         border: 0;
     }
+
+    div.lista-sposta-box {
+        margin-top: 20px;
+        margin-bottom: 40px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+
+    div.lista-sposta-box p {
+        text-align: left;
+        border-radius: 5px;
+        font-family: "Concert One", sans-serif;
+        font-size: 20px;
+        padding: 2px;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    div.menu-sposta p:hover {
+        color: white;
+    }
     </style>
 </head>
 <body>
@@ -2041,8 +2062,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     <p class="description" style="width: 200px; margin-right: 30px; margin-bottom: 0px;">Sposta Lista</p>
                     <div class="lista-sposta-box">
                         <p class="lista-text attuale"></p>
-                        <div class="menu-sposta" style="display: none">
-                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -2148,7 +2168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         <p class="text-format orario"></p>
     </div>
 
-    <p id="sposta-prototitpo" class="sposta-elem"></p>
+    <p id="sposta-prototipo" class="sposta-elem"></p>
 
     <script></script>
     <script>
@@ -2417,6 +2437,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 }
                 elem.show();
                 return elem;
+            }
+
+            crea_sposta(cod_att_attuale) {
+                let box = $("<div class='menu-sposta'></div>");
+                for (let cod in this.cod_idx["attivita"]) {
+                    let elem = $("#sposta-prototipo").clone(true);
+                
+                    let nome = this.data.attivita.list[this.get_idx("attivita", cod)[0]].info["titolo"];
+                    elem.attr("codice", cod);
+                    
+                    if (cod == cod_att_attuale) {
+                        elem.text("\u2713" + " " + nome);
+                        elem.addClass("actual");
+                    }
+                    else
+                        elem.text("- " + nome);
+
+                    elem.show();
+                    console.log(elem);
+                    box.append(elem);
+                }
+                $("#popup div.lista-sposta-box").append(box);
             }
 
             crea_giorno(numero, valido, attivo, scadenza) {
@@ -2705,6 +2747,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.find("div.lista-etichetta-box").append(this.crea_etichetta(dati.etichetta));
                 elem.find("div.lista-commento-box").append(this.crea_commento(dati.commento));
                 elem.find("div.lista-scadenza-box").append(this.crea_scadenza(dati.scadenza));
+                elem.find("div.lista-sposta-box p.attuale").text("\u2713" + " " +this.data.attivita.list[this.get_idx("lista", dati.codice)[0]].info["titolo"]);
 
                 // Aggiungo proprietà
                 elem.find(".text-mod > span").attr("contenteditable", "true");
@@ -2761,6 +2804,47 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     this.codLastMsg = msg.codice;
                     target.scrollTop(target.prop("scrollHeight"));
                 }
+            }
+
+            show_sposta_box(cod_attivita) {
+                this.crea_sposta(cod_attivita);
+                $("#popup div.lista-sposta-box p.attuale").hide();
+            }
+
+            hide_sposta_box(cod_lista, cod_press) {
+                let cod_attivita = this.get_idx("lista", cod_lista)[1];
+                
+                $("#popup div.lista-sposta-box p.attuale").show();
+                $("#popup div.menu-sposta").remove();
+                let self = this;
+                // cambio attivita
+                if (cod_attivita != cod_press) {
+                    console.log(cod_attivita, cod_press, cod_lista)
+                    $.ajax({
+                        url: "attivita.php",
+                        type: "POST",
+                        data: {
+                            "action": "sposta-lista",
+                            "codice_lista": cod_lista,
+                            "from_codice": cod_attivita,
+                            "to_codice": cod_press,
+                            "codice_bacheca": this.codice_bacheca
+                        },
+                        success: function (result) {
+                            console.log(result)
+                            result = JSON.parse(result);
+                            if (result.esito)
+                            {
+                                self.popup.close();
+                                // let dati = se.data.attivita.list[this.get_idx("attivita", cod_attivita)[0]].lista.list[this.get_idx("lista", cod_lista)[0]];
+                                self.cancella_lista(cod_lista, false);
+                                $("#" + cod_lista).remove();
+                                self.create_new_lista(result.lista, cod_press);
+                            }
+                        }
+                    });
+                }
+                    
             }
 
             cancella_lista(codice_lista, cancella=true) {
@@ -3363,9 +3447,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         // Cancellazione lista
         $("body").on("click", "#popup div.lista-info-box button.lista-delete", function (e) {
             let target = $(e.currentTarget);
-            visual.cancella_lista(target.closest("div.lista-info").find(".lista-codice > span").text());
+            visual.cancella_lista(target.closest("div.lista-info-box").attr("id"));
             visual.popup.close();
             e.stopPropagation();
+        });
+
+        // click aprire sposta
+        $("body").on("click", "#popup div.lista-sposta-box p.attuale", function (e) {
+            visual.show_sposta_box(visual.get_idx("lista", $(e.currentTarget).closest("div.lista-info-box").attr("id"))[1]);
+        });
+
+        // click fare sposta
+        $("body").on("click", "#popup div.menu-sposta p", function (e) {
+            let target = $(e.currentTarget);
+            visual.hide_sposta_box(
+                target.closest("div.lista-info-box").attr("id"),
+                target.attr("codice")
+            );
         });
 
         // Bottone modalità
