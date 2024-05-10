@@ -42,18 +42,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         $codice = genera_codice(16, -1);  // id temp per la creazione, poi da update
     
         $result = $conn->query(create_sql("INSERT INTO Bacheca", array("console", "nome", "codice"), array($_SESSION["id_console"], $_POST["nome"], $codice)));
-        
-        // cerco la bacheca per inserire l'id nel codice
-        $sql = "SELECT ID FROM Bacheca WHERE console=$id_console AND codice='$codice';";
-        $result = $conn->query($sql);
-
-        $id_bacheca = $result->fetch_assoc()["ID"];
 
         // update
         $sql = "UPDATE Codici SET bacheca=$id_bacheca WHERE codice='$codice';";
         $result = $conn->query($sql);
 
-        $dati = array("esito" => true, "bacheca" => array("nome" => $_POST["nome"], "codice" => $codice));
+        // restistuisco dati
+        $sql = "SELECT nome, codice, preferita, ultimo_accesso FROM Bacheca WHERE console=$id_console;";
+        $result_bacheca = $conn->query($sql);
+        $row_bacheca = $result_bacheca->fetch_assoc();
+
+        $dati = array("esito" => true, "bacheca" => array(
+            "nome" => $row_bacheca["nome"],
+            "codice" => $row_bacheca["codice"],
+            "preferita" => $row_bacheca["preferita"],
+            "ultimo_accesso" => $row_bacheca["ultimo_accesso"],
+            "proprietario" => true
+        ));
+
         echo json_encode($dati);
         exit();
     }
@@ -205,7 +211,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                     "codice" => $codice,
                     "data_creazione" => date("Y-m-d"),
                     "actual_user" => true,
-                    "nome_utente" => $row_utente["nome"] ." " . $row_utente["cognome"]
+                    "nome_utente" => $row_utente["nome"] ." " . $row_utente["cognome"],
+                    "autore" => true
                 )));
         }
     }
@@ -465,6 +472,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             $conn->query("UPDATE Bacheca_assoc SET preferita = CASE WHEN preferita = 0 THEN 1 ELSE 0 END WHERE ID=$id_bacheca;");
 
         $dati["esito"] = true;
+    }
+
+    if ($action == "change-lista-nome") {
+        if (isset($_POST["codice_lista"]) && isset($_POST["nome"])) {
+            $codice_lista = $_POST["codice_lista"];
+            $nome = $_POST["nome"];
+
+            $id_lista = get_elem_by_code("Lista", array("codice" => $codice_lista, "bacheca" => $codice_bacheca));
+            $conn->query("UPDATE Lista SET nome='$nome' WHERE ID=$id_lista;");
+            $dati["esito"] = true;
+        }
+    }
+
+    if ($action == "change-lista-descrizione") {
+        if (isset($_POST["codice_lista"]) && isset($_POST["descrizione"])) {
+            $codice_lista = $_POST["codice_lista"];
+            $descrizione = $_POST["descrizione"];
+
+            $id_lista = get_elem_by_code("Lista", array("codice" => $codice_lista, "bacheca" => $codice_bacheca));
+            $conn->query("UPDATE Lista SET descrizione='$descrizione' WHERE ID=$id_lista;");
+            $dati["esito"] = true;
+        }
     }
 
     echo json_encode($dati);

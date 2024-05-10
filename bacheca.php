@@ -315,13 +315,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         align-items: center;
     }
 
-    p.commento-utente {
-        width: 40px;
-        min-width: 40px;
-        max-width: 40px;
-        word-wrap: break-word;
-    }
-
     div.attivita-tabella {
         display: flex;
         flex-direction: row;
@@ -960,6 +953,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         padding-right: 10px;
     }
 
+    #popup-spazi-lavoro .lista-text {
+        cursor: pointer;
+    }
+
     div.bacheche-list-box {
         display: flex;
         flex-direction: row;
@@ -1278,12 +1275,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     } 
 
     div.messaggio-chat {
-        margin-top: 10%;
-    }
-
-    div.messaggio-chat {
         width: 75%;
         padding: 5px;
+        margin-top: 10%;
     }
 
     div.msg-proprio {
@@ -1312,7 +1306,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         height: 20px;
     }
 
-    div.messaggio-chat p.mittente{
+    div.messaggio-chat p.mittente {
         font-family: "Concert One", sans-serif;
         height: 30px;
         text-align: center;
@@ -1320,7 +1314,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         margin-left: 10px;
     }
     
-    div.messaggio-chat p.testo{
+    div.messaggio-chat p.testo {
         font-family: "Outfit", sans-serif;
         background-color: #80808087;
         border-radius: 10px;
@@ -1328,7 +1322,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         padding: 2%;
     }
     
-    div.messaggio-chat p.orario{
+    div.messaggio-chat p.orario {
         font-family: "Outfit", sans-serif;
         text-align: right;
         font-size: x-small;
@@ -1562,9 +1556,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         align-items: flex-end;
     }
 
-    .title-lista{
+    .title-lista {
         font-family: "Concert One", sans-serif;
-        font-size: 25px;
+        font-size: 30px;
         padding-left: 30px;
         padding-right: 15px;
         color: #eee;
@@ -1575,9 +1569,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         display: flex;
         align-items: center;
         justify-content: center;
+        text-align: center;
+        margin-top: 20px;
     }
 
-    .title-lista:focus{
+    div.lista-info-box .input-nomi:focus{
         outline: none;
         border: none;
     }
@@ -1661,6 +1657,62 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         font-family: "Concert One", sans-serif; 
         text-transform: uppercase;
     }
+
+    .btn-inline {
+        text-decoration: underline;
+        color: grey;
+    }
+
+    div.lista-commento-box {
+        height: 60vh;
+        overflow-y: auto;
+        border: 1px solid white;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    div.commento {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+        margin-bottom: 20px;
+    }
+
+    div.commento div.mittente-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    p.commento-utente {
+        margin-left: 20px;
+    }
+
+    p.commento-text {
+        margin-left: 20px;
+        background-color: var(--background);
+        min-width: 50%;
+        border-radius: 5px;
+        padding: 5px;
+        margin-top: 20px;
+    }
+
+    p.elimina-commento {
+        margin-top: 10px;
+        margin-left: 20px;
+    }
+
+    div.lista-info-box .input-nomi {
+        border: none;
+        background: transparent;
+    }
+
+    input.lista-descrizione {
+        font-size: 20px;
+        text-align: left;
+        border-bottom: 1px solid black;
+    }
     </style>
 </head>
 <body>
@@ -1680,7 +1732,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
                     <div id="popup-spazi-lavoro" style="display: none ">
                         <svg class="svg-chiudi" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g fill="#0F0F0F"><path d="M8.002 9.416a1 1 0 1 1 1.414-1.414l2.59 2.59 2.584-2.584a1 1 0 1 1 1.414 1.414l-2.584 2.584 2.584 2.584a1 1 0 0 1-1.414 1.414l-2.584-2.584-2.584 2.584a1 1 0 0 1-1.414-1.414l2.584-2.584z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23 4a3 3 0 0 0-3-3H4a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3zm-2 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1z"/></g></svg>
-                        <p class="lista-text">Le tue bacheche</p>
+                        <p class="lista-text" onclick="location.href = 'bacheche.php'">Le tue bacheche</p>
                         <div class="bacheche-list-box">
                         </div>
                     </div>
@@ -1693,6 +1745,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             </div>
         </div>
     </div>
+
+    <div id="chat">
+        <div id="chat-manager">
+            <svg class="svg-down-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 330" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M325.607 79.393c-5.857-5.857-15.355-5.858-21.213.001l-139.39 139.393L25.607 79.393c-5.857-5.857-15.355-5.858-21.213.001-5.858 5.858-5.858 15.355 0 21.213l150.004 150a15 15 0 0 0 21.212-.001l149.996-150c5.859-5.857 5.859-15.355.001-21.213"/></svg>
+            <svg class="svg-up-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.01 512.01" xml:space="preserve"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M505.755 358.256 271.088 123.589c-8.341-8.341-21.824-8.341-30.165 0L6.256 358.256c-8.341 8.341-8.341 21.824 0 30.165s21.824 8.341 30.165 0l219.584-219.584 219.584 219.584a21.28 21.28 0 0 0 15.083 6.251 21.28 21.28 0 0 0 15.083-6.251c8.341-8.341 8.341-21.824 0-30.165"/></svg>
+
+            <p class="text-format">Chat</p>
+        </div>
+
+        <div id="chat-content">
+        </div>
+
+        <div id="chat-new-msg">
+            <input type="text" name="msg" id="inp-chat-msg">
+            <svg id="svg-send-msg" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path clip-rule="evenodd" d="M18.455 9.883 7.063 4.143a1.048 1.048 0 0 0-1.563.733.8.8 0 0 0 .08.326l2.169 5.24c.109.348.168.71.176 1.074a4 4 0 0 1-.176 1.074L5.58 17.83a.8.8 0 0 0-.08.326 1.048 1.048 0 0 0 1.562.732l11.393-5.74a1.8 1.8 0 0 0 0-3.265" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+    </div>
+
 
     <div id="content">
         <!-- menu laterale -->
@@ -1866,11 +1936,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
     <div id="lista-info-prototipo" class="lista-info-box" style="display: none">
         <div class="lista-info">
-            <p class="lista-codice">Codice: <span></span></p>
-            <div class="display-2"><p class="lista-nome text-mod title-lista" style="font-size:30px;"><span></span></p></div>
+            <div class="display-2">
+                <input type="text" class="lista-nome title-lista input-nomi">
+            </div>
 
             <p class="lista-text description">Descrizione</p>
-            <p class="lista-descrizione text-mod"><span></span></p>
+            <input type="text" class="lista-descrizione input-nomi">
 
             <div class="organize">
                 <div>
@@ -1912,7 +1983,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 </div>
             </div>
 
-            <div class="organize">
+            <div class="">
                 <div>
                     <p class="description">Commenti</p>
                     <div class="lista-commento-box"></div>
@@ -1949,7 +2020,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </div>
 
     <div id="checkbox-prototipo" class="checkbox" style="display: none">
-        <div class="checkbox-item"><input type="checkbox" name="" id=""></div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="" id="">
+        </div>
         <p class="checkbox-text text-mod"><span></span></p>
         <div id="cestino" class="cestino">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
@@ -1959,13 +2032,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
     </div>
 
     <div id="commento-prototipo" class="commento" style="display: none">
-        <p class="commento-utente"><span></span>:</p>
-        <p class="commento-text"><span></span></p>
-        <div id="cestino" class="cestino">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 64 64">
-                <path d="M 28 11 C 26.895 11 26 11.895 26 13 L 26 14 L 13 14 C 11.896 14 11 14.896 11 16 C 11 17.104 11.896 18 13 18 L 14.160156 18 L 16.701172 48.498047 C 16.957172 51.583047 19.585641 54 22.681641 54 L 41.318359 54 C 44.414359 54 47.041828 51.583047 47.298828 48.498047 L 49.839844 18 L 51 18 C 52.104 18 53 17.104 53 16 C 53 14.896 52.104 14 51 14 L 38 14 L 38 13 C 38 11.895 37.105 11 36 11 L 28 11 z M 18.173828 18 L 45.828125 18 L 43.3125 48.166016 C 43.2265 49.194016 42.352313 50 41.320312 50 L 22.681641 50 C 21.648641 50 20.7725 49.194016 20.6875 48.166016 L 18.173828 18 z"></path>
-            </svg>
+        <div class="mittente-box">
+            <div class="user-icon"></div>
+            <p class="text-format commento-utente"><span></span></p>
         </div>
+        <p class="text-format commento-text"><span></span></p>
+        <p class="btn-inline elimina-commento">Elimina</p>
     </div>
 
     <div id="scadenza-prototipo" class="scadenza" style="display: none">
@@ -2039,7 +2111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 this.codice_bacheca = searchParams.get('codice');
 
                 this.data = data;
-                this.tipo = "membri";
+                this.tipo = "isola";
 
                 this.codLastMsg = null;
                 this.chat_status = false;  // true: open
@@ -2268,15 +2340,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 let elem = $("#commento-prototipo").clone(true);
                 let info = dati.list[idx];
                 elem.attr("id", info.codice);
+                console.log(dati);
+
+                if (dati.autore) this.show_user_name(elem.find("div.user-icon"));
+                else this.show_user_chat_img(elem.find("div.user-icon"), dati.autore_codice);
 
                 elem.find("p.commento-utente > span").text(info.nome_utente);
                 elem.find("p.commento-text > span").text(info.testo);
 
-                elem.find("#cestino").show();
-                elem.find("#cestino").css("width", "15px");
-                elem.find("#cestino").css("heigth", "15px");
-                elem.find("#cestino").css("cursor", "pointer");
-                elem.find("#cestino").attr("id", "cestino-" + info.codice);
+                elem.find(".elimina-commento").attr("id", "button-" + info.codice);
                 elem.show();
                 
                 return elem.add(this.crea_commento(dati, idx+1));  // Ricorsione per calcolarli tutti
@@ -2571,9 +2643,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                 elem.attr("id", dati.codice);
 
                 // Aggiungo valori campi
-                elem.find("p.lista-codice > span").text(dati.codice);
-                elem.find("p.lista-nome > span").text(dati.nome);
-                elem.find("p.lista-descrizione > span").text(dati.descrizione);
+                elem.find("input.lista-nome").val(dati.nome);
+                elem.find("input.lista-descrizione").val(dati.descrizione);
                 
                 // Aggiungo elementi
                 elem.find("div.lista-checkbox-box").append(this.crea_checkbox(dati.checkbox));
@@ -2876,9 +2947,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("body").on("click", "button.btn-etichetta-nuova", function (e) {
             let target = $(e.currentTarget);
-            let colore = target.siblings("div.colore-etichetta > input[name='colore']");
-            let testo = target.siblings("div.colore-etichetta > input[name='testo']");
+            let colore = target.parent().siblings("div.colore-etichetta").find("input[name='colore']");
+            let testo = target.parent().siblings("div.colore-etichetta").find("input[name='testo']");
 
+            console.log(target, colore, testo);
             if (colore.val() && testo.val()) {
                 let color_hex = colore.val().replace('#', '');
 
@@ -2907,9 +2979,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
-                        $("#" + codice_lista).find("div.lista-etichetta-box").append(visual.crea_etichetta(result.etichetta));
+                        //$("#" + codice_lista).find("div.lista-etichetta-box").append(visual.crea_etichetta(result.etichetta));
+                        visual.popup.find("div.lista-etichetta-box").append(visual.crea_etichetta(result.etichetta));
                         testo.val(""); colore.val("");
-                        visual.aggiungi_elemento_lista("etichetta", codice_lista, result.etichetta);
+                        visual.aggiungi_elemento_lista("etichetta", codice_lista, result.etichetta.list[0]);
                     }
                 },
 
@@ -2921,7 +2994,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         });
 
         $("body").on("click", "button.btn-etichetta-reset", function (e) {
-            $(e.currentTarget).siblings("input").val('');
+            $(e.currentTarget).parent().siblings("div.colore-etichetta").find("input").val('');
         });
 
         $("body").on("click", "div.lista-etichetta-box div.cestino", function (e) {
@@ -2954,7 +3027,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("body").on("click", "button.btn-checkbox-nuovo", function (e) {
             let target = $(e.currentTarget);
-            let testo = target.siblings("textarea");
+            let testo = target.parent().siblings("textarea");
 
             let codice_lista = target.closest("div.lista-info-box").attr("id");
             if (testo.val()) {
@@ -2973,9 +3046,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         result =JSON.parse(result);
                         console.log(result);
                         if (result.esito == true) {
-                            $("#" + codice_lista).find("div.lista-checkbox-box").append(visual.crea_checkbox(result.checkbox));
+                            visual.popup.find("div.lista-checkbox-box").prepend(visual.crea_checkbox(result.checkbox));
                             testo.val("");
-                            visual.aggiungi_elemento_lista("checkbox", codice_lista, result.checkbox);
+                            visual.aggiungi_elemento_lista("checkbox", codice_lista, result.checkbox.list[0]);
                         }
                     },
 
@@ -2987,7 +3060,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         });
 
         $("body").on("click", "button.btn-checkbox-reset", function (e) {
-            $(e.currentTarget).siblings("textarea").val('');
+            $(e.currentTarget).parent().siblings("textarea").val('');
         });
 
         $("body").on("click", "div.lista-checkbox-box div.cestino", function (e) {
@@ -2997,7 +3070,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("body").on("click", "button.btn-commento-nuovo", function (e) {
             let target = $(e.currentTarget);
-            let testo = target.siblings("textarea");
+            let testo = target.parent().siblings("textarea");
 
             let codice_lista = target.closest("div.lista-info-box").attr("id");
             if (testo.val()) {
@@ -3016,9 +3089,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         result =JSON.parse(result);
                         console.log(result);
                         if (result.esito == true) {
-                            $("#" + codice_lista).find("div.lista-commento-box").append(visual.crea_commento(result.commento));
+                            visual.popup.find("div.lista-commento-box").prepend(visual.crea_commento(result.commento));
                             testo.val("");
-                            visual.aggiungi_elemento_lista("commento", codice_lista, result.commento);
+                            visual.aggiungi_elemento_lista("commento", codice_lista, result.commento.list[0]);
                         }
                     },
 
@@ -3030,10 +3103,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
         });
 
         $("body").on("click", "button.btn-commento-reset", function (e) {
-            $(e.currentTarget).siblings("textarea").val('');
+            $(e.currentTarget).parent().siblings("textarea").val('');
         });
 
-        $("body").on("click", "div.lista-commento-box div.cestino", function (e) {
+        $("body").on("click", "div.lista-commento-box .elimina-commento", function (e) {
             visual.cancella_elemento_lista("commento", $(e.currentTarget).attr("id").split("-")[1]);
         });
 
@@ -3059,7 +3132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
                         console.log(result);
                         if (result.esito == true) {
                             target.parent().remove();
-                            $("#" + codice_lista).find("div.lista-scadenza-box").append(visual.crea_scadenza(result.scadenza));
+                            visual.popup.find("div.lista-scadenza-box").append(visual.crea_scadenza(result.scadenza));
                             visual.aggiungi_elemento_lista("scadenza", codice_lista, result.scadenza.list[0]);
                         }
                     },
@@ -3073,6 +3146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
 
         $("body").on("click", "button.btn-scadenza-elimina", function (e) {
             visual.cancella_elemento_lista("scadenza", $(e.currentTarget).parent().attr("id"));
+            visual.popup.find("div.lista-scadenza-box").append(visual.crea_scadenza({"length": 0}));
         });
 
         $("body").on("input", "div.lista-scadenza-box > div.scadenza > input", function (e) {
@@ -3172,6 +3246,52 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["codice"])) {
             let cod_bacheca = target.attr("id");
             location.href = location.href = "bacheca.php?codice=" +encodeURIComponent(cod_bacheca);
         });
+
+        $("body").on("input", "div.lista-info-box input.lista-nome", function (e) {
+            let target = $(e.currentTarget);
+            let codice_lista = target.closest("div.lista-info-box").attr("id");
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "change-lista-nome",
+                    "nome": target.val(),
+                    "codice_lista": codice_lista,
+                    "codice_bacheca": CODICE_BACHECA
+                },
+                success: function (result) {
+                    console.log(result);
+                    visual.data.attivita.list[visual.get_idx("attivita", visual.get_idx("lista", codice_lista)[1])[0]].lista.list[visual.get_idx("lista", codice_lista)[0]].nome = target.val();
+                    $("#" + codice_lista).find("p.lista-nome > span").text(target.val());
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+        $("body").on("input", "div.lista-info-box input.lista-descrizione", function (e) {
+            let target = $(e.currentTarget);
+
+            $.ajax({
+                url: "attivita.php",
+                type: "POST",
+                data: {
+                    "action": "change-lista-descizione",
+                    "descrizione": target.val(),
+                    "codice_lista": target.closest("div.lista-info-box").attr("id"),
+                    "codice_bacheca": CODICE_BACHECA
+                },
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
 
         // Informazioni lista
         $("body").on("click", "div.attivita-box div.lista", function (e) {

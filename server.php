@@ -80,10 +80,10 @@ function registrazione($conn, $campi)
     // invio email per conferma account
     $_SESSION["email_code"] = $codice_utente;
 
-    $mail_html = file_get_contents("mail_template/conferma_registrazione.html");
-    $mail_html = str_replace("{codice}", $codice_utente, $mail_html);
+    $mail_html = file_get_contents("mail_template/benvenuto_utente.html");
+    $mail_html = str_replace("{nome}", $campi["nome"] . " " . $campi["cognome"], $mail_html);
 
-    send_email($id_utente, "Codice Account", $mail_html);
+    send_email($id_utente, "Benvenuto", $mail_html);
 }
 
 
@@ -143,6 +143,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
                     $conn->query($sql);
                 }
 
+                $mail_html = file_get_contents("mail_template/conferma_cambio_password.html");
+                $mail_html = str_replace("{nome}", get_nome_utente($id_utente), $mail_html);
+
+                send_email($id_utente, "Cambio Password", $mail_html);
+
                 logout();
             }
         }
@@ -157,6 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
 
         $mail_html = file_get_contents("mail_template/resetta_password.html");
         $mail_html = str_replace("{password}", $password, $mail_html);
+        $mail_html = str_replace("{nome}", get_nome_utente($id_utente), $mail_html);
 
         send_email($id_utente, "Reset Password", $mail_html);
 
@@ -207,6 +213,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
             $conn->query("UPDATE Utenti SET img_profilo=$id_immagine WHERE ID=$id_utente;");
 
             echo json_encode(get_user_img_profilo());
+            $mail_html = file_get_contents("mail_template/benvenuto_utente.html");
+            $mail_html = str_replace("{codice}", $codice_utente, $mail_html);
+
+            send_email($id_utente, "Benvenuto su Torg", $mail_html);
         }
     }
 

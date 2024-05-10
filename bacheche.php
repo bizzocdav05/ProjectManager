@@ -565,7 +565,6 @@
         }
 
         function show_bacheca(dati, target=$("#container")) {
-            console.log(dati);
             let elem = $("#bacheca-prototipo").clone(true);
             elem.attr("id", "");
 
@@ -594,6 +593,24 @@
             $("html").css("--color-quaternary", colors[3]);
         }
 
+        function mostra_tutte_bacheche() {
+            $("#container-recenti, #container-preferiti, #container").empty();
+            // Mostro bacheche utente
+            for (let i = 0; i < dati.length; i++)
+                show_bacheca(dati.list[i])
+
+
+            // Mostro bacheche recenti
+            filter.by_ultimo_accesso().forEach(dati_bacheca => {
+                show_bacheca(dati_bacheca, $("#container_recenti"))
+            });
+
+            // Mostro bacheche preferite
+            filter.by_preferiti().forEach(dati_bacheca => {
+                show_bacheca(dati_bacheca, $("#container_preferiti"))
+            });
+        }
+
         // Passaggio dati
         let dati = <?php echo json_encode($data); ?>;
         
@@ -601,23 +618,7 @@
         show_user_name();
 
         let filter = new FilterBacheche(dati);
-
-        // Mostro bacheche utente
-        for (let i = 0; i < dati.length; i++)
-            show_bacheca(dati.list[i])
-
-
-        // Mostro bacheche recenti
-        filter.by_ultimo_accesso().forEach(dati_bacheca => {
-            console.log(dati_bacheca);
-            show_bacheca(dati_bacheca, $("#container_recenti"))
-        });
-
-        // Mostro bacheche preferite
-        filter.by_preferiti().forEach(dati_bacheca => {
-            console.log(dati_bacheca);
-            show_bacheca(dati_bacheca, $("#container_preferiti"))
-        });
+        mostra_tutte_bacheche();
 
 
         // Event Listener globali
@@ -678,7 +679,11 @@
                     result =JSON.parse(result);
                     console.log(result);
                     if (result.esito == true) {
-                        show_bacheca(result.bacheca).appendTo("#container");
+                        dati[dati.length] = result.bacheca;
+                        console.log(dati);
+                        dati.length += 1;
+                        filter.data = dati;
+                        mostra_tutte_bacheche();
                     }
                     popup.close();
                 },
