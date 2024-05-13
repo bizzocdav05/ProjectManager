@@ -100,8 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]))
             else { echo registrazione($conn, $campi); }
         }
         elseif ($action == "login") {
-            // $esito = login($conn, $campi, true);
-            $esito = login($conn, $campi);
+            $esito = login($conn, $campi, true);
+            // $esito = login($conn, $campi);
             
             if ($esito > 0) {
                 $_SESSION["id_utente"] = $esito;
